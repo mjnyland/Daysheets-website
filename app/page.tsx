@@ -1,35 +1,14 @@
 import { Section } from "@/components/containers/Section";
 import { Grid } from "@/components/containers/Grid";
+import { Hero } from "@/components/Hero";
+import TestimonialsSplide from "@/components/testimonials-splide";
 
 export default function Home() {
   return (
-    <main className="min-h-dvh ">
-      <Section id="hero" gap="xl">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
-            Daysheets
-          </h1>
-          <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-300">
-            Clean, consistent sections with a reusable Container.
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <a
-              href="#features"
-              className="inline-flex items-center rounded-md bg-black text-white px-4 py-2 text-sm md:text-base hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black"
-              aria-label="View features"
-            >
-              View features
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center rounded-md border border-neutral-300 dark:border-neutral-700 px-4 py-2 text-sm md:text-base hover:bg-neutral-50 dark:hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-500"
-              aria-label="Contact us"
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-      </Section>
+    <main className="min-h-dvh">
+      <Hero />
+
+      <TestimonialsSplide />
 
       <Section
         id="features"
