@@ -100,8 +100,8 @@ export default function TestimonialsSplide() {
   );
 
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800">
-      <div className="absolute inset-0 bg-black/20" />
+    <section className="relative py-24 overflow-hidden bg-[#166CD1]">
+      <div className="absolute inset-0 " />
 
       <div className="relative z-10 mb-16">
         <h2 className="text-5xl font-medium text-center text-white">

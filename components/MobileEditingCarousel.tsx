@@ -128,6 +128,12 @@ const carouselItems = [
     icon: Shield,
     color: "bg-blue-500",
   },
+  {
+    id: "security",
+    label: "Security",
+    icon: Shield,
+    color: "bg-blue-500",
+  },
 ];
 
 export function MobileEditingCarousel() {
