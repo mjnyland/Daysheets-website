@@ -2,14 +2,16 @@ import { Section } from "@/components/containers/Section";
 import { Grid } from "@/components/containers/Grid";
 import { Hero } from "@/components/Hero";
 import TestimonialsSplide from "@/components/testimonials-splide";
+import { FeatureSlideshow } from "@/components/FeatureSlideshow";
 
 export default function Home() {
   return (
     <main className="min-h-dvh">
       <Hero />
+      
+      <FeatureSlideshow />
 
       <TestimonialsSplide />
-
       <Section
         id="features"
         background="transparent"
