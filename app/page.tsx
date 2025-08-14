@@ -3,46 +3,16 @@ import { Grid } from "@/components/containers/Grid";
 import { Hero } from "@/components/Hero";
 import TestimonialsSplide from "@/components/testimonials-splide";
 import { FeatureSlideshow } from "@/components/FeatureSlideshow";
+import { FlightGrid } from "@/components/FlightGrid";
 
 export default function Home() {
   return (
     <main className="min-h-dvh">
       <Hero />
-      
-      <FeatureSlideshow />
 
       <TestimonialsSplide />
-      <Section
-        id="features"
-        background="transparent"
-        gap="lg"
-        containerClassName="space-y-8"
-      >
-        <h2 className="text-2xl md:text-3xl font-semibold">Features</h2>
-        <Grid cols={1} mdCols={2} lgCols={3} gap="lg">
-          <FeatureCard
-            title="Consistent widths"
-            description="Max-widths and gutters handled for you."
-          />
-          <FeatureCard
-            title="Responsive grid"
-            description="Drop in column counts per breakpoint."
-          />
-          <FeatureCard
-            title="Mobile-first"
-            description="Sane defaults, easy overrides."
-          />
-          <FeatureCard
-            title="Accessible"
-            description="Semantic sections and links/buttons."
-          />
-          <FeatureCard
-            title="Composable"
-            description="Use Section + Grid or roll your own."
-          />
-          <FeatureCard title="No CSS" description="Tailwind utilities only." />
-        </Grid>
-      </Section>
+      <FeatureSlideshow />
+      <FlightGrid />
 
       <Section id="contact" background="muted" gap="md">
         <div className="max-w-prose space-y-3">

@@ -8,7 +8,6 @@ interface Feature {
   title: string;
   description: string;
   videoUrl?: string;
-  backgroundColor: string;
 }
 
 const features: Feature[] = [
@@ -18,7 +17,6 @@ const features: Feature[] = [
     description:
       "Add 100+ seats in seconds, with section, row, and seat numbers ready to go.",
     videoUrl: "/videos/day-view.mp4",
-    backgroundColor: "from-blue-500 to-cyan-500",
   },
   {
     id: "personnel",
@@ -26,7 +24,6 @@ const features: Feature[] = [
     description:
       "View every available ticket in one place, with real-time updates as you assign seats.",
     videoUrl: "/videos/personnel.mp4",
-    backgroundColor: "from-cyan-500 to-teal-500",
   },
   {
     id: "routing",
@@ -34,7 +31,6 @@ const features: Feature[] = [
     description:
       "Distribute tickets instantly, without double-booking or manual errors.",
     videoUrl: "/videos/routing.mp4",
-    backgroundColor: "from-teal-500 to-blue-500",
   },
 ];
 
@@ -48,21 +44,20 @@ export const FeatureSlideshow = () => {
   const PROGRESS_UPDATE_INTERVAL = 50; // Update progress every 50ms for smooth animation
 
   useEffect(() => {
+    // Clear any existing interval
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+
     // Reset progress when slide changes
     setProgress(0);
 
-    if (!isAutoPlaying) return;
-
-    // Start progress animation
+    // Always start progress animation (whether auto-playing or manual)
     const startTime = Date.now();
     progressIntervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const newProgress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
       setProgress(newProgress);
-
-      if (newProgress >= 100) {
-        setActiveFeature((prev) => (prev + 1) % features.length);
-      }
     }, PROGRESS_UPDATE_INTERVAL);
 
     return () => {
@@ -70,20 +65,24 @@ export const FeatureSlideshow = () => {
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [activeFeature, isAutoPlaying]);
+  }, [activeFeature]);
+
+  // Handle auto-advance in a separate effect
+  useEffect(() => {
+    if (progress >= 100 && isAutoPlaying) {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }
+  }, [progress, isAutoPlaying]);
 
   const handleFeatureClick = (index: number) => {
-    // Clear any existing intervals
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
+    // Clear auto-play timeout if it exists
     if (autoPlayTimeoutRef.current) {
       clearTimeout(autoPlayTimeoutRef.current);
     }
 
+    // Change to the selected feature
     setActiveFeature(index);
     setIsAutoPlaying(false);
-    setProgress(0);
 
     // Resume auto-play after 10 seconds of inactivity
     autoPlayTimeoutRef.current = setTimeout(
@@ -97,7 +96,8 @@ export const FeatureSlideshow = () => {
   return (
     <Section
       id="features-slideshow"
-      className={`relative min-h-[80vh] bg-gradient-to-br ${currentFeature.backgroundColor} transition-all duration-1000 overflow-hidden`}
+      background="blue"
+      className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
         {/* Header */}
@@ -128,14 +128,19 @@ export const FeatureSlideshow = () => {
                 </p>
 
                 {/* Animated progress line */}
-                {index === activeFeature && (
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
-                    <div
-                      className="h-full bg-white transition-all duration-100 ease-linear"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-                )}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+                  <div
+                    className={`h-full bg-white ${
+                      index === activeFeature
+                        ? "transition-all duration-100 ease-linear"
+                        : ""
+                    }`}
+                    style={{
+                      width: index === activeFeature ? `${progress}%` : "0%",
+                      transition: index === activeFeature ? undefined : "none",
+                    }}
+                  />
+                </div>
               </button>
             ))}
           </div>
@@ -163,22 +168,6 @@ export const FeatureSlideshow = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Progress Indicators */}
-        <div className="flex justify-center mt-12 gap-2">
-          {features.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleFeatureClick(index)}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                index === activeFeature
-                  ? "w-12 bg-white"
-                  : "w-6 bg-white/40 hover:bg-white/60"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
         </div>
       </div>
 
