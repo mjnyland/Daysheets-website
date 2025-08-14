@@ -128,12 +128,6 @@ const carouselItems = [
     icon: Shield,
     color: "bg-blue-500",
   },
-  {
-    id: "security",
-    label: "Security",
-    icon: Shield,
-    color: "bg-blue-500",
-  },
 ];
 
 export function MobileEditingCarousel() {
@@ -160,9 +154,8 @@ export function MobileEditingCarousel() {
   }, [isPaused]);
 
   const getItemPosition = (index: number, totalItems: number) => {
-    // Use smaller angle spacing for tighter grouping (180 degrees instead of 360)
-    // This makes items cluster on one side of the circle
-    const angleSpacing = 320 / (totalItems - 1); // Spread over half circle
+    // Evenly space items around the full circle
+    const angleSpacing = 360 / totalItems;
     const angle = angleSpacing * index - rotation - 90;
     const radius = 400; // Large radius so items get cropped at edges
     const x = Math.cos((angle * Math.PI) / 180) * radius;
