@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Section } from "@/components/containers/Section";
+import Image from "next/image";
 
 interface Feature {
   id: string;
   title: string;
   description: string;
   videoUrl?: string;
+  imageUrl?: string;
 }
 
 const features: Feature[] = [
@@ -16,21 +18,21 @@ const features: Feature[] = [
     title: "Day View",
     description:
       "Add 100+ seats in seconds, with section, row, and seat numbers ready to go.",
-    videoUrl: "/videos/day-view.mp4",
+    imageUrl: "/assets/dayview.png",
   },
   {
     id: "personnel",
     title: "Personnel",
     description:
       "View every available ticket in one place, with real-time updates as you assign seats.",
-    videoUrl: "/videos/personnel.mp4",
+    imageUrl: "/assets/dayview.png",
   },
   {
     id: "routing",
     title: "Multi-day Routing",
     description:
       "Distribute tickets instantly, without double-booking or manual errors.",
-    videoUrl: "/videos/routing.mp4",
+    imageUrl: "/assets/dayview.png",
   },
 ];
 
@@ -147,7 +149,7 @@ export const FeatureSlideshow = () => {
 
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm">
+            <div className="relative aspect-[1250/822] rounded-2xl overflow-hidden  backdrop-blur-sm">
               {currentFeature.videoUrl ? (
                 <video
                   key={currentFeature.id}
@@ -157,6 +159,15 @@ export const FeatureSlideshow = () => {
                   loop
                   muted
                   playsInline
+                />
+              ) : currentFeature.imageUrl ? (
+                <Image
+                  key={currentFeature.id}
+                  src={currentFeature.imageUrl}
+                  alt={currentFeature.title}
+                  fill
+                  className="object-cover"
+                  priority
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
