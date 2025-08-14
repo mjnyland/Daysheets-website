@@ -10,7 +10,7 @@ export function FlightGrid() {
     <Section background="dark" className="relative overflow-hidden ">
       <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-transparent mix-blend-soft-light" />
 
-      <div className="relative z-10 flex flex-col items-center gap-20 py-20">
+      <div className="relative z-10 flex flex-col items-center gap-8 ">
         <div className="flex flex-col items-center gap-6 text-center max-w-3xl">
           <span className="text-blue-500 text-lg font-normal">Flight Grid</span>
 
@@ -42,29 +42,28 @@ export function FlightGrid() {
             </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full max-w-6xl">
-          <FeatureItem
-            icon="􀒸"
-            title="Import Flights"
-            description="Daysheets AI makes it painless to add dozens of flights in a flash."
-          />
-          <FeatureItem
-            icon="􀒸"
-            title="Easy Charters"
-            description="Find any FBO globally, and we will handle the time zones for you."
-          />
-          <FeatureItem
-            icon="􀒸"
-            title="Export Grids"
-            description="Share flight grids in seconds, without manual creation errors."
-          />
-          <FeatureItem
-            icon="􀒸"
-            title="Track Flights"
-            description="Check the status of flights in the air and monitor their progress."
-          />
-        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full max-w-6xl pb-[160px]">
+        <FeatureItem
+          icon="􀒸"
+          title="Import Flights"
+          description="Daysheets AI makes it painless to add dozens of flights in a flash."
+        />
+        <FeatureItem
+          icon="􀒸"
+          title="Easy Charters"
+          description="Find any FBO globally, and we will handle the time zones for you."
+        />
+        <FeatureItem
+          icon="􀒸"
+          title="Export Grids"
+          description="Share flight grids in seconds, without manual creation errors."
+        />
+        <FeatureItem
+          icon="􀒸"
+          title="Track Flights"
+          description="Check the status of flights in the air and monitor their progress."
+        />
       </div>
     </Section>
   );

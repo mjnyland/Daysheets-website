@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import TestimonialsSplide from "@/components/testimonials-splide";
 import { FeatureSlideshow } from "@/components/FeatureSlideshow";
 import { FlightGrid } from "@/components/FlightGrid";
+import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
 
       <TestimonialsSplide />
       <FeatureSlideshow />
+
       <FlightGrid />
+      <MobileEditingCarousel />
 
       <Section id="contact" background="muted" gap="md">
         <div className="max-w-prose space-y-3">

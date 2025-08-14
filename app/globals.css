@@ -34,3 +34,22 @@ html.lenis body {
 .splide__slide {
   height: auto;
 }
+
+/* Mobile Editing Carousel */
+@keyframes rotate-carousel {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.carousel-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gradient radial effect */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
