@@ -55,33 +55,56 @@ const testimonials = [
   },
 ];
 
-function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
+function TestimonialCard({
+  testimonial,
+}: {
+  testimonial: (typeof testimonials)[0];
+}) {
   return (
-    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 h-full" style={{ textAlign: 'left', direction: 'ltr' }}>
-      <div className="flex items-center justify-start gap-4 mb-4" style={{ justifyContent: 'flex-start' }}>
+    <div
+      className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 h-full"
+      style={{ textAlign: "left", direction: "ltr" }}
+    >
+      <div
+        className="flex items-center justify-start gap-4 mb-4"
+        style={{ justifyContent: "flex-start" }}
+      >
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold flex-shrink-0">
-          {testimonial.name.split(' ').map(n => n[0]).join('')}
+          {testimonial.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")}
         </div>
-        <div style={{ textAlign: 'left' }}>
+        <div style={{ textAlign: "left" }}>
           <h4 className="font-semibold text-white">{testimonial.name}</h4>
           <p className="text-sm text-white/60">{testimonial.role}</p>
         </div>
       </div>
-      <p className="text-white/80 leading-relaxed" style={{ textAlign: 'left' }}>{testimonial.text}</p>
+      <p
+        className="text-white/80 leading-relaxed"
+        style={{ textAlign: "left" }}
+      >
+        {testimonial.text}
+      </p>
     </div>
   );
 }
 
 export default function TestimonialsSplide() {
-  const topRowTestimonials = testimonials.slice(0, Math.ceil(testimonials.length / 2));
-  const bottomRowTestimonials = testimonials.slice(Math.ceil(testimonials.length / 2));
+  const topRowTestimonials = testimonials.slice(
+    0,
+    Math.ceil(testimonials.length / 2)
+  );
+  const bottomRowTestimonials = testimonials.slice(
+    Math.ceil(testimonials.length / 2)
+  );
 
   return (
     <section className="relative py-24 overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800">
       <div className="absolute inset-0 bg-black/20" />
-      
+
       <div className="relative z-10 mb-16">
-        <h2 className="text-5xl font-bold text-center text-white">
+        <h2 className="text-5xl font-medium text-center text-white">
           Loved by the best in the industry.
         </h2>
       </div>
@@ -144,26 +167,26 @@ export default function TestimonialsSplide() {
                 rewind: false,
                 speed: 1,
               },
-            breakpoints: {
-              1280: {
-                perPage: 3,
+              breakpoints: {
+                1280: {
+                  perPage: 3,
+                },
+                1024: {
+                  perPage: 2,
+                },
+                640: {
+                  perPage: 1,
+                },
               },
-              1024: {
-                perPage: 2,
-              },
-              640: {
-                perPage: 1,
-              },
-            },
-          }}
-          extensions={{ AutoScroll }}
-        >
-          {bottomRowTestimonials.map((testimonial) => (
-            <SplideSlide key={testimonial.id}>
-              <TestimonialCard testimonial={testimonial} />
-            </SplideSlide>
-          ))}
-        </Splide>
+            }}
+            extensions={{ AutoScroll }}
+          >
+            {bottomRowTestimonials.map((testimonial) => (
+              <SplideSlide key={testimonial.id}>
+                <TestimonialCard testimonial={testimonial} />
+              </SplideSlide>
+            ))}
+          </Splide>
         </div>
       </div>
     </section>
