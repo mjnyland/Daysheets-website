@@ -19,6 +19,7 @@ type Props<T extends ElementType> = {
   padded?: ContainerPadding;
   className?: string;
   containerClassName?: string;
+  ref?: React.RefObject<HTMLElement | null>;
   children?: ReactNode;
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
 
@@ -48,6 +49,7 @@ export const Section = <T extends ElementType = "section">({
   className,
   containerClassName,
   children,
+  ref,
   ...rest
 }: Props<T>) => {
   const Tag = (as || "section") as ElementType;
@@ -58,6 +60,7 @@ export const Section = <T extends ElementType = "section">({
 
   return (
     <Tag
+      ref={ref}
       id={id}
       className={outerClasses}
       {...(rest as Record<string, unknown>)}
