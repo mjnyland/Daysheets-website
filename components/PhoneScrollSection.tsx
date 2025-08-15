@@ -12,14 +12,40 @@ export default function PhoneScrollSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const textRefs = useRef<HTMLDivElement[]>([]);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
     const section = sectionRef.current;
     const container = containerRef.current;
     const texts = textRefs.current;
+    const videoContainer = videoContainerRef.current;
 
-    if (!video || !section || !container) return;
+    if (!video || !section || !container || !videoContainer) return;
+
+    // Entrance animation for video container
+    gsap.fromTo(
+      videoContainer,
+      {
+        scale: 0.9,
+        y: 10,
+        transformOrigin: "center bottom",
+        opacity: 0,
+      },
+      {
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: videoContainer,
+          start: "top 100%",
+          end: "top 30%",
+          scrub: 1,
+        },
+      }
+    );
 
     // Ensure video is loaded before setting up ScrollTrigger
     video.load();
@@ -114,25 +140,25 @@ export default function PhoneScrollSection() {
       as="section"
       background="dark"
       gap="sm"
-      size="full"
+      size="lg"
       padded={false}
       className="relative min-h-[300vh]"
       containerClassName="h-full"
       id="phone-scroll-section"
     >
-      <div ref={containerRef} className="flex flex-col h-screen">
-        <div className="text-center pt-20 pb-10 ">
-          <h1 className="text-5xl font-bold text-white">
-            Your team will thank you
+      <div ref={containerRef} className="flex flex-col h-screen ">
+        <div className="text-center pt-20 pb-0">
+          <h1 className="text-6xl font-semibold text-white tracking-tight">
+            Your team will thank you.
           </h1>
         </div>
-        <div className="flex">
+        <div className="flex items-center ">
           {/* Left side - Sticky iPhone */}
-          <div className="w-1/2 flex items-center justify-center">
-            <div className="relative w-[400px] h-[800px]">
+          <div className="w-2/3 flex items-center justify-center">
+            <div ref={videoContainerRef} className="relative w-[400px]">
               <video
                 ref={videoRef}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain pb-16"
                 src="/videos/DaysheetsiPhoneMockup.mov"
                 playsInline
                 muted
@@ -141,7 +167,7 @@ export default function PhoneScrollSection() {
             </div>
           </div>
           {/* Right side - Scrolling content */}
-          <div className="w-1/2 flex items-center ">
+          <div className="w-1/3 flex items-center ">
             <div className="px-12 relative h-[300px]  w-[400px]">
               <div
                 ref={(el) => {
@@ -195,8 +221,8 @@ export default function PhoneScrollSection() {
                   Travel Time Built In
                 </h2>
                 <p className="text-xl text-gray-300 leading-relaxed">
-                  Intelligent travel time calculations ensure you&apos;re never late.
-                  Get notifications when it&apos;s time to leave.
+                  Intelligent travel time calculations ensure you&apos;re never
+                  late. Get notifications when it&apos;s time to leave.
                 </p>
               </div>
             </div>
