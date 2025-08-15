@@ -32,15 +32,13 @@ export default function PhoneScrollSection() {
       // Hide all text sections initially
       gsap.set(texts, { opacity: 0, y: 50 });
 
-      // Create main timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          pin: container,
-          scrub: 1,
-        },
+      // Create pinned container
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom top",
+        pin: container,
+        scrub: 1,
       });
 
       // Add video scrubbing
@@ -197,8 +195,8 @@ export default function PhoneScrollSection() {
                   Travel Time Built In
                 </h2>
                 <p className="text-xl text-gray-300 leading-relaxed">
-                  Intelligent travel time calculations ensure you're never late.
-                  Get notifications when it's time to leave.
+                  Intelligent travel time calculations ensure you&apos;re never late.
+                  Get notifications when it&apos;s time to leave.
                 </p>
               </div>
             </div>

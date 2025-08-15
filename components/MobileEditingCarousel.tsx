@@ -20,9 +20,6 @@ import {
   Utensils,
   Music,
   Shield,
-  Briefcase,
-  Ticket,
-  Wifi,
 } from "lucide-react";
 
 const carouselItems = [
