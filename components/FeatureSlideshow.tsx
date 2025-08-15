@@ -101,28 +101,28 @@ export const FeatureSlideshow = () => {
       background="blue"
       className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col gap-0">
         {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white ">
+        <div className="text-center mb-8">
+          <h2 className="text-5xl font-medium text-white ">
             The most complete touring solution.
           </h2>
         </div>
 
         {/* Feature Tabs */}
-        <div className="flex flex-col  gap-4  items-start">
+        <div className="flex flex-col  items-start">
           <div className="w-full space-y-4 flex flex-col justify-center md:flex-row gap-3">
             {features.map((feature, index) => (
               <button
                 key={feature.id}
                 onClick={() => handleFeatureClick(index)}
-                className={`flex flex-col relative w-full text-left p-6 rounded-xl transition-all duration-300 overflow-hidden h-full ${
+                className={`flex flex-col relative w-full text-left p-4 rounded-xl transition-all duration-300 overflow-hidden h-full ${
                   index === activeFeature
                     ? "bg-white/20 backdrop-blur-md border-2 border-white/30"
                     : "bg-white/10 backdrop-blur-sm border-2 border-transparent hover:bg-white/15"
                 }`}
               >
-                <h3 className="text-xl md:text-2xl font-semibold text-white mb-2">
+                <h3 className="text-lg font-semibold text-white mb-1">
                   {feature.title}
                 </h3>
                 <p className="text-white/90 text-sm md:text-base">
@@ -180,12 +180,6 @@ export const FeatureSlideshow = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-white/10 to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
     </Section>
   );

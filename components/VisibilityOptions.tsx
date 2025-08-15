@@ -102,8 +102,8 @@ export const VisibilityOptions = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-900 mb-4">
-            Create a personalized the experience
+          <h2 className="text-5xl font-medium text-gray-900 mb-4">
+            A personalized experience
             <br />
             for everyone on tour.
           </h2>
