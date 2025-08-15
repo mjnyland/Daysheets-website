@@ -6,6 +6,7 @@ import { FeatureSlideshow } from "@/components/FeatureSlideshow";
 import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
 import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
+import PhoneScrollSection from "@/components/PhoneScrollSection";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <TestimonialsSplide />
       <FeatureSlideshow />
+      <PhoneScrollSection />
       <FlightGrid />
       <VisibilityOptions />
       <MobileEditingCarousel />
