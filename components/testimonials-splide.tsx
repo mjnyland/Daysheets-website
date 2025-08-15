@@ -81,7 +81,7 @@ function TestimonialCard({
         </div>
       </div>
       <p
-        className="text-white/80 leading-relaxed"
+        className="text-white/80 leading-relaxed line-clamp-2"
         style={{ textAlign: "left" }}
       >
         {testimonial.text}
@@ -110,6 +110,11 @@ export default function TestimonialsSplide() {
       </div>
 
       <div className="relative space-y-6">
+        {/* Left gradient overlay */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#166CD1] to-transparent z-10 pointer-events-none" />
+        
+        {/* Right gradient overlay */}
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#166CD1] to-transparent z-10 pointer-events-none" />
         {/* Top row - scrolls left */}
         <Splide
           options={{
