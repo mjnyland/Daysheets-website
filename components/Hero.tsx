@@ -82,17 +82,15 @@ export const Hero = () => {
             <Image src={Logo} alt="Daysheets" width={64} height={64} />
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-tighter">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tighter">
             The New Standard for
             <br />
             Tour Management.
           </h1>
 
-          <div className="space-y-2">
-            <p className="text-2xl text-blue-100">
-              Plan Tours. Book Travel. All in One Place.
-            </p>
-            <p className="text-2xl text-blue-100">
+          <div className="space-y-1">
+            <p className="text-xl text-blue-100">
+              Plan Tours. Book Travel. All in One Place. <br />
               Logistics just got 10x easier.
             </p>
           </div>

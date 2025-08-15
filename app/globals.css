@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  --font-archivo: 'Archivo', sans-serif;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;

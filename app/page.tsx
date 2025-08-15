@@ -5,6 +5,8 @@ import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
 import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import PhoneScrollSection from "@/components/PhoneScrollSection";
+import { TravelSection } from "@/components/TravelSection";
+import { SummaryCards } from "@/components/SummaryCards";
 
 export default function Home() {
   return (
@@ -16,6 +18,8 @@ export default function Home() {
       <VisibilityOptions />
       <PhoneScrollSection />
       <MobileEditingCarousel />
+      <TravelSection />
+      <SummaryCards />
     </main>
   );
 }
