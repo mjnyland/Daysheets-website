@@ -100,8 +100,9 @@ export const FeatureSlideshow = () => {
       id="features-slideshow"
       background="blue"
       className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
+      size="xl"
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col gap-0">
+      <div className="relative z-10 mx-auto px-4 flex flex-col gap-0 ">
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-5xl font-medium text-white ">

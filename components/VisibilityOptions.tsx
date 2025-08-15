@@ -97,11 +97,11 @@ export const VisibilityOptions = () => {
     <Section
       id="visibility-options"
       background="muted"
-      className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
+      className={`relative transition-all duration-1000 overflow-hidden`}
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 ">
         {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-5xl font-medium text-gray-900 mb-4">
             A personalized experience
             <br />
@@ -115,15 +115,15 @@ export const VisibilityOptions = () => {
         </div>
 
         {/* Main Content Area with Dots Navigation */}
-        <div className="flex flex-col  gap-8 items-center">
+        <div className="flex flex-col gap-8 items-center">
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden">
+            <div className="relative h-[500px] rounded-2xl">
               {currentOption.videoUrl ? (
                 <video
                   key={currentOption.id}
                   src={currentOption.videoUrl}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   autoPlay
                   loop
                   muted
@@ -135,7 +135,7 @@ export const VisibilityOptions = () => {
                   src={currentOption.imageUrl}
                   alt={currentOption.title}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               ) : (
