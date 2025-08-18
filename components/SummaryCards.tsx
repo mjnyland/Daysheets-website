@@ -6,7 +6,7 @@ import { Container } from "./containers/Container";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin
+// Register ScrollTrigger directly
 gsap.registerPlugin(ScrollTrigger);
 
 const cards = [
@@ -33,165 +33,90 @@ const cards = [
 ];
 
 export function SummaryCards() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null); // Dedicated trigger element
+  const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardsWrapperRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
     const section = sectionRef.current;
+    const container = containerRef.current;
     const headline = headlineRef.current;
-    const cardsContainer = cardsContainerRef.current;
-    const cardsWrapper = cardsWrapperRef.current;
 
-    // Create context for better performance
-    const ctx = gsap.context(() => {
-      // Pin the section and create animations
+    if (!section || !container || !headline) return;
+
+    // Debug positioning
+    console.log("Section offsetTop:", section.offsetTop);
+    console.log("Section getBoundingClientRect:", section.getBoundingClientRect());
+    console.log("Document scrollTop:", document.documentElement.scrollTop);
+    console.log("Window pageYOffset:", window.pageYOffset);
+
+    // Force ScrollTrigger to recalculate everything
+    ScrollTrigger.refresh();
+
+    setTimeout(() => {
+      console.log("After timeout - Section offsetTop:", section.offsetTop);
+      console.log("After timeout - Section getBoundingClientRect:", section.getBoundingClientRect());
+
+      // Create ScrollTrigger after ensuring layout is settled
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top top",
-          end: () => `+=${cards.length * 100}%`,
-          pin: true,
+          start: "top top", 
+          end: "+=1000",
+          pin: container,
           scrub: 1,
-          anticipatePin: 1,
+          markers: true,
+          id: "summary-cards",
+          onRefresh: (self) => {
+            console.log("ScrollTrigger start:", self.start);
+            console.log("ScrollTrigger end:", self.end);
+            console.log("Trigger element offsetTop:", self.trigger.offsetTop);
+          }
         },
       });
 
-      // Headline animation - fade and scale down when pinned
-      tl.to(
-        headline,
-        {
-          opacity: 0,
-          scale: 0.7,
-          duration: 0.3,
-          ease: "power2.inOut",
-        },
-        0
-      );
-
-      // Cards container slides up from bottom
-      tl.fromTo(
-        cardsContainer,
-        {
-          yPercent: 100,
-        },
-        {
-          yPercent: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        0.1
-      );
-
-      // Horizontal scroll for cards
-      tl.to(
-        cardsWrapper,
-        {
-          x: () => -(cards.length - 1) * 380, // 380px card width, no gap
-          duration: 2,
-          ease: "none",
-        },
-        0.5
-      );
-
-      // Individual card animations for focus effect
-      cardRefs.current.forEach((card, index) => {
-        if (!card) return;
-
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: () => `+=${cards.length * 100}%`,
-          scrub: 1,
-          onUpdate: (self) => {
-            // Calculate which card should be in focus based on scroll progress
-            const progress = self.progress;
-            const cardProgress = progress * (cards.length - 1);
-            const distance = Math.abs(cardProgress - index);
-
-            // Scale and opacity based on distance from center
-            const scale = Math.max(0.9, 1 - distance * 0.1);
-            const opacity = Math.max(0.3, 1 - distance * 0.3);
-
-            gsap.set(card, {
-              scale,
-              opacity,
-            });
-          },
-        });
+      tl.to(headline, {
+        scale: 0.8,
+        opacity: 0.5,
+        duration: 1,
       });
-    }, section);
+    }, 1000); // Give layout time to settle
 
-    // Cleanup
     return () => {
-      ctx.revert();
+      ScrollTrigger.getAll().forEach(st => st.kill());
     };
   }, []);
 
   return (
-    <Section
+    <div
       ref={sectionRef}
-      className="h-screen relative overflow-hidden"
-      background="blue"
+      className="min-h-[300vh] bg-blue-500 relative"
+      style={{ backgroundColor: '#3b82f6' }}
     >
-      {/* Headline Section */}
+      {/* Very visible border to see exactly where this section starts */}
+      <div className="w-full h-4 bg-red-500 absolute top-0 z-50"></div>
+      <div className="w-full text-center py-4 bg-yellow-400 text-black font-bold">
+        THIS IS THE SUMMARY CARDS SECTION START
+      </div>
+      
       <div
-        ref={headlineRef}
-        className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center z-10"
+        ref={containerRef}
+        className="h-screen flex flex-col overflow-hidden bg-blue-600"
       >
-        <Container>
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              <span className="text-sm uppercase tracking-wider text-white">
-                Built for every band.
-              </span>
-            </div>
+        <div
+          ref={headlineRef}
+          className="flex-1 flex flex-col items-center justify-center"
+        >
+          <div className="text-center">
             <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white">
-              The most complete
-              <br />
-              touring solution.
+              ScrollTrigger Test
             </h2>
           </div>
-        </Container>
+        </div>
       </div>
-
-      {/* Cards Section */}
-      <div
-        ref={cardsContainerRef}
-        className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
-      >
-        <Container className="overflow-visible">
-          <div ref={cardsWrapperRef} className="flex">
-            {cards.map((card, index) => (
-              <div
-                key={index}
-                ref={(el) => {
-                  if (el) cardRefs.current[index] = el;
-                }}
-                className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-lg"
-              >
-                <div className="h-full p-8 flex flex-col justify-between bg-white/10 backdrop-blur-sm">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">
-                      {card.title}
-                    </h3>
-                    <p className="text-lg text-white/80">{card.description}</p>
-                  </div>
-                  <div className="aspect-video bg-gray-200/10 rounded-lg overflow-hidden">
-                    {/* Video placeholder - replace with actual videos */}
-                    <div className="w-full h-full" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
-    </Section>
+    </div>
   );
 }

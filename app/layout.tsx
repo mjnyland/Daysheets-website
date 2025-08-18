@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={archivo.variable}>
       <body className={`${archivo.className} antialiased`}>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+{children}
       </body>
     </html>
   );
