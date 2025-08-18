@@ -5,7 +5,7 @@ import {
   ContainerSize,
 } from "@/components/containers/Container";
 
-type SectionGap = "sm" | "md" | "lg" | "xl";
+type SectionGap = "none" | "sm" | "md" | "lg" | "xl";
 type SectionBg = "transparent" | "subtle" | "muted" | "red" | "dark" | "blue";
 
 type Props<T extends ElementType> = {
@@ -24,6 +24,7 @@ type Props<T extends ElementType> = {
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
 
 const gapMap: Record<SectionGap, string> = {
+  none: "py-0",
   sm: "py-8",
   md: "py-12",
   lg: "py-16",

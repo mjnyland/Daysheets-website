@@ -6,11 +6,11 @@ import { FlightGrid } from "@/components/FlightGrid";
 import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import PhoneScrollSection from "@/components/PhoneScrollSection";
 import { TravelSection } from "@/components/TravelSection";
-import { SummaryCards } from "@/components/SummaryCards";
+import { SimpleStickySection } from "@/components/SimpleStickySection";
 
 export default function Home() {
   return (
-    <main className="min-h-dvh">
+    <main className="min-h-dvh ">
       <Hero />
       <TestimonialsSplide />
       <FeatureSlideshow />
@@ -19,7 +19,7 @@ export default function Home() {
       <PhoneScrollSection />
       <MobileEditingCarousel />
       <TravelSection />
-      <SummaryCards />
+      <SimpleStickySection />
     </main>
   );
 }

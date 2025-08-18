@@ -8,7 +8,7 @@ export const Hero = () => {
   return (
     <Section
       id="hero"
-      gap="xl"
+      gap="none"
       className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-700 sm:h-[60dvh] md:h-[70dvh] lg:h-[100dvh] flex items-center"
     >
       {/* Background gradient overlay */}

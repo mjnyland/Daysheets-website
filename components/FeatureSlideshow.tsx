@@ -101,6 +101,7 @@ export const FeatureSlideshow = () => {
       background="blue"
       className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
       size="xl"
+      gap="none"
     >
       <div className="relative z-10 mx-auto px-4 flex flex-col gap-0 ">
         {/* Header */}

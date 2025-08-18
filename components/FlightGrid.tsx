@@ -60,7 +60,7 @@ export function FlightGrid() {
   }, []);
 
   return (
-    <Section background="dark" className="relative overflow-hidden ">
+    <Section background="dark" className="relative overflow-hidden " gap="none">
       <div className="relative z-10 flex flex-col items-center gap-12 mt-16">
         <div className="flex flex-col items-center gap-6 text-center max-w-3xl">
           <div className="flex items-center px-4 py-2 bg-blue-500/30 rounded-full">
