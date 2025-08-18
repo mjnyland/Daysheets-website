@@ -49,7 +49,7 @@ export function SummaryCards() {
 
     // Create context for better performance
     const ctx = gsap.context(() => {
-      // Create the main timeline with pin
+      // Pin the section and create animations
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -61,7 +61,7 @@ export function SummaryCards() {
         },
       });
 
-      // Headline animation - fade and scale down when section pins
+      // Headline animation - fade and scale down when pinned
       tl.to(
         headline,
         {
@@ -91,7 +91,7 @@ export function SummaryCards() {
       tl.to(
         cardsWrapper,
         {
-          x: () => -(cards.length - 1) * 420, // 380px card width + 40px gap
+          x: () => -(cards.length - 1) * 380, // 380px card width, no gap
           duration: 2,
           ease: "none",
         },
@@ -165,7 +165,7 @@ export function SummaryCards() {
         ref={cardsContainerRef}
         className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
       >
-        <Container className="overflow-hidden">
+        <Container className="overflow-visible">
           <div ref={cardsWrapperRef} className="flex">
             {cards.map((card, index) => (
               <div
