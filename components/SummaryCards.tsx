@@ -166,7 +166,7 @@ export function SummaryCards() {
         className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
       >
         <Container className="overflow-hidden">
-          <div ref={cardsWrapperRef} className="flex gap-10">
+          <div ref={cardsWrapperRef} className="flex">
             {cards.map((card, index) => (
               <div
                 key={index}
@@ -175,16 +175,12 @@ export function SummaryCards() {
                 }}
                 className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-lg"
               >
-                <div
-                  className="h-full p-8 flex flex-col justify-between bg-white/10 backdrop-blur-sm"
-                >
+                <div className="h-full p-8 flex flex-col justify-between bg-white/10 backdrop-blur-sm">
                   <div>
                     <h3 className="text-2xl font-bold mb-4 text-white">
                       {card.title}
                     </h3>
-                    <p className="text-lg text-white/80">
-                      {card.description}
-                    </p>
+                    <p className="text-lg text-white/80">{card.description}</p>
                   </div>
                   <div className="aspect-video bg-gray-200/10 rounded-lg overflow-hidden">
                     {/* Video placeholder - replace with actual videos */}
