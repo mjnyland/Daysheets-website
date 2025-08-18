@@ -13,25 +13,21 @@ const cards = [
   {
     title: "Portfolio overview",
     description: "Track your entire portfolio in one place.",
-    bgColor: "bg-gray-100",
     video: "/assets/portfolio-video.mp4",
   },
   {
     title: "Hardware wallet support",
     description: "Keeps funds safe on your Ledger / Trezor.",
-    bgColor: "bg-gray-100",
     video: "/assets/hardware-video.mp4",
   },
   {
     title: "Malicious address alerts",
     description: "We flag malicious and suspicious addresses for you.",
-    bgColor: "bg-gray-100",
     video: "/assets/alerts-video.mp4",
   },
   {
     title: "No IP tracking",
     description: "We do not record any user IP addresses.",
-    bgColor: "bg-gray-100",
     video: "/assets/privacy-video.mp4",
   },
 ];
@@ -53,19 +49,19 @@ export function SummaryCards() {
 
     // Create context for better performance
     const ctx = gsap.context(() => {
-      // Create the main timeline
+      // Create the main timeline with pin
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: `+=${cards.length * 100}%`,
+          end: () => `+=${cards.length * 100}%`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
         },
       });
 
-      // Headline animation - fade and scale down when section becomes sticky
+      // Headline animation - fade and scale down when section pins
       tl.to(
         headline,
         {
@@ -109,7 +105,7 @@ export function SummaryCards() {
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: `+=${cards.length * 100}%`,
+          end: () => `+=${cards.length * 100}%`,
           scrub: 1,
           onUpdate: (self) => {
             // Calculate which card should be in focus based on scroll progress
@@ -139,69 +135,66 @@ export function SummaryCards() {
   return (
     <Section
       ref={sectionRef}
-      className="relative "
-      style={{ height: `${100 * cards.length}vh` }}
+      className="h-screen relative overflow-hidden"
       background="blue"
     >
-      <div className="h-screen relative overflow-hidden">
-        {/* Headline Section */}
-        <div
-          ref={headlineRef}
-          className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center z-10"
-        >
-          <Container>
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span className="text-sm uppercase tracking-wider text-white">
-                  Built for every band.
-                </span>
-              </div>
-              <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white">
-                The most complete
-                <br />
-                touring solution.
-              </h2>
+      {/* Headline Section */}
+      <div
+        ref={headlineRef}
+        className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center z-10"
+      >
+        <Container>
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <span className="text-sm uppercase tracking-wider text-white">
+                Built for every band.
+              </span>
             </div>
-          </Container>
-        </div>
+            <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white">
+              The most complete
+              <br />
+              touring solution.
+            </h2>
+          </div>
+        </Container>
+      </div>
 
-        {/* Cards Section */}
-        <div
-          ref={cardsContainerRef}
-          className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
-        >
-          <Container className="overflow-hidden">
-            <div ref={cardsWrapperRef} className="flex gap-10">
-              {cards.map((card, index) => (
+      {/* Cards Section */}
+      <div
+        ref={cardsContainerRef}
+        className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
+      >
+        <Container className="overflow-hidden">
+          <div ref={cardsWrapperRef} className="flex gap-10">
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                ref={(el) => {
+                  if (el) cardRefs.current[index] = el;
+                }}
+                className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-lg"
+              >
                 <div
-                  key={index}
-                  ref={(el) => {
-                    if (el) cardRefs.current[index] = el;
-                  }}
-                  className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-xl"
+                  className="h-full p-8 flex flex-col justify-between bg-white/10 backdrop-blur-sm"
                 >
-                  <div
-                    className={`${card.bgColor} h-full p-8 flex flex-col justify-between`}
-                  >
-                    <div>
-                      <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                        {card.title}
-                      </h3>
-                      <p className="text-lg text-gray-600">
-                        {card.description}
-                      </p>
-                    </div>
-                    <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-                      {/* Video placeholder - replace with actual videos */}
-                      <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 animate-pulse" />
-                    </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">
+                      {card.title}
+                    </h3>
+                    <p className="text-lg text-white/80">
+                      {card.description}
+                    </p>
+                  </div>
+                  <div className="aspect-video bg-gray-200/10 rounded-lg overflow-hidden">
+                    {/* Video placeholder - replace with actual videos */}
+                    <div className="w-full h-full" />
                   </div>
                 </div>
-              ))}
-            </div>
-          </Container>
-        </div>
+              </div>
+            ))}
+          </div>
+        </Container>
       </div>
     </Section>
   );
