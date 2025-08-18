@@ -3,7 +3,7 @@ import { Section } from "@/components/containers/Section";
 
 export const TravelSection = () => {
   return (
-    <Section background="subtle" gap="none">
+    <Section background="subtle" gap="md">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div className="space-y-6">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight">

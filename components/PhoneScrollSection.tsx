@@ -139,7 +139,7 @@ export default function PhoneScrollSection() {
       ref={sectionRef}
       as="section"
       background="dark"
-      gap="none"
+      gap="md"
       size="lg"
       padded={false}
       className="relative min-h-[300vh]"

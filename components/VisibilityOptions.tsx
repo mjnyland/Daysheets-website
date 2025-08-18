@@ -98,7 +98,7 @@ export const VisibilityOptions = () => {
       id="visibility-options"
       background="muted"
       className={`relative transition-all duration-1000 overflow-hidden`}
-      gap="none"
+      gap="md"
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 ">
         {/* Header */}

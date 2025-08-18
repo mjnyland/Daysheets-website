@@ -27,16 +27,32 @@ export default function SmoothScrollProvider({
 
     smootherRef.current = smoother;
 
+    // after creating `smoother`
+    const doRefresh = () => ScrollTrigger.refresh();
+    const onRefresh = () => smoother?.refresh();
+
+    window.addEventListener("load", doRefresh, { once: true });
+    document.fonts?.ready.then(doRefresh);
+
+    ScrollTrigger.addEventListener("refresh", onRefresh);
+
+    // double RAF to ensure first-paint sync
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    });
+
     return () => {
+      window.removeEventListener("load", doRefresh);
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
       smoother?.kill();
     };
   }, []);
 
   return (
     <div id="smooth-wrapper">
-      <div id="smooth-content">
-        {children}
-      </div>
+      <div id="smooth-content">{children}</div>
     </div>
   );
 }

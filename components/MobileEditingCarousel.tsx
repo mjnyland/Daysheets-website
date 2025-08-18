@@ -173,7 +173,7 @@ export function MobileEditingCarousel() {
   };
 
   return (
-    <Section background="dark" className="overflow-hidden" gap="none" size="xl">
+    <Section background="dark" className="overflow-hidden" gap="md" size="xl">
       <div className="grid lg:grid-cols-2 gap-20 lg:gap-20 items-center min-h-[600px]">
         {/* Left Content */}
         <div className="space-y-6">

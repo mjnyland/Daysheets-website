@@ -3,12 +3,13 @@ import { Section } from "@/components/containers/Section";
 import Logo from "@/assets/DaysheetsLogo@3x.png";
 import HeroImage from "@/assets/hero img.png";
 import GradientBg from "@/assets/gradient.png";
+import NavBar from "@/components/NavBar";
 
 export const Hero = () => {
   return (
     <Section
       id="hero"
-      gap="none"
+      gap="md"
       className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-700 sm:h-[60dvh] md:h-[70dvh] lg:h-[100dvh] flex items-center"
     >
       {/* Background gradient overlay */}
@@ -17,63 +18,9 @@ export const Hero = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8 py-6">
-        <div className="max-w-screen-xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image
-              src={Logo}
-              alt="Daysheets"
-              width={40}
-              height={40}
-              className="w-8 h-8 md:w-10 md:h-10"
-            />
-            <span className="text-white text-xl md:text-2xl font-semibold">
-              Daysheets
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#"
-              className="text-white hover:text-blue-100 transition-colors"
-            >
-              Travel
-            </a>
-            <a
-              href="#"
-              className="text-white hover:text-blue-100 transition-colors"
-            >
-              Pricing
-            </a>
-            <a
-              href="#"
-              className="text-white hover:text-blue-100 transition-colors"
-            >
-              Careers
-            </a>
-            <button className="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-              Book a demo
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
-          <button className="md:hidden text-white">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-      </nav>
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <NavBar theme="dark" />
+      </div>
 
       {/* Hero content */}
       <div className="relative z-10 w-full pb-[35%] md:pb-[30%] lg:pb-[25%]">

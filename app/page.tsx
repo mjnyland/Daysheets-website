@@ -7,6 +7,8 @@ import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import PhoneScrollSection from "@/components/PhoneScrollSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
+import CtaSection from "@/components/CtaSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -20,6 +22,8 @@ export default function Home() {
       <MobileEditingCarousel />
       <TravelSection />
       <SimpleStickySection />
+      <CtaSection />
+      <Footer />
     </main>
   );
 }
