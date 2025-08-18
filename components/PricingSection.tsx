@@ -91,7 +91,7 @@ export default function PricingSection() {
         <NavBar theme="light" />
       </div>
       <Section
-        background="muted"
+        background="light"
         gap="none"
         aria-label="Pricing hero"
         padded="lg"
@@ -109,7 +109,7 @@ export default function PricingSection() {
       </Section>
 
       <Section
-        background="muted"
+        background="light"
         gap="xl"
         aria-label="Pricing tiers"
         padded="lg"

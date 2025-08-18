@@ -6,7 +6,14 @@ import {
 } from "@/components/containers/Container";
 
 type SectionGap = "none" | "sm" | "md" | "lg" | "xl";
-type SectionBg = "transparent" | "subtle" | "muted" | "red" | "dark" | "blue";
+type SectionBg =
+  | "transparent"
+  | "subtle"
+  | "muted"
+  | "red"
+  | "dark"
+  | "blue"
+  | "light";
 
 type Props<T extends ElementType> = {
   as?: T;
@@ -38,6 +45,7 @@ const bgMap: Record<SectionBg, string> = {
   red: "bg-red-500",
   dark: "bg-[#0E0E0E]",
   blue: "bg-[#166CD1]",
+  light: "bg-white",
 };
 
 export const Section = <T extends ElementType = "section">({
