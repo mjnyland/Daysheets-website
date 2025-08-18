@@ -92,7 +92,7 @@ export default function PricingSection() {
       </div>
       <Section
         background="muted"
-        gap="xl"
+        gap="none"
         aria-label="Pricing hero"
         padded="lg"
       >
@@ -114,15 +114,21 @@ export default function PricingSection() {
         aria-label="Pricing tiers"
         padded="lg"
       >
-        <Grid cols={1} mdCols={2} lgCols={4} gap="lg" className="items-stretch">
+        <Grid
+          cols={1}
+          mdCols={2}
+          lgCols={4}
+          gap="none"
+          className="items-stretch"
+        >
           {tiers.map((tier) => (
             <div
               key={tier.name}
               className={[
-                "flex min-h-full flex-col rounded-3xl bg-white p-6 sm:p-8 ring-1",
+                "flex min-h-full flex-col  p-6 sm:p-8 ring-1",
                 tier.highlight === "filled"
-                  ? "ring-blue-300"
-                  : "ring-neutral-200",
+                  ? "ring-blue-300 bg-blue-50"
+                  : "ring-neutral-200 bg-white",
               ].join(" ")}
             >
               <div className="text-center">

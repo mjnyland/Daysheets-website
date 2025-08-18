@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 type GridCols = 1 | 2 | 3 | 4;
-type GridGap = "sm" | "md" | "lg";
+type GridGap = "sm" | "md" | "lg" | "none";
 
 type Props = {
   cols?: GridCols;
@@ -44,6 +44,7 @@ const xlColsMap: Record<GridCols, string> = {
 };
 
 const gapMap: Record<GridGap, string> = {
+  none: "gap-0",
   sm: "gap-4",
   md: "gap-6",
   lg: "gap-8",

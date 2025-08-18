@@ -83,7 +83,7 @@ export function SimpleStickySection() {
             end: () => `+=${cards.length * 100}%`,
             pin: container,
             scrub: 1,
-            markers: true,
+            markers: false,
             invalidateOnRefresh: true,
             pinType: "transform",
           },
