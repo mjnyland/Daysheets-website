@@ -32,8 +32,8 @@ const gapMap: Record<SectionGap, string> = {
 
 const bgMap: Record<SectionBg, string> = {
   transparent: "bg-transparent",
-  subtle: "bg-neutral-50 dark:bg-neutral-900",
-  muted: "bg-neutral-100 dark:bg-neutral-950",
+  subtle: "bg-neutral-50",
+  muted: "bg-neutral-100",
   red: "bg-red-500",
   dark: "bg-[#0E0E0E]",
   blue: "bg-[#166CD1]",

@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Section } from "./containers/Section";
 import { Container } from "./containers/Container";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const cards = [
   {
@@ -35,108 +40,127 @@ export function SummaryCards() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isSticky, setIsSticky] = useState(false);
-  const [headlineOpacity, setHeadlineOpacity] = useState(1);
-  const [headlineScale, setHeadlineScale] = useState(1);
-  const [cardsTranslateY, setCardsTranslateY] = useState(100);
+  const cardsWrapperRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+    if (!sectionRef.current) return;
 
-      const section = sectionRef.current;
-      const rect = section.getBoundingClientRect();
-      const sectionHeight = section.offsetHeight;
-      const windowHeight = window.innerHeight;
+    const section = sectionRef.current;
+    const headline = headlineRef.current;
+    const cardsContainer = cardsContainerRef.current;
+    const cardsWrapper = cardsWrapperRef.current;
 
-      // Calculate when section enters viewport
-      const sectionTop = rect.top;
-      const sectionBottom = rect.bottom;
+    // Create context for better performance
+    const ctx = gsap.context(() => {
+      // Create the main timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: `+=${cards.length * 100}%`,
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+        },
+      });
 
-      // Section is in viewport
-      if (sectionTop <= windowHeight && sectionBottom >= 0) {
-        // Calculate progress through the section (0 to 1)
-        const progress = Math.max(
-          0,
-          Math.min(
-            1,
-            (windowHeight - sectionTop) / (sectionHeight + windowHeight)
-          )
-        );
+      // Headline animation - fade and scale down when section becomes sticky
+      tl.to(
+        headline,
+        {
+          opacity: 0,
+          scale: 0.7,
+          duration: 0.3,
+          ease: "power2.inOut",
+        },
+        0
+      );
 
-        setScrollProgress(progress);
+      // Cards container slides up from bottom
+      tl.fromTo(
+        cardsContainer,
+        {
+          yPercent: 100,
+        },
+        {
+          yPercent: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        0.1
+      );
 
-        // Sticky state activates when section reaches top
-        setIsSticky(sectionTop <= 0 && sectionBottom > windowHeight);
+      // Horizontal scroll for cards
+      tl.to(
+        cardsWrapper,
+        {
+          x: () => -(cards.length - 1) * 420, // 380px card width + 40px gap
+          duration: 2,
+          ease: "none",
+        },
+        0.5
+      );
 
-        // Headline zooms out and fades (first 25% of scroll)
-        if (progress < 0.25) {
-          const headlineProgress = progress * 4;
-          setHeadlineOpacity(1 - headlineProgress);
-          setHeadlineScale(1 - headlineProgress * 0.3);
-        } else {
-          setHeadlineOpacity(0);
-          setHeadlineScale(0.7);
-        }
+      // Individual card animations for focus effect
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return;
 
-        // Cards slide up from bottom (15% to 35% of scroll)
-        if (progress < 0.15) {
-          setCardsTranslateY(100);
-        } else if (progress < 0.35) {
-          const cardProgress = (progress - 0.15) / 0.2;
-          setCardsTranslateY(100 - cardProgress * 100);
-        } else {
-          setCardsTranslateY(0);
-        }
-      }
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: `+=${cards.length * 100}%`,
+          scrub: 1,
+          onUpdate: (self) => {
+            // Calculate which card should be in focus based on scroll progress
+            const progress = self.progress;
+            const cardProgress = progress * (cards.length - 1);
+            const distance = Math.abs(cardProgress - index);
+
+            // Scale and opacity based on distance from center
+            const scale = Math.max(0.9, 1 - distance * 0.1);
+            const opacity = Math.max(0.3, 1 - distance * 0.3);
+
+            gsap.set(card, {
+              scale,
+              opacity,
+            });
+          },
+        });
+      });
+    }, section);
+
+    // Cleanup
+    return () => {
+      ctx.revert();
     };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Calculate horizontal scroll for cards
-  const cardsScrollX =
-    Math.max(0, (scrollProgress - 0.5) * 2) * (cards.length - 1) * 400;
 
   return (
     <Section
       ref={sectionRef}
-      className="relative bg-white"
+      className="relative "
       style={{ height: `${100 * cards.length}vh` }}
+      background="blue"
     >
-      <div
-        className={`${
-          isSticky ? "fixed top-0" : "absolute top-0"
-        } left-0 right-0 h-screen flex flex-col items-center justify-center overflow-hidden`}
-        style={{ zIndex: isSticky ? 10 : 1 }}
-      >
+      <div className="h-screen relative overflow-hidden">
         {/* Headline Section */}
         <div
           ref={headlineRef}
-          className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center"
-          style={{
-            opacity: headlineOpacity,
-            transform: `scale(${headlineScale})`,
-            transition:
-              "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-out",
-          }}
+          className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center z-10"
         >
           <Container>
             <div className="text-center max-w-4xl mx-auto">
               <div className="flex items-center justify-center gap-2 mb-6">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span className="text-sm uppercase tracking-wider text-gray-600">
-                  Secure and private
+                <span className="text-sm uppercase tracking-wider text-white">
+                  Built for every band.
                 </span>
               </div>
-              <h2 className="text-6xl md:text-7xl font-bold mb-8">
+              <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white">
                 The most complete
                 <br />
-                <span className="text-green-500">touring</span> solution.
+                touring solution.
               </h2>
             </div>
           </Container>
@@ -146,33 +170,16 @@ export function SummaryCards() {
         <div
           ref={cardsContainerRef}
           className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
-          style={{
-            transform: `translateY(${cardsTranslateY}%)`,
-            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
         >
           <Container className="overflow-hidden">
-            <div
-              className="flex gap-8 transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateX(-${cardsScrollX}px)`,
-              }}
-            >
+            <div ref={cardsWrapperRef} className="flex gap-10">
               {cards.map((card, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-xl"
-                  style={{
-                    opacity: Math.min(
-                      1,
-                      0.3 + (1 - Math.abs(cardsScrollX / 400 - index) * 0.3)
-                    ),
-                    transform: `scale(${Math.min(
-                      1,
-                      0.9 + (1 - Math.abs(cardsScrollX / 400 - index) * 0.1)
-                    )})`,
-                    transition: "opacity 0.3s, transform 0.3s",
+                  ref={(el) => {
+                    if (el) cardRefs.current[index] = el;
                   }}
+                  className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-xl"
                 >
                   <div
                     className={`${card.bgColor} h-full p-8 flex flex-col justify-between`}
