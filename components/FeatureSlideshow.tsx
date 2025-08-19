@@ -99,7 +99,7 @@ export const FeatureSlideshow = () => {
     <Section
       id="features-slideshow"
       background="blue"
-      className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden`}
+      className={`relative min-h-[80vh] transition-all duration-1000 overflow-hidden bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]`}
       size="xl"
       gap="md"
     >
