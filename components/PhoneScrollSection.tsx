@@ -211,19 +211,6 @@ export default function PhoneScrollSection() {
                   everything in one beautiful interface.
                 </p>
               </div>
-              <div
-                ref={(el) => {
-                  if (el) textRefs.current[3] = el;
-                }}
-                className="absolute inset-0 flex flex-col justify-center"
-              >
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Four Views to Choose From
-                </h2>
-                <p className="text-xl text-gray-300 leading-relaxed">
-                  Day, Week, Month, and Year views.
-                </p>
-              </div>
             </div>
           </div>
         </div>
