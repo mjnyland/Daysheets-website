@@ -106,7 +106,7 @@ export const FeatureSlideshow = () => {
       <div className="relative z-10 mx-auto px-4 flex flex-col gap-0 ">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-5xl font-medium text-white ">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-white">
             The most complete touring solution.
           </h2>
         </div>

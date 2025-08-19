@@ -148,7 +148,7 @@ export default function PhoneScrollSection() {
     >
       <div ref={containerRef} className="flex flex-col h-screen ">
         <div className="text-center pt-20 pb-0">
-          <h1 className="text-6xl font-semibold text-white tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-center text-white">
             Your team will thank you.
           </h1>
         </div>

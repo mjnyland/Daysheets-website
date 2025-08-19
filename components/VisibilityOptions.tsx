@@ -107,12 +107,12 @@ export const VisibilityOptions = () => {
       id="visibility-options"
       background="light"
       className={`relative transition-all duration-1000 overflow-hidden`}
-      gap="md"
+      gap="xl"
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 ">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-medium text-gray-900 mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-gray-900">
             A personalized experience
             <br />
             for everyone on tour.

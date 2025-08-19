@@ -63,13 +63,13 @@ export function FlightGrid() {
     <Section background="dark" className="relative overflow-hidden " gap="md">
       <div className="relative z-10 flex flex-col items-center gap-12 mt-16">
         <div className="flex flex-col items-center gap-6 text-center max-w-3xl">
-          <div className="flex items-center px-4 py-2 bg-blue-500/10 rounded-full">
+          <div className="flex items-center px-4 py-2 bg-blue-500/0 rounded-full">
             <span className="text-blue-500 text-lg font-normal">
               Flight Grid
             </span>
           </div>
 
-          <h2 className="text-5xl font-medium text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-white">
             Every flight in one place.
           </h2>
 

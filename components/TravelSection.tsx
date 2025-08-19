@@ -6,10 +6,8 @@ export const TravelSection = () => {
     <Section background="subtle" gap="md">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div className="space-y-6">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight">
-            <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-              You can even pick your hotels with Daysheets Travel
-            </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-left text-[#166CD1]">
+            You can even pick hotels with Daysheets Travel.
           </h2>
           <p className="text-xl sm:text-2xl text-neutral-700">
             Plan Tours. Book Travel. All in One Place.
