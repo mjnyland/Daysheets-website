@@ -218,11 +218,10 @@ export default function PhoneScrollSection() {
                 className="absolute inset-0 flex flex-col justify-center"
               >
                 <h2 className="text-2xl font-bold mb-4 text-white">
-                  Travel Time Built In
+                  Four Views to Choose From
                 </h2>
                 <p className="text-xl text-gray-300 leading-relaxed">
-                  Intelligent travel time calculations ensure you&apos;re never
-                  late. Get notifications when it&apos;s time to leave.
+                  Day, Week, Month, and Year views.
                 </p>
               </div>
             </div>
