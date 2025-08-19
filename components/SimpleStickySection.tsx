@@ -171,10 +171,13 @@ export function SimpleStickySection() {
 
   return (
     <>
-      <div ref={sectionRef} className="min-h-[300vh] bg-[#166CD1]">
+      <div
+        ref={sectionRef}
+        className="min-h-[300vh] bg-[#166CD1] bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]"
+      >
         <div
           ref={containerRef}
-          className="h-dvh w-full relative overflow-hidden bg-[#166CD1]"
+          className="h-dvh w-full relative overflow-hidden bg-[#166CD1] bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]"
         >
           {/* Headline Section */}
           <div
