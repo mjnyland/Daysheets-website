@@ -119,7 +119,7 @@ export function SimpleStickySection() {
         tl.to(
           cardsWrapper,
           {
-            x: () => -(cards.length - 1) * 380, // 380px card width, no gap
+            x: () => -(cards.length - 1) * 200, // 380px card width, no gap
             duration: 2,
             ease: "none",
           },
