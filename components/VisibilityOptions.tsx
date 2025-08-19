@@ -40,6 +40,7 @@ export const VisibilityOptions = () => {
   const [progress, setProgress] = useState(0);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const SLIDE_DURATION = 5000; // 5 seconds per slide
   const PROGRESS_UPDATE_INTERVAL = 50; // Update progress every 50ms for smooth animation
 
@@ -51,6 +52,14 @@ export const VisibilityOptions = () => {
 
     // Reset progress when slide changes
     setProgress(0);
+
+    // Play the active video
+    const activeVideoId = visibilityOptions[activeOption].id;
+    const activeVideo = videoRefs.current[activeVideoId];
+    if (activeVideo) {
+      activeVideo.currentTime = 0;
+      activeVideo.play().catch(() => {});
+    }
 
     // Always start progress animation (whether auto-playing or manual)
     const startTime = Date.now();
@@ -119,18 +128,28 @@ export const VisibilityOptions = () => {
         <div className="flex flex-col gap-8 items-center max-w-4xl mx-auto">
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50">
-              {currentOption.videoUrl ? (
-                <video
-                  key={currentOption.id}
-                  src={currentOption.videoUrl}
-                  className="w-full h-full lg:object-cover object-contain"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              ) : currentOption.imageUrl ? (
+            <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
+              {/* Preload all videos but only show the active one */}
+              {visibilityOptions.map((option, index) => (
+                option.videoUrl && (
+                  <video
+                    key={option.id}
+                    ref={(el) => {
+                      if (el) videoRefs.current[option.id] = el;
+                    }}
+                    src={option.videoUrl}
+                    className={`absolute inset-0 w-full h-full lg:object-cover object-contain transition-opacity duration-500 ${
+                      index === activeOption ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                    }`}
+                    autoPlay={index === activeOption}
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                  />
+                )
+              ))}
+              {currentOption.imageUrl && !currentOption.videoUrl ? (
                 <Image
                   key={currentOption.id}
                   src={currentOption.imageUrl}
@@ -139,14 +158,14 @@ export const VisibilityOptions = () => {
                   className="object-contain"
                   priority
                 />
-              ) : (
+              ) : !currentOption.videoUrl && !currentOption.imageUrl ? (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
                   <div className="text-gray-500 text-center">
                     <p className="text-2xl mb-2">Video Coming Soon</p>
                     <p className="text-sm">Video for {currentOption.title}</p>
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
 
