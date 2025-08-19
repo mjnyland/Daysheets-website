@@ -10,7 +10,7 @@ export const Hero = () => {
     <Section
       id="hero"
       gap="md"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-700 sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] hmd:min-h-[800px] flex items-center"
+      className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-700 sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] flex items-center"
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 z-0">
