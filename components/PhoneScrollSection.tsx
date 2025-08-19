@@ -138,7 +138,7 @@ export default function PhoneScrollSection() {
     <Section
       ref={sectionRef}
       as="section"
-      background="dark"
+      background="darkBlue"
       gap="md"
       size="lg"
       padded={false}
@@ -154,7 +154,7 @@ export default function PhoneScrollSection() {
         </div>
         <div className="flex h-full items-start">
           {/* Left side - Sticky iPhone */}
-          <div className="w-2/3 flex items-start h-full ">
+          <div className="w-2/3 px-16 flex items-start h-full ">
             <div ref={videoContainerRef} className="relative">
               <video
                 ref={videoRef}

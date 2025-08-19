@@ -13,6 +13,7 @@ type SectionBg =
   | "red"
   | "dark"
   | "blue"
+  | "darkBlue"
   | "light";
 
 type Props<T extends ElementType> = {
@@ -45,6 +46,7 @@ const bgMap: Record<SectionBg, string> = {
   red: "bg-red-500",
   dark: "bg-[#0E0E0E]",
   blue: "bg-[#166CD1]",
+  darkBlue: "bg-[#030720]",
   light: "bg-white",
 };
 

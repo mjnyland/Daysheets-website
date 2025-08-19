@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const cards = [
   {
@@ -32,16 +32,25 @@ export function SimpleStickySection() {
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardsWrapperRef = useRef<HTMLDivElement>(null);
+  const cardsViewportRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     const container = containerRef.current;
     const headline = headlineRef.current;
     const cardsContainer = cardsContainerRef.current;
     const cardsWrapper = cardsWrapperRef.current;
+    const cardsViewport = cardsViewportRef.current;
 
-    if (!section || !container || !headline || !cardsContainer || !cardsWrapper)
+    if (
+      !section ||
+      !container ||
+      !headline ||
+      !cardsContainer ||
+      !cardsWrapper ||
+      !cardsViewport
+    )
       return;
 
     let mounted = true;
@@ -75,6 +84,14 @@ export function SimpleStickySection() {
 
       // Create context for better performance
       ctx = gsap.context(() => {
+        const getMaxTranslateX = () => {
+          if (!cardsWrapper || !cardsViewport) return 0;
+          const wrapperWidth = cardsWrapper.scrollWidth;
+          const viewportWidth = cardsViewport.clientWidth;
+          const maxShift = Math.max(0, wrapperWidth - viewportWidth);
+          return -maxShift;
+        };
+
         // Pin the section and create animations
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -85,7 +102,16 @@ export function SimpleStickySection() {
             scrub: 1,
             markers: false,
             invalidateOnRefresh: true,
-            pinType: "transform",
+            onUpdate: (self) => {
+              const cardProgress = self.progress * (cards.length - 1);
+              cardRefs.current.forEach((card, index) => {
+                if (!card) return;
+                const distance = Math.abs(cardProgress - index);
+                const scale = Math.max(0.9, 1 - distance * 0.1);
+                const opacity = Math.max(0.3, 1 - distance * 0.3);
+                gsap.set(card, { scale, opacity });
+              });
+            },
           },
         });
 
@@ -115,43 +141,18 @@ export function SimpleStickySection() {
           0.1
         );
 
-        // Horizontal scroll for cards
+        // Horizontal scroll for cards (responsive)
         tl.to(
           cardsWrapper,
           {
-            x: () => -(cards.length - 1) * 200, // 380px card width, no gap
+            x: getMaxTranslateX,
             duration: 2,
             ease: "none",
           },
           0.5
         );
 
-        // Individual card animations for focus effect
-        cardRefs.current.forEach((card, index) => {
-          if (!card) return;
-
-          ScrollTrigger.create({
-            trigger: section,
-            start: "top top",
-            end: () => `+=${cards.length * 100}%`,
-            scrub: 1,
-            onUpdate: (self) => {
-              // Calculate which card should be in focus based on scroll progress
-              const progress = self.progress;
-              const cardProgress = progress * (cards.length - 1);
-              const distance = Math.abs(cardProgress - index);
-
-              // Scale and opacity based on distance from center
-              const scale = Math.max(0.9, 1 - distance * 0.1);
-              const opacity = Math.max(0.3, 1 - distance * 0.3);
-
-              gsap.set(card, {
-                scale,
-                opacity,
-              });
-            },
-          });
-        });
+        // Card focus effect handled in scrollTrigger.onUpdate above
       }, section);
 
       // Ensure everything measures after creation, once fonts are ready
@@ -204,7 +205,10 @@ export function SimpleStickySection() {
             ref={cardsContainerRef}
             className="absolute top-0 left-0 right-0 h-full flex items-center justify-center"
           >
-            <div className="overflow-visible w-full max-w-7xl mx-auto px-6">
+            <div
+              ref={cardsViewportRef}
+              className="overflow-visible w-full max-w-7xl mx-auto px-6"
+            >
               <div ref={cardsWrapperRef} className="flex">
                 {cards.map((card, index) => (
                   <div
