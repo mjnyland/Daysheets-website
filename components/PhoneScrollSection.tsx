@@ -152,7 +152,7 @@ export default function PhoneScrollSection() {
             Your team will thank you.
           </h1>
         </div>
-        <div className="flex h-full">
+        <div className="flex h-full items-start">
           {/* Left side - Sticky iPhone */}
           <div className="w-2/3 flex items-start h-full ">
             <div ref={videoContainerRef} className="relative">
@@ -167,7 +167,7 @@ export default function PhoneScrollSection() {
             </div>
           </div>
           {/* Right side - Scrolling content */}
-          <div className="w-1/3 flex items-center ">
+          <div className="w-1/3 flex items-center pt-16">
             <div className="px-12 relative h-[300px]  w-[400px]">
               <div
                 ref={(el) => {
