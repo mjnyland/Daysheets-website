@@ -96,7 +96,7 @@ export const VisibilityOptions = () => {
   return (
     <Section
       id="visibility-options"
-      background="muted"
+      background="light"
       className={`relative transition-all duration-1000 overflow-hidden`}
       gap="md"
     >
@@ -116,15 +116,15 @@ export const VisibilityOptions = () => {
         </div>
 
         {/* Main Content Area with Dots Navigation */}
-        <div className="flex flex-col gap-8 items-center">
+        <div className="flex flex-col gap-8 items-center max-w-4xl mx-auto">
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative h-[500px] rounded-2xl">
+            <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50">
               {currentOption.videoUrl ? (
                 <video
                   key={currentOption.id}
                   src={currentOption.videoUrl}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full lg:object-cover object-contain"
                   autoPlay
                   loop
                   muted
