@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { Section } from "@/components/containers/Section";
 import {
   Bus,
@@ -129,26 +130,39 @@ const carouselItems = [
 
 export function MobileEditingCarousel() {
   const [rotation, setRotation] = useState(0);
-  const animationRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const rotationProxyRef = useRef<{ value: number }>({ value: 0 });
+  const spinTweenRef = useRef<gsap.core.Tween | null>(null);
 
+  // Simple always-rotating carousel using GSAP
   useEffect(() => {
-    const animate = () => {
-      if (!isPaused) {
-        setRotation((prev) => (prev + 0.2) % 360);
-      }
-      animationRef.current = requestAnimationFrame(animate);
-    };
+    const proxy = rotationProxyRef.current;
+    proxy.value = 0;
 
-    animationRef.current = requestAnimationFrame(animate);
+    // One full rotation every ~30s, linear, infinite
+    spinTweenRef.current = gsap.to(proxy, {
+      value: 360,
+      duration: 30,
+      ease: "none",
+      repeat: -1,
+      onUpdate: () => setRotation(proxy.value % 360),
+    });
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      if (spinTweenRef.current) {
+        spinTweenRef.current.kill();
+        spinTweenRef.current = null;
       }
     };
-  }, [isPaused]);
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (spinTweenRef.current) spinTweenRef.current.pause();
+  };
+
+  const handleMouseLeave = () => {
+    if (spinTweenRef.current) spinTweenRef.current.resume();
+  };
 
   const getItemPosition = (index: number, totalItems: number) => {
     // Evenly space items around the full circle
@@ -201,8 +215,8 @@ export function MobileEditingCarousel() {
           <div
             ref={containerRef}
             className="relative w-full h-full ml-80"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             {/* Carousel Items */}
             {carouselItems.map((item, index) => {

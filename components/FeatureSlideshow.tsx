@@ -151,7 +151,7 @@ export const FeatureSlideshow = () => {
 
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative aspect-[1250/822] rounded-2xl overflow-hidden  backdrop-blur-sm">
+            <div className="relative aspect-[1250/822] rounded-2xl overflow-hidden">
               {currentFeature.videoUrl ? (
                 <video
                   key={currentFeature.id}
