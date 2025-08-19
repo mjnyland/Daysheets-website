@@ -20,12 +20,12 @@ const visibilityOptions: VisibilityOption[] = [
   {
     id: "vip-access",
     title: "VIP Access",
-    videoUrl: "/videos/visibility_1.mp4",
+    videoUrl: "/videos/visibility_2.mp4",
   },
   {
     id: "public-info",
     title: "Public Information",
-    videoUrl: "/videos/visibility_1.mp4",
+    videoUrl: "/videos/visibility_3.mp4",
   },
   {
     id: "team-only",
@@ -130,25 +130,28 @@ export const VisibilityOptions = () => {
           <div className="w-full">
             <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
               {/* Preload all videos but only show the active one */}
-              {visibilityOptions.map((option, index) => (
-                option.videoUrl && (
-                  <video
-                    key={option.id}
-                    ref={(el) => {
-                      if (el) videoRefs.current[option.id] = el;
-                    }}
-                    src={option.videoUrl}
-                    className={`absolute inset-0 w-full h-full lg:object-cover object-contain transition-opacity duration-500 ${
-                      index === activeOption ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                    }`}
-                    autoPlay={index === activeOption}
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                  />
-                )
-              ))}
+              {visibilityOptions.map(
+                (option, index) =>
+                  option.videoUrl && (
+                    <video
+                      key={option.id}
+                      ref={(el) => {
+                        if (el) videoRefs.current[option.id] = el;
+                      }}
+                      src={option.videoUrl}
+                      className={`absolute inset-0 w-full h-full lg:object-cover object-contain transition-opacity duration-500 ${
+                        index === activeOption
+                          ? "opacity-100 z-10"
+                          : "opacity-0 z-0"
+                      }`}
+                      autoPlay={index === activeOption}
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                    />
+                  )
+              )}
               {currentOption.imageUrl && !currentOption.videoUrl ? (
                 <Image
                   key={currentOption.id}
