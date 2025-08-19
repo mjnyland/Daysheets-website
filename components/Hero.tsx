@@ -18,6 +18,7 @@ export const Hero = () => {
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const glassRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -37,6 +38,8 @@ export const Hero = () => {
       gsap.set(subtextRef.current, { opacity: 0, y: 20 });
       gsap.set(ctaRef.current, { opacity: 0, y: 20, scale: 0.9 });
       gsap.set(imageContainerRef.current, { opacity: 0, y: 60, scale: 0.95 });
+      if (glassRef.current)
+        gsap.set(glassRef.current, { opacity: 0, scale: 0.8, y: 40 });
 
       // Background fade in with scale
       tl.to(
@@ -140,6 +143,21 @@ export const Hero = () => {
         1.5
       );
 
+      // Glass element animates in first
+      if (glassRef.current) {
+        tl.to(
+          glassRef.current,
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          0.6
+        );
+      }
+
       // Hero image slides up with scale
       tl.to(
         imageContainerRef.current,
@@ -172,23 +190,24 @@ export const Hero = () => {
 
   return (
     <Section
+      ref={containerRef}
       id="hero"
       gap="md"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-700 sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] flex items-center"
+      className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-950 sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] flex items-center"
     >
       {/* Background gradient overlay */}
-      <div className="absolute inset-0 z-0">
+      <div ref={bgRef} className="absolute inset-0 z-0">
         <Image src={GradientBg} alt="" fill className="object-cover" priority />
       </div>
 
       {/* Navigation */}
-      <div className="absolute top-0 left-0 right-0 z-20">
+      <div ref={navRef} className="absolute top-0 left-0 right-0 z-20">
         <NavBar theme="dark" />
       </div>
 
       {/* Hero content */}
       <div className="relative z-10 w-full pb-[35%] md:pb-[30%] lg:pb-[25%]">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-6 ">
           <div
             ref={logoRef}
             className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 mb-4"
@@ -198,14 +217,15 @@ export const Hero = () => {
 
           <h1
             ref={headingRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tighter bg-gradient-to-r from-white via-blue-100 to-blue-300 bg-clip-text text-transparent drop-shadow-[0_2px_16px_rgba(59,130,246,0.25)]"
+            className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tighter text-white  drop-shadow-[0_2px_16px_rgba(59,130,246,0.25)] bg-[length:200%_auto] pb-4"
+            style={{ backgroundPosition: "0% center" }}
           >
             The New Standard for
             <br />
             Tour Management.
           </h1>
 
-          <div ref={subtextRef} className="space-y-1">
+          <div ref={subtextRef} className="">
             <p className="text-xl text-blue-100">
               Plan Tours. Book Travel. All in One Place. <br />
               Logistics just got 10x easier.
@@ -224,16 +244,20 @@ export const Hero = () => {
       {/* Hero image - positioned absolutely at the bottom */}
       <div className="absolute -bottom-25 left-0 right-0 z-0 pointer-events-none">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div
-            ref={imageContainerRef}
-            className="relative w-full before:content-[''] before:absolute before:inset-x-24 before:bottom-[-48px] before:h-40 before:rounded-full before:bg-blue-500/30 before:blur-3xl"
-          >
+          <div ref={imageContainerRef} className="relative w-full ">
+            {/* Glass-like element behind mockups */}
+            <div
+              ref={glassRef}
+              className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[60%] w-[105%] -z-10  bg-gradient-to-t from-white/20 to-white/10 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl shadow-blue-900/20  translate-y-8"
+            />
+
             <Image
               src={HeroImage}
               alt="Daysheets platform interface"
               width={1920}
               height={1080}
               priority
+              className="z-20"
             />
           </div>
         </div>
