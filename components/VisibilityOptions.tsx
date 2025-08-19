@@ -15,22 +15,22 @@ const visibilityOptions: VisibilityOption[] = [
   {
     id: "crew-party",
     title: "Crew Party",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/visibility_1.mp4",
   },
   {
     id: "vip-access",
     title: "VIP Access",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/visibility_1.mp4",
   },
   {
     id: "public-info",
     title: "Public Information",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/visibility_1.mp4",
   },
   {
     id: "team-only",
     title: "Team Only",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/visibility_1.mp4",
   },
 ];
 

@@ -159,7 +159,7 @@ export default function PricingSection() {
                 </ul>
               </div>
 
-              <div className="mt-10">
+              <div className="mt-auto">
                 <Link
                   href={tier.ctaHref}
                   aria-label={`${tier.ctaText}`}
