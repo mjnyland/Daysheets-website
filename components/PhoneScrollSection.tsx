@@ -152,14 +152,14 @@ export default function PhoneScrollSection() {
             Your team will thank you.
           </h1>
         </div>
-        <div className="flex items-center ">
+        <div className="flex h-full">
           {/* Left side - Sticky iPhone */}
-          <div className="w-2/3 flex items-center justify-center">
-            <div ref={videoContainerRef} className="relative w-[400px]">
+          <div className="w-2/3 flex items-start h-full ">
+            <div ref={videoContainerRef} className="relative">
               <video
                 ref={videoRef}
-                className="w-full h-full object-contain pb-16"
-                src="/videos/DaysheetsiPhoneMockup.mov"
+                className="h-full object-contain object-top"
+                src="/videos/DaysheetsiPhoneMockup.mp4"
                 playsInline
                 muted
                 preload="auto"
