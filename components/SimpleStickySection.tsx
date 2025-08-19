@@ -9,20 +9,22 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const cards = [
   {
-    title: "Portfolio overview",
-    description: "Track your entire portfolio in one place.",
+    title: "Notifications & Reminders",
+    description: "Schedule as many reminders as your team member needs.",
   },
   {
-    title: "Hardware wallet support",
-    description: "Keeps funds safe on your Ledger / Trezor.",
+    title: "Shortcuts for speed",
+    description:
+      "Quick shortcuts let you add, edit, and find things in seconds.",
   },
   {
-    title: "Malicious address alerts",
-    description: "We flag malicious and suspicious addresses for you.",
+    title: "Notes",
+    description:
+      "Add general notes to keep important travel details in one place.",
   },
   {
-    title: "No IP tracking",
-    description: "We do not record any user IP addresses.",
+    title: "Travel Profiles",
+    description: "Never miss an expiring passport again. We'll remind you.",
   },
 ];
 
