@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -13,41 +13,23 @@ export default function SmoothScrollProvider({
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
   useEffect(() => {
-    // Register plugins inside useEffect to avoid SSR issues
-    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-    
-    // Create ScrollSmoother
-    const smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 0.8,
-      effects: true,
-      smoothTouch: 0.1,
-    });
-
-    smootherRef.current = smoother;
-
-    // after creating `smoother`
-    const doRefresh = () => ScrollTrigger.refresh();
-    const onRefresh = () => smoother?.refresh();
-
-    window.addEventListener("load", doRefresh, { once: true });
-    document.fonts?.ready.then(doRefresh);
-
-    ScrollTrigger.addEventListener("refresh", onRefresh);
-
-    // double RAF to ensure first-paint sync
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
+    const ctx = gsap.context(() => {
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+      
+      const smoother = ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 1,
+        effects: true,
+        smoothTouch: 0.1,
       });
+
+      smootherRef.current = smoother;
+
+      ScrollTrigger.refresh();
     });
 
-    return () => {
-      window.removeEventListener("load", doRefresh);
-      ScrollTrigger.removeEventListener("refresh", onRefresh);
-      smoother?.kill();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

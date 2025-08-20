@@ -14,8 +14,10 @@ export default function Home() {
   return (
     <main className="min-h-dvh ">
       <Hero />
-      <TestimonialsSplide />
-      <FeatureSlideshow />
+      <div className="bg-[#2978D4]  bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
+        <TestimonialsSplide />
+        <FeatureSlideshow />
+      </div>
       <FlightGrid />
       <VisibilityOptions />
       <PhoneScrollSection />

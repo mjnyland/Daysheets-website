@@ -121,26 +121,9 @@ export const Hero = () => {
           y: 0,
           scale: 1,
           duration: 0.6,
-          ease: "power4.in",
+          ease: "back.out(1.7)",
         },
         0.8
-      );
-
-      // Add hover pulse to CTA
-      tl.to(
-        ctaRef.current,
-        {
-          boxShadow: "0 0 30px rgba(37,99,235,0.3)",
-          duration: 0.3,
-        },
-        1.2
-      ).to(
-        ctaRef.current,
-        {
-          boxShadow: "0 0 0 rgba(37,99,235,0)",
-          duration: 0.3,
-        },
-        1.5
       );
 
       // Glass element animates in first
@@ -232,7 +215,7 @@ export const Hero = () => {
             </div>
             <button
               ref={ctaRef}
-              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl transition-all duration-300 bg-[#0967D2] hover:scale-105 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_35px_rgba(37,99,235,0.45)] ring-1 ring-inset ring-white/10 hover:ring-blue-300/40"
+              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl  bg-[#0967D2] hover:scale-105  hover:shadow-[0_10px_35px_rgba(37,99,235,0.45)] "
             >
               Get Started for free
             </button>
@@ -245,7 +228,7 @@ export const Hero = () => {
               {/* Glass-like element behind mockups */}
               <div
                 ref={glassRef}
-                className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[60%] w-[105%] -z-10  bg-white/20 backdrop-blur-md rounded-3xl border-[2px] border-white/10 shadow-2xl shadow-blue-900/20  translate-y-8"
+                className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[60%] w-[105%] -z-10  bg-white/20 backdrop-blur-md rounded-t-3xl border-[2px] border-white/10 shadow-2xl shadow-blue-900/20  translate-y-8"
               />
               <Image
                 src={HeroImage}

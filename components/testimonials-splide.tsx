@@ -100,7 +100,7 @@ export default function TestimonialsSplide() {
   );
 
   return (
-    <section className="relative py-[120px] overflow-hidden bg-[#166CD1] bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
+    <section className="relative py-[120px] overflow-hidden">
       <div className="relative z-10 mb-16">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-white">
           Loved by the best in the industry.
