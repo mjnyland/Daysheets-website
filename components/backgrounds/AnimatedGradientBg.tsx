@@ -8,13 +8,7 @@ export function AnimatedGradientBg() {
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(at 63.29113924050633% 14.588359469240048%, #176ED1 0px, transparent 50%), 
-            radial-gradient(at 73.77938517179024% 54.154101326899884%, #050547 0px, transparent 50%), 
-            radial-gradient(at 90.32549728752261% 81.77774427020506%, #D77AFF 0px, transparent 50%), 
-            radial-gradient(at 33.815551537070526% 37.1456574185766%, #050547 0px, transparent 50%), 
-            radial-gradient(at 17% 70%, #176ED1 0px, transparent 50%), 
-            radial-gradient(at 68.80650994575045% 76.59077201447528%, #050547 0px, transparent 50%),
-            #050548
+            radial-gradient(at 58.77034358047016% 29.546139927623642%, #0439CC 0px, transparent 50%), radial-gradient(at 23.508137432188065% 57.290410132689985%, #050547 0px, transparent 50%), radial-gradient(at 97.92043399638337% 100%, #D77AFF 0px, transparent 50%), radial-gradient(at 70.97649186256781% 90.10102533172497%, #050547 0px, transparent 50%), radial-gradient(at 2.5316455696202533% 84.31091676718938%, #2459ED 0px, transparent 50%), radial-gradient(at 87.25135623869801% 19.051568154402894%, #050547 0px, transparent 50%) #050548
           `,
           mixBlendMode: "normal",
         }}

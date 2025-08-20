@@ -232,7 +232,7 @@ export const Hero = () => {
             </div>
             <button
               ref={ctaRef}
-              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl transition-all duration-300 bg-[#032258] hover:scale-105 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_35px_rgba(37,99,235,0.45)] ring-1 ring-inset ring-white/10 hover:ring-blue-300/40"
+              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl transition-all duration-300 bg-[#0967D2] hover:scale-105 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_35px_rgba(37,99,235,0.45)] ring-1 ring-inset ring-white/10 hover:ring-blue-300/40"
             >
               Get Started for free
             </button>
