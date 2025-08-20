@@ -175,7 +175,7 @@ export const Hero = () => {
     <Section
       ref={containerRef}
       id="hero"
-      gap="md"
+      gap="none"
       className="relative overflow-hidden bg-gradient-to-b from-[#050548] to-[#050548] sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] max-h-[1900px] flex items-center"
     >
       {/* Animated gradient background */}
@@ -188,7 +188,7 @@ export const Hero = () => {
         <NavBar theme="dark" />
       </div>
 
-      <div className="relative z-10 w-full  grid grid-cols-1 grid-rows-[auto_1fr_auto]">
+      <div className="relative z-10 w-full  h-full grid grid-cols-1 grid-rows-[auto_1fr_auto]">
         <div className=" min-h-60"></div>
         {/* Hero content */}
         <div className="relative z-10 w-full ">
@@ -215,14 +215,14 @@ export const Hero = () => {
             </div>
             <button
               ref={ctaRef}
-              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl  bg-[#0967D2] hover:scale-105  hover:shadow-[0_10px_35px_rgba(37,99,235,0.45)] "
+              className="relative inline-flex items-center justify-center px-8 py-4 mt-8 text-xl font-medium text-white rounded-xl  bg-[#0967D2] transition-all duration-300 cursor-pointer"
             >
               Get Started for free
             </button>
           </div>
         </div>
         {/* Hero image - positioned absolutely at the bottom */}
-        <div className="mt-10">
+        <div className="mt-10 ">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <div ref={imageContainerRef} className="relative w-full ">
               {/* Glass-like element behind mockups */}
