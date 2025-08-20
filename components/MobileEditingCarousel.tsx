@@ -50,12 +50,20 @@ const carouselItems = [
 
 export function MobileEditingCarousel() {
   const [rotation, setRotation] = useState(0);
+  const [isClient, setIsClient] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const rotationProxyRef = useRef<{ value: number }>({ value: 0 });
   const spinTweenRef = useRef<gsap.core.Tween | null>(null);
 
+  // Set isClient flag after mount to avoid hydration mismatches
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Simple always-rotating carousel using GSAP
   useEffect(() => {
+    if (!isClient) return;
+    
     const proxy = rotationProxyRef.current;
     proxy.value = 0;
 
@@ -74,7 +82,7 @@ export function MobileEditingCarousel() {
         spinTweenRef.current = null;
       }
     };
-  }, []);
+  }, [isClient]);
 
   const handleMouseEnter = () => {
     if (spinTweenRef.current) spinTweenRef.current.pause();
@@ -85,20 +93,35 @@ export function MobileEditingCarousel() {
   };
 
   const getItemPosition = (index: number, totalItems: number) => {
+    // Return static positions during SSR to avoid hydration mismatches
+    if (!isClient) {
+      // During SSR, return static initial positions
+      const angleSpacing = 360 / totalItems;
+      const angle = angleSpacing * index - 90;
+      const radius = 400;
+      const x = Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
+      const y = Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
+      const normalizedX = -x / radius;
+      const opacity = normalizedX > 0 ? Math.round((0.3 + normalizedX * 0.7) * 100) / 100 : 0;
+      const scale = Math.round((0.6 + (normalizedX + 1) * 0.4) * 100) / 100;
+      const zIndex = Math.round((normalizedX + 1) * 10);
+      return { x, y, opacity, scale, zIndex };
+    }
+    
     // Evenly space items around the full circle
     const angleSpacing = 360 / totalItems;
     const angle = angleSpacing * index - rotation - 90;
     const radius = 400; // Large radius so items get cropped at edges
-    const x = Math.cos((angle * Math.PI) / 180) * radius;
-    const y = Math.sin((angle * Math.PI) / 180) * radius;
+    const x = Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
+    const y = Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
 
     // Calculate opacity and scale based on x position (items on left are emphasized)
     // Normalize x position: -1 (far left) to 1 (far right)
     const normalizedX = -x / radius;
 
     // Only show items on the left side (emphasis area), hide others
-    const opacity = normalizedX > 0 ? 0.3 + normalizedX * 0.7 : 0;
-    const scale = 0.6 + (normalizedX + 1) * 0.4;
+    const opacity = Math.round((normalizedX > 0 ? 0.3 + normalizedX * 0.7 : 0) * 100) / 100;
+    const scale = Math.round((0.6 + (normalizedX + 1) * 0.4) * 100) / 100;
 
     // Calculate z-index based on x position (leftmost items on top)
     const zIndex = Math.round((normalizedX + 1) * 10);
@@ -153,9 +176,9 @@ export function MobileEditingCarousel() {
                   key={item.id}
                   className="absolute left-1/2 top-1/2 transition-all duration-300 ease-out cursor-pointer"
                   style={{
-                    transform: `translate(-50%, -50%) translate3d(${position.x}px, ${position.y}px, 0) scale(${position.scale})`,
-                    opacity: position.opacity,
-                    zIndex: position.zIndex,
+                    transform: `translate(-50%, -50%) translate3d(${position.x}px, ${position.y}px, 0px) scale(${position.scale})`,
+                    opacity: String(position.opacity),
+                    zIndex: String(position.zIndex),
                   }}
                 >
                   <div className="flex flex-row items-center gap-3 group">
@@ -167,8 +190,8 @@ export function MobileEditingCarousel() {
                     <span
                       className="text-white font-medium whitespace-nowrap"
                       style={{
-                        fontSize: `${0.875 + position.scale * 0.25}rem`,
-                        opacity: position.opacity,
+                        fontSize: `${Math.round((0.875 + position.scale * 0.25) * 1000) / 1000}rem`,
+                        opacity: String(position.opacity),
                       }}
                     >
                       {item.label}

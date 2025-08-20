@@ -5,8 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
 const cards = [
   {
     title: "Notifications & Reminders",
@@ -38,6 +36,9 @@ export function SimpleStickySection() {
   const cardRefs = useRef<HTMLDivElement[]>([]);
 
   useLayoutEffect(() => {
+    // Register plugins inside useLayoutEffect to avoid SSR issues
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+    
     const section = sectionRef.current;
     const container = containerRef.current;
     const headline = headlineRef.current;

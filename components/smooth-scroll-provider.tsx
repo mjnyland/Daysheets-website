@@ -5,9 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-// Register plugins
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
 export default function SmoothScrollProvider({
   children,
 }: {
@@ -16,6 +13,9 @@ export default function SmoothScrollProvider({
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
   useEffect(() => {
+    // Register plugins inside useEffect to avoid SSR issues
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+    
     // Create ScrollSmoother
     const smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",

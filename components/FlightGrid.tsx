@@ -7,15 +7,14 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin with GSAP
-gsap.registerPlugin(ScrollTrigger);
-
 const flightGridImage = "/assets/flight-grid-dashboard.png";
 
 export function FlightGrid() {
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Register ScrollTrigger plugin inside useEffect to avoid SSR issues
+    gsap.registerPlugin(ScrollTrigger);
     // GSAP Animation Setup
     // Here's how GSAP works:
     // 1. gsap.fromTo() animates from one state to another

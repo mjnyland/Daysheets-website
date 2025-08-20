@@ -5,8 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Section } from "@/components/containers/Section";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function PhoneScrollSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -15,6 +13,9 @@ export default function PhoneScrollSection() {
   const videoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Register plugin inside useEffect to avoid SSR issues
+    gsap.registerPlugin(ScrollTrigger);
+    
     const video = videoRef.current;
     const section = sectionRef.current;
     const container = containerRef.current;

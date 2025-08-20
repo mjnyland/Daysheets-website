@@ -6,8 +6,6 @@ import { Container } from "./containers/Container";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const cards = [
   {
     title: "Portfolio overview",
@@ -37,6 +35,9 @@ export function SummaryCards() {
   const headlineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Register plugin inside useEffect to avoid SSR issues
+    gsap.registerPlugin(ScrollTrigger);
+    
     const section = sectionRef.current;
     const container = containerRef.current;
     const headline = headlineRef.current;
