@@ -15,13 +15,11 @@ export default function SmoothScrollProvider({
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-      
+
       const smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 1,
-        effects: true,
-        smoothTouch: 0.1,
+        smooth: 2,
       });
 
       smootherRef.current = smoother;
