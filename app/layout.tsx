@@ -19,9 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={archivo.variable}>
-      <body className={`${archivo.className} antialiased`}>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
-      </body>
+      <body className={`${archivo.className} antialiased`}>{children}</body>
     </html>
   );
 }

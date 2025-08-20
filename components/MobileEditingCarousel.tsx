@@ -63,7 +63,7 @@ export function MobileEditingCarousel() {
   // Simple always-rotating carousel using GSAP
   useEffect(() => {
     if (!isClient) return;
-    
+
     const proxy = rotationProxyRef.current;
     proxy.value = 0;
 
@@ -99,28 +99,34 @@ export function MobileEditingCarousel() {
       const angleSpacing = 360 / totalItems;
       const angle = angleSpacing * index - 90;
       const radius = 400;
-      const x = Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
-      const y = Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
+      const x =
+        Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
+      const y =
+        Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
       const normalizedX = -x / radius;
-      const opacity = normalizedX > 0 ? Math.round((0.3 + normalizedX * 0.7) * 100) / 100 : 0;
+      const opacity =
+        normalizedX > 0 ? Math.round((0.3 + normalizedX * 0.7) * 100) / 100 : 0;
       const scale = Math.round((0.6 + (normalizedX + 1) * 0.4) * 100) / 100;
       const zIndex = Math.round((normalizedX + 1) * 10);
       return { x, y, opacity, scale, zIndex };
     }
-    
+
     // Evenly space items around the full circle
     const angleSpacing = 360 / totalItems;
     const angle = angleSpacing * index - rotation - 90;
     const radius = 400; // Large radius so items get cropped at edges
-    const x = Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
-    const y = Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
+    const x =
+      Math.round(Math.cos((angle * Math.PI) / 180) * radius * 100) / 100;
+    const y =
+      Math.round(Math.sin((angle * Math.PI) / 180) * radius * 100) / 100;
 
     // Calculate opacity and scale based on x position (items on left are emphasized)
     // Normalize x position: -1 (far left) to 1 (far right)
     const normalizedX = -x / radius;
 
     // Only show items on the left side (emphasis area), hide others
-    const opacity = Math.round((normalizedX > 0 ? 0.3 + normalizedX * 0.7 : 0) * 100) / 100;
+    const opacity =
+      Math.round((normalizedX > 0 ? 0.3 + normalizedX * 0.7 : 0) * 100) / 100;
     const scale = Math.round((0.6 + (normalizedX + 1) * 0.4) * 100) / 100;
 
     // Calculate z-index based on x position (leftmost items on top)
@@ -133,15 +139,21 @@ export function MobileEditingCarousel() {
     <Section
       background="darkBlue"
       className="overflow-hidden"
-      gap="md"
+      gap="none"
       size="xl"
     >
-      <div className="grid lg:grid-cols-2 gap-20 lg:gap-20 items-center min-h-[600px]">
+      <div className="grid lg:grid-cols-2 gap-20 lg:gap-20 items-center min-h-[600px] relative py-20">
+        {/* Top gradient overlay */}
+        <div className="absolute top-0 left-0 right-0 h-40 z-50 pointer-events-none bg-gradient-to-b from-[#030720] to-transparent" />
+        {/* Bottom gradient overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 z-50 pointer-events-none bg-gradient-to-t from-[#030720] to-transparent" />
         {/* Left Content */}
         <div className="space-y-6">
-          <span className="text-blue-400 text-sm font-medium">
-            Mobile Editing
-          </span>
+          <div className="">
+            <span className="text-blue-400 text-md font-medium sp">
+              Mobile Editing
+            </span>
+          </div>
           <div className="space-y-4">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-left text-white">
               Edit everything.
@@ -190,7 +202,10 @@ export function MobileEditingCarousel() {
                     <span
                       className="text-white font-medium whitespace-nowrap"
                       style={{
-                        fontSize: `${Math.round((0.875 + position.scale * 0.25) * 1000) / 1000}rem`,
+                        fontSize: `${
+                          Math.round((0.875 + position.scale * 0.25) * 1000) /
+                          1000
+                        }rem`,
                         opacity: String(position.opacity),
                       }}
                     >
