@@ -68,7 +68,7 @@ export default function IOSViewsSection() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 text-center px-3">
+              <div className="mt-6 text-left px-3">
                 <h3 className="text-white text-lg font-semibold">
                   {view.title}
                 </h3>
