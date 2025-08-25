@@ -176,7 +176,7 @@ export const Hero = () => {
       ref={containerRef}
       id="hero"
       gap="none"
-      className="relative overflow-hidden bg-gradient-to-b from-[#050548] to-[#050548] sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] max-h-[1900px] flex items-center"
+      className="relative overflow-hidden bg-gradient-to-b from-[#050548] to-[#050548] sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] max-h-[1000px] flex items-center"
     >
       {/* Animated gradient background */}
       <div ref={bgRef} className="absolute inset-0 z-0">
