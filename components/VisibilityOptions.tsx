@@ -93,14 +93,6 @@ export const VisibilityOptions = () => {
 
           {/* Controls */}
           <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={handleNextClick}
-              className="px-3 py-1.5 rounded-md bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
-              aria-label="Go to next section"
-            >
-              Next
-            </button>
             <div className="flex gap-3">
               {videoSections.map((section, index) => (
                 <button
