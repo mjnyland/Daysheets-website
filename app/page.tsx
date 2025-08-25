@@ -11,6 +11,7 @@ import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
 import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import PhoneScrollSection from "@/components/PhoneScrollSection";
+import IOSViewsSection from "@/components/IOSViewsSection";
 import AppDownloadSection from "@/components/AppDownloadSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
@@ -62,6 +63,7 @@ export default function Home() {
       <VisibilityOptions />
       <AppDownloadSection />
       <PhoneScrollSection />
+      <IOSViewsSection />
       <MobileEditingCarousel />
       <TravelSection />
       <SimpleStickySection />
