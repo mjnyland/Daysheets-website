@@ -27,80 +27,32 @@ const visibilityOptions: VisibilityOption[] = [
     title: "Public Information",
     videoUrl: "/videos/visibility_3.mp4",
   },
-  {
-    id: "team-only",
-    title: "Team Only",
-    videoUrl: "/videos/visibility_1.mp4",
-  },
 ];
 
 export const VisibilityOptions = () => {
-  const [activeOption, setActiveOption] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
-  const SLIDE_DURATION = 5000; // 5 seconds per slide
-  const PROGRESS_UPDATE_INTERVAL = 50; // Update progress every 50ms for smooth animation
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    // Clear any existing interval
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
-
-    // Reset progress when slide changes
-    setProgress(0);
-
-    // Play the active video
-    const activeVideoId = visibilityOptions[activeOption].id;
-    const activeVideo = videoRefs.current[activeVideoId];
-    if (activeVideo) {
-      activeVideo.currentTime = 0;
-      activeVideo.play().catch(() => {});
-    }
-
-    // Always start progress animation (whether auto-playing or manual)
-    const startTime = Date.now();
-    progressIntervalRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
-      setProgress(newProgress);
-    }, PROGRESS_UPDATE_INTERVAL);
-
-    return () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-    };
-  }, [activeOption]);
-
-  // Handle auto-advance in a separate effect
-  useEffect(() => {
-    if (progress >= 100 && isAutoPlaying) {
-      setActiveOption((prev) => (prev + 1) % visibilityOptions.length);
-    }
-  }, [progress, isAutoPlaying]);
-
-  const handleOptionClick = (index: number) => {
-    // Clear auto-play timeout if it exists
-    if (autoPlayTimeoutRef.current) {
-      clearTimeout(autoPlayTimeoutRef.current);
-    }
-
-    // Change to the selected option
-    setActiveOption(index);
-    setIsAutoPlaying(false);
-
-    // Resume auto-play after 10 seconds of inactivity
-    autoPlayTimeoutRef.current = setTimeout(
-      () => setIsAutoPlaying(true),
-      10000
-    );
+  // Handle video end event
+  const handleVideoEnded = () => {
+    // Move to next video, loop back to 0 after last video
+    setCurrentVideoIndex((prev) => {
+      const nextIndex = prev + 1;
+      return nextIndex >= visibilityOptions.length ? 0 : nextIndex;
+    });
   };
 
-  const currentOption = visibilityOptions[activeOption];
+  // When video index changes, reset and play the new video
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load(); // Reload the video with new source
+      videoRef.current.play().catch((error) => {
+        console.error("Error playing video:", error);
+      });
+    }
+  }, [currentVideoIndex]);
+
+  const currentOption = visibilityOptions[currentVideoIndex];
 
   return (
     <Section
@@ -129,96 +81,37 @@ export const VisibilityOptions = () => {
           {/* Video/Content Area */}
           <div className="w-full">
             <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
-              {/* Preload all videos but only show the active one */}
-              {visibilityOptions.map(
-                (option, index) =>
-                  option.videoUrl && (
-                    <video
-                      key={option.id}
-                      ref={(el) => {
-                        if (el) videoRefs.current[option.id] = el;
-                      }}
-                      src={option.videoUrl}
-                      className={`absolute inset-0 w-full h-full lg:object-cover object-contain transition-opacity duration-500 ${
-                        index === activeOption
-                          ? "opacity-100 z-10"
-                          : "opacity-0 z-0"
-                      }`}
-                      autoPlay={index === activeOption}
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                    />
-                  )
-              )}
-              {currentOption.imageUrl && !currentOption.videoUrl ? (
+              {/* Single video element with dynamic source */}
+              {currentOption.videoUrl ? (
+                <video
+                  ref={videoRef}
+                  key={currentVideoIndex} // Force remount when index changes
+                  src={currentOption.videoUrl}
+                  className="absolute inset-0 w-full h-full lg:object-cover object-contain"
+                  autoPlay
+                  muted
+                  playsInline
+                  onEnded={handleVideoEnded}
+                />
+              ) : currentOption.imageUrl ? (
                 <Image
-                  key={currentOption.id}
                   src={currentOption.imageUrl}
                   alt={currentOption.title}
                   fill
                   className="object-contain"
                   priority
                 />
-              ) : !currentOption.videoUrl && !currentOption.imageUrl ? (
+              ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
                   <div className="text-gray-500 text-center">
                     <p className="text-2xl mb-2">Video Coming Soon</p>
                     <p className="text-sm">Video for {currentOption.title}</p>
                   </div>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
 
-          {/* Dots Navigation and Description */}
-          <div className="w-full  flex flex-col items-center gap-6">
-            {/* Dots Navigation */}
-            <div className="flex gap-3 ">
-              {visibilityOptions.map((option, index) => (
-                <button
-                  key={option.id}
-                  onClick={() => handleOptionClick(index)}
-                  className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === activeOption
-                      ? "bg-blue-600 scale-125"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                  aria-label={`Go to ${option.title}`}
-                >
-                  {index === activeOption && (
-                    <div
-                      className="absolute inset-0 rounded-full bg-blue-600 opacity-30 animate-ping"
-                      style={{
-                        animationDuration: `${SLIDE_DURATION}ms`,
-                      }}
-                    />
-                  )}
-                  {/* Progress indicator for active dot */}
-                  {index === activeOption && (
-                    <svg
-                      className="absolute -inset-1 w-5 h-5"
-                      viewBox="0 0 20 20"
-                    >
-                      <circle
-                        cx="10"
-                        cy="10"
-                        r="8"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeDasharray={`${progress * 0.5} 100`}
-                        strokeLinecap="round"
-                        transform="rotate(-90 10 10)"
-                        className="text-blue-600 transition-all duration-100 ease-linear"
-                      />
-                    </svg>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
