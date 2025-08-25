@@ -79,15 +79,18 @@ export const VisibilityOptions = () => {
               {/* Single master video */}
               <video
                 ref={videoRef}
-                src="/videos/visibility_master.mp4"
                 className="absolute inset-0 w-full h-full lg:object-cover object-contain"
                 autoPlay
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
                 onTimeUpdate={handleTimeUpdate}
                 loop
-              />
+                aria-hidden="true"
+              >
+                <source src="/videos/visibility_master.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
 
