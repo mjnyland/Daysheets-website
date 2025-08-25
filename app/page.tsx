@@ -11,6 +11,7 @@ import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
 import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import PhoneScrollSection from "@/components/PhoneScrollSection";
+import AppDownloadSection from "@/components/AppDownloadSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
 import CtaSection from "@/components/CtaSection";
@@ -24,14 +25,14 @@ export default function Home() {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
+      orientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
     });
 
     // Update ScrollTrigger on Lenis scroll
-    lenis.on('scroll', ScrollTrigger.update);
+    lenis.on("scroll", ScrollTrigger.update);
 
     // Add Lenis's requestAnimationFrame to GSAP's ticker
     gsap.ticker.add((time) => {
@@ -53,12 +54,13 @@ export default function Home() {
   return (
     <main className="min-h-dvh">
       <Hero />
-      <div className="bg-[#2978D4]  bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
+      <div className="bg-[#166CD1]  bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
         <TestimonialsSplide />
         <FeatureSlideshow />
       </div>
       <FlightGrid />
       <VisibilityOptions />
+      <AppDownloadSection />
       <PhoneScrollSection />
       <MobileEditingCarousel />
       <TravelSection />
