@@ -2,7 +2,6 @@
 
 import { Section } from "@/components/containers/Section";
 import Image from "next/image";
-import { Upload, MapPin, Share2, Radar } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -94,48 +93,76 @@ export function FlightGrid() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full max-w-6xl mb-16">
-        <FeatureItem
-          icon={<Upload className="w-5 h-5" />}
-          title="Import Flights"
-          description="Daysheets AI makes it painless to add dozens of flights in a flash."
-        />
-        <FeatureItem
-          icon={<MapPin className="w-5 h-5" />}
-          title="Easy Charters"
-          description="Find any FBO globally, and we will handle the time zones for you."
-        />
-        <FeatureItem
-          icon={<Share2 className="w-5 h-5" />}
-          title="Export Grids"
-          description="Share flight grids in seconds, without manual creation errors."
-        />
-        <FeatureItem
-          icon={<Radar className="w-5 h-5" />}
-          title="Track Flights"
-          description="Check the status of flights in the air and monitor their progress."
-        />
+      <div className="w-full max-w-6xl my-16 space-y-24 md:space-y-32">
+        {/* Feature 1: Text left, Image right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          <div>
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
+              Streamlined Flight Management
+            </h3>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed">
+              Track every flight detail in one place. From passenger manifests
+              to crew assignments, manage complex travel logistics with ease.
+              Real-time updates ensure everyone stays informed throughout the
+              journey.
+            </p>
+          </div>
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm">
+            <Image
+              src="/assets/flight-grid-dashboard.png"
+              alt="Flight management dashboard"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
+
+        {/* Feature 2: Image left, Text right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          <div className="md:order-2">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
+              Complete Personnel Overview
+            </h3>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed">
+              View and manage your entire team at a glance. Assign roles, track
+              credentials, and coordinate schedules effortlessly. Our
+              intelligent system prevents conflicts and ensures smooth
+              operations.
+            </p>
+          </div>
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm md:order-1">
+            <Image
+              src="/assets/dayview.png"
+              alt="Personnel tracking interface"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Feature 3: Text left, Image right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          <div>
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
+              Smart Multi-Day Routing
+            </h3>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed">
+              Plan complex multi-city tours with confidence. Our routing engine
+              optimizes travel times, manages accommodations, and keeps your
+              entire team synchronized across multiple locations and time zones.
+            </p>
+          </div>
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm">
+            <Image
+              src="/assets/dayview.png"
+              alt="Routing optimization view"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
       </div>
     </Section>
-  );
-}
-
-function FeatureItem({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <span className="text-white">{icon}</span>
-        <h3 className="text-white text-lg font-normal">{title}</h3>
-      </div>
-      <p className="text-base text-white/65 leading-relaxed">{description}</p>
-    </div>
   );
 }
