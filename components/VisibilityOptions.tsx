@@ -2,57 +2,83 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Section } from "@/components/containers/Section";
-import Image from "next/image";
 
-interface VisibilityOption {
+interface VideoSection {
   id: string;
   title: string;
-  videoUrl?: string;
-  imageUrl?: string;
+  startTime: number;
+  endTime: number;
 }
 
-const visibilityOptions: VisibilityOption[] = [
+const videoSections: VideoSection[] = [
   {
     id: "crew-party",
     title: "Crew Party",
-    videoUrl: "/videos/visibility_1.mp4",
+    startTime: 0,
+    endTime: 3,
   },
   {
     id: "vip-access",
     title: "VIP Access",
-    videoUrl: "/videos/visibility_2.mp4",
+    startTime: 3,
+    endTime: 6,
   },
   {
     id: "public-info",
     title: "Public Information",
-    videoUrl: "/videos/visibility_3.mp4",
+    startTime: 6,
+    endTime: 9,
   },
 ];
 
 export const VisibilityOptions = () => {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const isSeekingRef = useRef(false);
 
-  // Handle video end event
-  const handleVideoEnded = () => {
-    // Move to next video, loop back to 0 after last video
-    setCurrentVideoIndex((prev) => {
-      const nextIndex = prev + 1;
-      return nextIndex >= visibilityOptions.length ? 0 : nextIndex;
-    });
+  // Handle clicking on a dot to jump to that section
+  const handleSectionClick = (index: number) => {
+    if (videoRef.current) {
+      isSeekingRef.current = true;
+      const section = videoSections[index];
+      videoRef.current.currentTime = section.startTime;
+      setActiveSectionIndex(index);
+      videoRef.current.play();
+    }
   };
 
-  // When video index changes, reset and play the new video
+  // Monitor video time to update active section and loop sections
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load(); // Reload the video with new source
-      videoRef.current.play().catch((error) => {
-        console.error("Error playing video:", error);
-      });
-    }
-  }, [currentVideoIndex]);
+    const video = videoRef.current;
+    if (!video) return;
 
-  const currentOption = visibilityOptions[currentVideoIndex];
+    const handleTimeUpdate = () => {
+      const currentTime = video.currentTime;
+      
+      // Find which section we're currently in
+      for (let i = 0; i < videoSections.length; i++) {
+        const section = videoSections[i];
+        if (currentTime >= section.startTime && currentTime < section.endTime) {
+          if (i !== activeSectionIndex) {
+            setActiveSectionIndex(i);
+          }
+          return;
+        }
+      }
+      
+      // If we've reached the end of the last section, loop back to start
+      if (currentTime >= videoSections[videoSections.length - 1].endTime) {
+        video.currentTime = 0;
+        setActiveSectionIndex(0);
+        video.play();
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  }, [activeSectionIndex]);
+
+  const currentSection = videoSections[activeSectionIndex];
 
   return (
     <Section
@@ -81,37 +107,38 @@ export const VisibilityOptions = () => {
           {/* Video/Content Area */}
           <div className="w-full">
             <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
-              {/* Single video element with dynamic source */}
-              {currentOption.videoUrl ? (
-                <video
-                  ref={videoRef}
-                  key={currentVideoIndex} // Force remount when index changes
-                  src={currentOption.videoUrl}
-                  className="absolute inset-0 w-full h-full lg:object-cover object-contain"
-                  autoPlay
-                  muted
-                  playsInline
-                  onEnded={handleVideoEnded}
-                />
-              ) : currentOption.imageUrl ? (
-                <Image
-                  src={currentOption.imageUrl}
-                  alt={currentOption.title}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
-                  <div className="text-gray-500 text-center">
-                    <p className="text-2xl mb-2">Video Coming Soon</p>
-                    <p className="text-sm">Video for {currentOption.title}</p>
-                  </div>
-                </div>
-              )}
+              {/* Single master video */}
+              <video
+                ref={videoRef}
+                src="/videos/visibility_master.mp4"
+                className="absolute inset-0 w-full h-full lg:object-cover object-contain"
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+              />
             </div>
           </div>
 
+          {/* Dots Navigation */}
+          <div className="flex gap-3">
+            {videoSections.map((section, index) => (
+              <button
+                key={section.id}
+                onClick={() => handleSectionClick(index)}
+                className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === activeSectionIndex
+                    ? "bg-blue-600 scale-125"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+                aria-label={`Go to ${section.title}`}
+              >
+                {index === activeSectionIndex && (
+                  <div className="absolute inset-0 rounded-full bg-blue-600 opacity-30 animate-ping" />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
