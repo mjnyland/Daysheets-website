@@ -6,79 +6,48 @@ import { Section } from "@/components/containers/Section";
 interface VideoSection {
   id: string;
   title: string;
-  startTime: number;
-  endTime: number;
 }
 
 const videoSections: VideoSection[] = [
-  {
-    id: "crew-party",
-    title: "Crew Party",
-    startTime: 0,
-    endTime: 3,
-  },
-  {
-    id: "vip-access",
-    title: "VIP Access",
-    startTime: 3,
-    endTime: 6,
-  },
-  {
-    id: "public-info",
-    title: "Public Information",
-    startTime: 6,
-    endTime: 9,
-  },
+  { id: "crew-party", title: "Crew Party" },
+  { id: "vip-access", title: "VIP Access" },
+  { id: "public-info", title: "Public Information" },
 ];
+
+const SECTION_LENGTH_SECONDS = 3;
 
 export const VisibilityOptions = () => {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const isSeekingRef = useRef(false);
 
   // Handle clicking on a dot to jump to that section
   const handleSectionClick = (index: number) => {
-    if (videoRef.current) {
-      isSeekingRef.current = true;
-      const section = videoSections[index];
-      videoRef.current.currentTime = section.startTime;
-      setActiveSectionIndex(index);
-      videoRef.current.play();
-    }
-  };
-
-  // Monitor video time to update active section and loop sections
-  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    const targetTime = index * SECTION_LENGTH_SECONDS + 0.001;
+    video.currentTime = targetTime;
+    setActiveSectionIndex(index);
+    video.play();
+  };
 
-    const handleTimeUpdate = () => {
-      const currentTime = video.currentTime;
-      
-      // Find which section we're currently in
-      for (let i = 0; i < videoSections.length; i++) {
-        const section = videoSections[i];
-        if (currentTime >= section.startTime && currentTime < section.endTime) {
-          if (i !== activeSectionIndex) {
-            setActiveSectionIndex(i);
-          }
-          return;
-        }
-      }
-      
-      // If we've reached the end of the last section, loop back to start
-      if (currentTime >= videoSections[videoSections.length - 1].endTime) {
-        video.currentTime = 0;
-        setActiveSectionIndex(0);
-        video.play();
-      }
-    };
+  const handleNextClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const nextIndex = (activeSectionIndex + 1) % videoSections.length;
+    const targetTime = nextIndex * SECTION_LENGTH_SECONDS + 0.001;
+    video.currentTime = targetTime;
+    setActiveSectionIndex(nextIndex);
+    video.play();
+  };
 
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  }, [activeSectionIndex]);
-
-  const currentSection = videoSections[activeSectionIndex];
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const idx =
+      Math.floor(video.currentTime / SECTION_LENGTH_SECONDS) %
+      videoSections.length;
+    if (idx !== activeSectionIndex) setActiveSectionIndex(idx);
+  };
 
   return (
     <Section
@@ -116,28 +85,41 @@ export const VisibilityOptions = () => {
                 muted
                 playsInline
                 preload="auto"
+                onTimeUpdate={handleTimeUpdate}
+                loop
               />
             </div>
           </div>
 
-          {/* Dots Navigation */}
-          <div className="flex gap-3">
-            {videoSections.map((section, index) => (
-              <button
-                key={section.id}
-                onClick={() => handleSectionClick(index)}
-                className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === activeSectionIndex
-                    ? "bg-blue-600 scale-125"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
-                aria-label={`Go to ${section.title}`}
-              >
-                {index === activeSectionIndex && (
-                  <div className="absolute inset-0 rounded-full bg-blue-600 opacity-30 animate-ping" />
-                )}
-              </button>
-            ))}
+          {/* Controls */}
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleNextClick}
+              className="px-3 py-1.5 rounded-md bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+              aria-label="Go to next section"
+            >
+              Next
+            </button>
+            <div className="flex gap-3">
+              {videoSections.map((section, index) => (
+                <button
+                  key={section.id}
+                  type="button"
+                  onClick={() => handleSectionClick(index)}
+                  className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === activeSectionIndex
+                      ? "bg-blue-600 scale-125"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to ${section.title}`}
+                >
+                  {index === activeSectionIndex && (
+                    <div className="absolute inset-0 rounded-full bg-blue-600 opacity-30 animate-ping" />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
