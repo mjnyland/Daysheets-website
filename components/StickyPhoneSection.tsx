@@ -97,13 +97,13 @@ export default function StickyPhoneSection() {
           if (fromEl && toEl) {
             gsap.to(fromEl, {
               opacity: 0,
-              y: -12,
+
               duration: 0.5,
               ease: "power2.out",
             });
             gsap.fromTo(
               toEl,
-              { opacity: 0, y: 12 },
+              { opacity: 0 },
               { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }
             );
           }
@@ -173,11 +173,11 @@ export default function StickyPhoneSection() {
             {/* Nav Content */}
             <nav
               aria-label="Phone views"
-              className="mt-2 absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-2  "
+              className="mt-2 absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-2"
             >
               <div
                 ref={navContainerRef}
-                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2"
+                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2 shadow-xl shadow-slate-900/30"
               >
                 {/* Sliding indicator pill */}
                 <div
