@@ -156,8 +156,10 @@ export default function StickyPhoneSection() {
       >
         {/* Content wrapper - kept contained within the section container */}
         <div className="flex flex-1 w-full items-center justify-center flex-col gap-8">
+          {/* Blur */}
+          <div className="absolute left-1/2 bottom-[10%] -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-blue-500/50 blur-[160px] z-0"></div>
           {/* Headline Content */}
-          <div className="text-center px-6 max-w-2xl">
+          <div className="text-center px-6 max-w-2xl z-2">
             <h2 className="text-white text-3xl sm:text-4xl font-medium tracking-tight">
               {SLIDES[activeIndex].title}
             </h2>
@@ -167,7 +169,7 @@ export default function StickyPhoneSection() {
           </div>
 
           {/* Phone Content (contained) */}
-          <div className="relative w-full max-w-sm aspect-[9/16] rounded-2xl bg-white/5 ring-1 ring-white/10 ">
+          <div className="relative w-full max-w-sm aspect-[9/16]">
             {/* Nav Content */}
             <nav
               aria-label="Phone views"
