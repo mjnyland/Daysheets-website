@@ -51,7 +51,6 @@ export default function Home() {
       <VisibilityOptions />
       <StickyPhoneSection />
       <AppDownloadSection />
-      <IOSViewsSection />
       <MobileEditingCarousel />
       <TravelSection />
       <SimpleStickySection />

@@ -40,106 +40,7 @@ export default function AppDownloadSection() {
               in sync.
             </p>
           </div>
-          {/* Reviews */}
-          <div className="mt-8 md:mt-10 w-full">
-            <ul
-              className="grid grid-cols-1 md:grid-cols-3 gap-4"
-              role="list"
-              aria-label="App Store reviews"
-            >
-              <li
-                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
-                role="article"
-                aria-label="Review: Amazing app"
-              >
-                <div
-                  className="flex items-center gap-1"
-                  role="img"
-                  aria-label="5 out of 5 stars"
-                >
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 text-yellow-400"
-                      fill="currentColor"
-                      strokeWidth={0}
-                      aria-hidden="true"
-                    />
-                  ))}
-                  <span className="sr-only">5 out of 5 stars</span>
-                </div>
-                <h3 className="mt-1 text-lg font-semibold text-white">
-                  Amazing app
-                </h3>
 
-                <p className="mt-1 text-sm leading-6 text-slate-200">
-                  Best touring app, highly recommend. Very detailed and easy to
-                  use.
-                </p>
-              </li>
-              <li
-                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
-                role="article"
-                aria-label="Review: Artist in Shed Tour"
-              >
-                <div
-                  className="flex items-center gap-1"
-                  role="img"
-                  aria-label="5 out of 5 stars"
-                >
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 text-yellow-400"
-                      fill="currentColor"
-                      strokeWidth={0}
-                      aria-hidden="true"
-                    />
-                  ))}
-                  <span className="sr-only">5 out of 5 stars</span>
-                </div>
-                <h3 className="mt-1 text-lg font-semibold text-white">
-                  Artist in Shed Tour
-                </h3>
-
-                <p className="mt-1 text-sm leading-6 text-slate-200">
-                  I manage an artist who’s been touring for the last 7 years and
-                  Daysheets is the best. The artist even checks it. It is
-                  smooth, updates quick, and the team is very responsive. 5
-                  stars.
-                </p>
-              </li>
-              <li
-                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
-                role="article"
-                aria-label="Review: Master who?"
-              >
-                <div
-                  className="flex items-center gap-1"
-                  role="img"
-                  aria-label="5 out of 5 stars"
-                >
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 text-yellow-400"
-                      fill="currentColor"
-                      strokeWidth={0}
-                      aria-hidden="true"
-                    />
-                  ))}
-                  <span className="sr-only">5 out of 5 stars</span>
-                </div>
-                <h3 className="mt-1 text-lg font-semibold text-white">
-                  Master who?
-                </h3>
-
-                <p className="mt-1 text-sm leading-6 text-slate-200">
-                  Don’t think. Just switch. Total game changer for me.
-                </p>
-              </li>
-            </ul>
-          </div>
           {/* App links */}
           <div className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 w-full max-w-xl justify-center items-center gap-4">
             {/* App Store */}
@@ -184,6 +85,106 @@ export default function AppDownloadSection() {
                 </Link>
               </div>
             </div>
+          </div>
+          {/* Reviews */}
+          <div className="mt-8 md:mt-10 w-full">
+            <ul
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
+              role="list"
+              aria-label="App Store reviews"
+            >
+              <li
+                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
+                role="article"
+                aria-label="Review: Amazing app"
+              >
+                <div
+                  className="flex items-center gap-0"
+                  role="img"
+                  aria-label="5 out of 5 stars"
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-4 w-4 text-yellow-400"
+                      fill="currentColor"
+                      strokeWidth={0}
+                      aria-hidden="true"
+                    />
+                  ))}
+                  <span className="sr-only">5 out of 5 stars</span>
+                </div>
+                <h3 className="mt-1 text-lg font-semibold text-white">
+                  Amazing app
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-200">
+                  Best touring app, highly recommend. Very detailed and easy to
+                  use.
+                </p>
+              </li>
+              <li
+                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
+                role="article"
+                aria-label="Review: Artist in Shed Tour"
+              >
+                <div
+                  className="flex items-center gap-0"
+                  role="img"
+                  aria-label="5 out of 5 stars"
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-4 w-4 text-yellow-400"
+                      fill="currentColor"
+                      strokeWidth={0}
+                      aria-hidden="true"
+                    />
+                  ))}
+                  <span className="sr-only">5 out of 5 stars</span>
+                </div>
+                <h3 className="mt-1 text-lg font-semibold text-white">
+                  Artist in Shed Tour
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-200">
+                  I manage an artist who’s been touring for the last 7 years and
+                  Daysheets is the best. The artist even checks it. It is
+                  smooth, updates quick, and the team is very responsive. 5
+                  stars.
+                </p>
+              </li>
+              <li
+                className="bg-white/10 text-slate-100 rounded-2xl border border-white/10 shadow-sm p-4"
+                role="article"
+                aria-label="Review: Master who?"
+              >
+                <div
+                  className="flex items-center gap-0"
+                  role="img"
+                  aria-label="5 out of 5 stars"
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-4 w-4 text-yellow-400"
+                      fill="currentColor"
+                      strokeWidth={0}
+                      aria-hidden="true"
+                    />
+                  ))}
+                  <span className="sr-only">5 out of 5 stars</span>
+                </div>
+                <h3 className="mt-1 text-lg font-semibold text-white">
+                  Master who?
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-200">
+                  Don’t think. Just switch. Total game changer for me.
+                </p>
+              </li>
+            </ul>
           </div>
           {/* Image */}
           <div className="relative w-full max-w-4xl aspect-[16/9]">
