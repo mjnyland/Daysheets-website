@@ -47,6 +47,9 @@ export default function StickyPhoneSection() {
   const imageRefs = useRef<HTMLDivElement[]>([]);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const navButtonRefs = useRef<HTMLButtonElement[]>([]);
+  const indicatorRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     // Create one ScrollTrigger controlling this whole sticky section
@@ -78,6 +81,8 @@ export default function StickyPhoneSection() {
           if (!el) return;
           gsap.set(el, { opacity: i === activeIndexRef.current ? 1 : 0, y: 0 });
         });
+        // Position nav indicator on refresh
+        moveIndicator(activeIndexRef.current, 0);
       },
 
       // Called on every scroll update; decides which slide should be visible
@@ -93,7 +98,7 @@ export default function StickyPhoneSection() {
             gsap.to(fromEl, {
               opacity: 0,
               y: -12,
-              duration: 0.25,
+              duration: 0.5,
               ease: "power2.out",
             });
             gsap.fromTo(
@@ -105,6 +110,8 @@ export default function StickyPhoneSection() {
 
           activeIndexRef.current = next;
           setActiveIndex(next);
+          // Slide nav indicator to the new active button
+          moveIndicator(next, 0.25);
         }
       },
     });
@@ -113,6 +120,7 @@ export default function StickyPhoneSection() {
     triggerRef.current = st;
   }); // useGSAP handles cleanup automatically
 
+  // Nav click handler
   const handleNavClick = (index: number) => {
     const st = triggerRef.current;
     if (!st) return;
@@ -123,16 +131,31 @@ export default function StickyPhoneSection() {
     window.scrollTo({ top: target, behavior: "smooth" });
   };
 
+  // Animate the blue pill indicator under the active nav item
+  const moveIndicator = (index: number, duration: number) => {
+    const container = navContainerRef.current;
+    const pill = indicatorRef.current;
+    const btn = navButtonRefs.current[index];
+    if (!container || !pill || !btn) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const x = btnRect.left - containerRect.left;
+    const width = btnRect.width;
+
+    gsap.to(pill, { x, width, duration, ease: "power2.out" });
+  };
+
   return (
     <>
       <Section
         ref={sectionRef}
-        background="blue"
+        background="darkBlue"
         className="h-dvh"
         containerClassName="flex flex-col h-full"
       >
         {/* Content wrapper - kept contained within the section container */}
-        <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
+        <div className="flex flex-1 w-full items-center justify-center flex-col gap-8">
           {/* Headline Content */}
           <div className="text-center px-6 max-w-2xl">
             <h2 className="text-white text-3xl sm:text-4xl font-medium tracking-tight">
@@ -144,7 +167,47 @@ export default function StickyPhoneSection() {
           </div>
 
           {/* Phone Content (contained) */}
-          <div className="relative w-full max-w-sm aspect-[9/16] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
+          <div className="relative w-full max-w-sm aspect-[9/16] rounded-2xl bg-white/5 ring-1 ring-white/10 ">
+            {/* Nav Content */}
+            <nav
+              aria-label="Phone views"
+              className="mt-2 absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-2  "
+            >
+              <div
+                ref={navContainerRef}
+                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1"
+              >
+                {/* Sliding indicator pill */}
+                <div
+                  ref={indicatorRef}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 h-[32px] rounded-full bg-blue-500"
+                  style={{ width: 0 }}
+                  aria-hidden
+                />
+
+                {SLIDES.map((slide, index) => {
+                  const isActive = index === activeIndex;
+                  return (
+                    <button
+                      key={slide.key}
+                      type="button"
+                      ref={(el) => {
+                        if (el) navButtonRefs.current[index] = el;
+                      }}
+                      onClick={() => handleNavClick(index)}
+                      className={
+                        "relative z-10 px-4 py-2 rounded-full text-sm font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
+                        (isActive ? "" : "hover:bg-white/10")
+                      }
+                      aria-current={isActive ? "page" : undefined}
+                      aria-label={`Show ${slide.title}`}
+                    >
+                      {slide.title}
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
             {SLIDES.map((slide, i) => (
               <div
                 key={slide.key}
@@ -165,30 +228,6 @@ export default function StickyPhoneSection() {
               </div>
             ))}
           </div>
-
-          {/* Nav Content */}
-          <nav aria-label="Phone views" className="mt-2">
-            <div className="flex items-center justify-center rounded-full bg-blue-900/60 p-1">
-              {SLIDES.map((slide, index) => {
-                const isActive = index === activeIndex;
-                return (
-                  <button
-                    key={slide.key}
-                    type="button"
-                    onClick={() => handleNavClick(index)}
-                    className={
-                      "px-4 py-2 rounded-full text-sm font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
-                      (isActive ? "bg-blue-500" : "hover:bg-white/10")
-                    }
-                    aria-current={isActive ? "page" : undefined}
-                    aria-label={`Show ${slide.title}`}
-                  >
-                    {slide.title}
-                  </button>
-                );
-              })}
-            </div>
-          </nav>
         </div>
       </Section>
     </>
