@@ -18,17 +18,17 @@ export default function AppDownloadSection() {
       size="xl"
       padded={false}
       className=""
-      containerClassName="flex flex-col items-center justify-center py-16 md:py-24"
+      containerClassName="flex flex-col items-center justify-center py-16 md:py-24 px-12"
       aria-label="Download the Daysheets apps"
       id="download"
     >
       <div className="relative mt-10 w-full flex items-center justify-center overflow-hidden">
-        <div className="absolute left-1/2 bottom-[-40%] -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-blue-500/70 blur-[160px]"></div>
+        <div className="absolute left-1/2 bottom-[-40%] -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-blue-500/50 blur-[160px]"></div>
         <div
           className="pointer-events-none absolute inset-0 -z-10"
           aria-hidden="true"
         ></div>
-        <div className="w-full flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded-[32px] pt-20">
+        <div className="w-full flex flex-col items-center justify-center bg-white/2 border-[2px] border-white/5 rounded-[32px] pt-20">
           {/* Text */}
           <div className="flex flex-col items-center text-center">
             <h2 className="text-white text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight">
@@ -40,58 +40,52 @@ export default function AppDownloadSection() {
             </p>
           </div>
           {/* App links */}
-          <div className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg">
-            {/* Google Play */}
-            <div className="flex items-center justify-start gap-3 sm:gap-4 w-full">
+          <div className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 w-full max-w-xl justify-center items-center gap-4">
+            {/* App Store */}
+            <div className="flex items-center justify-center gap-3 bg-slate-200 pl-6 pr-8 py-4 rounded-2xl border-[2px] border-slate-300">
               <Image
-                src="/assets/AppStore_Logo.png"
+                src="/assets/AppStore_Logo.svg"
                 alt="Apple App Store"
                 width={48}
                 height={48}
-                className="h-12 w-12"
+                className="h-6 w-6 "
               />
               <div className="flex flex-col">
-                <p className="text-white text-base font-bold sm:text-lg">
-                  App Store
-                </p>
                 <Link
                   href={STORE_LINKS.googlePlay}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-white text-sm sm:text-base underline underline-offset-4"
+                  className="text-slate-900 font-medium text-lg"
                   aria-label="Download Daysheets on Google Play"
                 >
-                  Download
+                  Download for iOS
                 </Link>
               </div>
             </div>
-            {/* iOS App Store */}
-            <div className="flex items-center justify-start gap-3 sm:gap-4 w-full">
+            {/* Google Play */}
+            <div className="flex items-center justify-center gap-3 bg-slate-200 pl-6 pr-8 py-4 rounded-2xl border-[2px] border-slate-300">
               <Image
                 src="/assets/PlayStore_Logo.png"
                 alt="Google Play"
                 width={48}
                 height={48}
-                className="h-12 w-12"
+                className="h-6 w-6 "
               />
               <div className="flex flex-col">
-                <p className="text-white/90 text-base font-bold sm:text-lg">
-                  Google Play
-                </p>
                 <Link
                   href={STORE_LINKS.googlePlay}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/90 hover:text-white text-sm sm:text-base underline underline-offset-4"
+                  className="text-slate-900 font-medium text-lg"
                   aria-label="Download Daysheets on Google Play"
                 >
-                  Download
+                  Download for Android
                 </Link>
               </div>
             </div>
           </div>
           {/* Image */}
-          <div className="relative w-full max-w-5xl aspect-[16/9]">
+          <div className="relative w-full max-w-4xl aspect-[16/9]">
             <Image
               src="/assets/Android_iPad_iOS_mockup.png"
               alt="Daysheets apps shown on Android, iPad, and iPhone"
