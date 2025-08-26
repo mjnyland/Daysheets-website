@@ -62,7 +62,7 @@ export function FlightGrid() {
       background="dark"
       className="relative overflow-hidden "
       gap="md"
-      size="lg"
+      size="xl"
     >
       <div className="relative z-10 flex flex-col items-center mt-16 gap-12">
         <div className="flex flex-col items-center gap-6 text-center max-w-3xl">
@@ -98,10 +98,10 @@ export function FlightGrid() {
           </div>
         </div>
       </div>
-      <div className="w-full max-w-6xl mt-8 rounded-2xl overflow-hidden border-1 border-white/10">
+      <div className="w-full max-w-6xl mt-8 rounded-2xl overflow-hidden px-12">
         {/* Feature 1: Text left, Image right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
-          <div className="p-6">
+          <div className="flex flex-col justify-center p-12">
             <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
               Import Flights
             </h3>
@@ -124,7 +124,7 @@ export function FlightGrid() {
 
         {/* Feature 2: Image left, Text right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
-          <div className="md:order-2 p-6 border-l-1 border-white/10 h-full">
+          <div className="flex flex-col justify-center p-12 md:order-2 border-l-1 border-white/10 h-full">
             <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
               Easy Charters
             </h3>
@@ -146,7 +146,7 @@ export function FlightGrid() {
 
         {/* Feature 3: Text left, Image right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
-          <div className="p-6">
+          <div className="flex flex-col justify-center p-12">
             <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
               Export Grids
             </h3>
@@ -158,7 +158,7 @@ export function FlightGrid() {
           </div>
           <div className="relative aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur-sm border-l-1 border-white/10">
             <Image
-              src="/assets/dayview.png"
+              src="/assets/ExportPreview.png"
               alt="Routing optimization view"
               fill
               className="object-cover"
