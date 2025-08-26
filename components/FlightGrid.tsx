@@ -58,8 +58,13 @@ export function FlightGrid() {
   }, []);
 
   return (
-    <Section background="dark" className="relative overflow-hidden " gap="md">
-      <div className="relative z-10 flex flex-col items-center gap-12 mt-16">
+    <Section
+      background="dark"
+      className="relative overflow-hidden "
+      gap="md"
+      size="lg"
+    >
+      <div className="relative z-10 flex flex-col items-center mt-16 gap-12">
         <div className="flex flex-col items-center gap-6 text-center max-w-3xl">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-white">
             Every flight in one place.
@@ -93,23 +98,22 @@ export function FlightGrid() {
           </div>
         </div>
       </div>
-      <div className="w-full max-w-6xl my-16 space-y-24 md:space-y-32">
+      <div className="w-full max-w-6xl mt-8 rounded-2xl overflow-hidden border-1 border-white/10">
         {/* Feature 1: Text left, Image right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-          <div>
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
-              Streamlined Flight Management
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
+          <div className="p-6">
+            <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
+              Import Flights
             </h3>
             <p className="text-white/80 text-base md:text-lg leading-relaxed">
-              Track every flight detail in one place. From passenger manifests
-              to crew assignments, manage complex travel logistics with ease.
-              Real-time updates ensure everyone stays informed throughout the
-              journey.
+              Daysheets AI makes it painless to add dozens of flights in a
+              flash. Upload manifests or paste itineraries and we’ll normalize
+              airports, aircraft, and passenger details automatically.
             </p>
           </div>
-          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm">
+          <div className="relative aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur-sm border-l-1 border-white/10">
             <Image
-              src="/assets/flight-grid-dashboard.png"
+              src="/assets/ImportFlights.png"
               alt="Flight management dashboard"
               fill
               className="object-cover"
@@ -119,21 +123,20 @@ export function FlightGrid() {
         </div>
 
         {/* Feature 2: Image left, Text right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-          <div className="md:order-2">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
-              Complete Personnel Overview
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
+          <div className="md:order-2 p-6 border-l-1 border-white/10 h-full">
+            <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
+              Easy Charters
             </h3>
             <p className="text-white/80 text-base md:text-lg leading-relaxed">
-              View and manage your entire team at a glance. Assign roles, track
-              credentials, and coordinate schedules effortlessly. Our
-              intelligent system prevents conflicts and ensures smooth
-              operations.
+              Find any FBO globally, and we will handle the time zones for you.
+              Instantly surface handling options, fees, and quick contacts
+              alongside each leg.
             </p>
           </div>
-          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm md:order-1">
+          <div className="relative aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur-sm md:order-1 border-l-1 border-white/10">
             <Image
-              src="/assets/dayview.png"
+              src="/assets/CharterFlights.png"
               alt="Personnel tracking interface"
               fill
               className="object-cover"
@@ -142,18 +145,18 @@ export function FlightGrid() {
         </div>
 
         {/* Feature 3: Text left, Image right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-          <div>
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4">
-              Smart Multi-Day Routing
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
+          <div className="p-6">
+            <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
+              Export Grids
             </h3>
             <p className="text-white/80 text-base md:text-lg leading-relaxed">
-              Plan complex multi-city tours with confidence. Our routing engine
-              optimizes travel times, manages accommodations, and keeps your
-              entire team synchronized across multiple locations and time zones.
+              Share flight grids in seconds, without manual creation errors.
+              Generate beautiful, consistent views for talent, crew, and vendors
+              with a single click.
             </p>
           </div>
-          <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm">
+          <div className="relative aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur-sm border-l-1 border-white/10">
             <Image
               src="/assets/dayview.png"
               alt="Routing optimization view"
