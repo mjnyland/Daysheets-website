@@ -10,7 +10,7 @@ const cards = [
   {
     title: "Portfolio overview",
     description: "Track your entire portfolio in one place.",
-    video: "/assets/portfolio-video.mp4",
+    video: "/videos/Summary_Test.mp4",
   },
   {
     title: "Hardware wallet support",
@@ -37,7 +37,7 @@ export function SummaryCards() {
   useEffect(() => {
     // Register plugin inside useEffect to avoid SSR issues
     gsap.registerPlugin(ScrollTrigger);
-    
+
     const section = sectionRef.current;
     const container = containerRef.current;
     const headline = headlineRef.current;
@@ -53,14 +53,14 @@ export function SummaryCards() {
       scrub: 1,
       onUpdate: (self) => {
         // Simple scale animation based on progress
-        const scale = 1 - (self.progress * 0.2); // Scale from 1 to 0.8
-        const opacity = 1 - (self.progress * 0.5); // Opacity from 1 to 0.5
-        
+        const scale = 1 - self.progress * 0.2; // Scale from 1 to 0.8
+        const opacity = 1 - self.progress * 0.5; // Opacity from 1 to 0.5
+
         gsap.set(headline, {
           scale: scale,
           opacity: opacity,
         });
-      }
+      },
     });
 
     // Cleanup
@@ -122,8 +122,17 @@ export function SummaryCards() {
                         {card.description}
                       </p>
                     </div>
-                    <div className="aspect-video bg-gray-200/10 rounded-lg overflow-hidden">
-                      <div className="w-full h-full" />
+                    <div className="aspect-square bg-gray-200/10 rounded-lg overflow-hidden">
+                      <video
+                        src={card.video}
+                        className="w-full h-full object-cover"
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={`${card.title} demo video`}
+                      />
                     </div>
                   </div>
                 </div>

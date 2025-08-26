@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Section } from "@/components/containers/Section";
+gsap.registerPlugin(ScrollTrigger);
 
 interface VideoSection {
   id: string;
@@ -23,6 +25,7 @@ export const VisibilityOptions = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const rafIdRef = useRef<number | null>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const sectionCopy: string[] = [
     "Share with a specific group. Crew, VIP, or Local Team.",
@@ -69,6 +72,38 @@ export const VisibilityOptions = () => {
     );
   }, [activeSectionIndex]);
 
+  // Scroll-driven subtle fade-ins when section enters viewport
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const ctx = gsap.context(() => {
+      gsap.set(
+        [".vo-badge", ".vo-heading", ".vo-video", ".vo-copy", ".vo-controls"],
+        {
+          autoAlpha: 0,
+          y: 12,
+        }
+      );
+
+      const tl = gsap.timeline({
+        defaults: { duration: 0.4, ease: "power2.out" },
+        scrollTrigger: {
+          trigger: root,
+          start: "top 75%",
+          once: true,
+        },
+      });
+
+      tl.to(".vo-badge", { autoAlpha: 1, y: 0 })
+        .to(".vo-heading", { autoAlpha: 1, y: 0 }, "-=0.2")
+        .to(".vo-video", { autoAlpha: 1, y: 0 }, "-=0.1")
+        .to(".vo-copy", { autoAlpha: 1, y: 0 }, "-=0.1")
+        .to(".vo-controls", { autoAlpha: 1, y: 0 }, "-=0.1");
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
   // Handle clicking on a dot to jump to that section
   const handleSectionClick = (index: number) => {
     const video = videoRef.current;
@@ -113,28 +148,27 @@ export const VisibilityOptions = () => {
       className={`relative transition-all duration-1000 overflow-hidden`}
       gap="xl"
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 ">
+      <div
+        ref={rootRef}
+        className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 "
+      >
+        <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
+          Custom Visibility
+        </div>
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-gray-900">
+          <h2 className="vo-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-gray-900">
             A personalized experience
             <br />
             for everyone on tour.
           </h2>
-          <p
-            ref={copyRef}
-            key={activeSectionIndex}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mt-4"
-          >
-            {sectionCopy[activeSectionIndex]}
-          </p>
         </div>
 
         {/* Main Content Area with Dots Navigation */}
         <div className="flex flex-col gap-8 items-center max-w-4xl mx-auto">
           {/* Video/Content Area */}
           <div className="w-full">
-            <div className="relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
+            <div className="vo-video relative h-[500px] rounded-2xl overflow-hidden lg:border-2 border-gray-200/50 bg-gray-100">
               {/* Single master video */}
               <video
                 ref={videoRef}
@@ -152,8 +186,16 @@ export const VisibilityOptions = () => {
             </div>
           </div>
 
+          <p
+            ref={copyRef}
+            key={activeSectionIndex}
+            className="vo-copy text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mt-4"
+          >
+            {sectionCopy[activeSectionIndex]}
+          </p>
+
           {/* Controls */}
-          <div className="flex items-center gap-4 w-[240px]">
+          <div className="vo-controls flex items-center gap-4 w-[240px]">
             <div className="flex items-center gap-3 bg-slate-100 p-4 rounded-full w-full">
               {videoSections.map((section, index) => {
                 const isActive = index === activeSectionIndex;

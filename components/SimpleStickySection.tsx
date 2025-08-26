@@ -9,20 +9,24 @@ const cards = [
   {
     title: "Notifications & Reminders",
     description: "Schedule as many reminders as your team member needs.",
+    video: "/videos/NotificationsVideo.mp4",
   },
   {
     title: "Shortcuts for speed",
     description:
       "Quick shortcuts let you add, edit, and find things in seconds.",
+    video: "/videos/ShortcutsVideo.mp4",
   },
   {
     title: "Notes",
     description:
       "Add general notes to keep important travel details in one place.",
+    video: "/videos/NotesVideo.mp4",
   },
   {
     title: "Travel Profiles",
     description: "Never miss an expiring passport again. We'll remind you.",
+    video: "/videos/TravelProfilesVideo.mp4",
   },
 ];
 
@@ -38,7 +42,7 @@ export function SimpleStickySection() {
   useLayoutEffect(() => {
     // Register plugins inside useLayoutEffect to avoid SSR issues
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-    
+
     const section = sectionRef.current;
     const container = containerRef.current;
     const headline = headlineRef.current;
@@ -111,8 +115,7 @@ export function SimpleStickySection() {
                 if (!card) return;
                 const distance = Math.abs(cardProgress - index);
                 const scale = Math.max(0.9, 1 - distance * 0.1);
-                const opacity = Math.max(0.3, 1 - distance * 0.3);
-                gsap.set(card, { scale, opacity });
+                gsap.set(card, { scale });
               });
             },
           },
@@ -219,10 +222,10 @@ export function SimpleStickySection() {
                     ref={(el) => {
                       if (el) cardRefs.current[index] = el;
                     }}
-                    className="flex-shrink-0 w-[380px] h-[500px] rounded-2xl overflow-hidden shadow-lg"
+                    className="flex-shrink-0 w-[500px] h-[640px] rounded-2xl overflow-hidden shadow-lg"
                   >
-                    <div className="h-full p-8 flex flex-col justify-between bg-[#2978D4] backdrop-blur-sm">
-                      <div>
+                    <div className="h-full flex flex-col justify-between bg-[#2978D4] ">
+                      <div className="p-8">
                         <h3 className="text-2xl font-bold mb-4 text-white">
                           {card.title}
                         </h3>
@@ -230,8 +233,21 @@ export function SimpleStickySection() {
                           {card.description}
                         </p>
                       </div>
-                      <div className="aspect-video bg-gray-200/10 rounded-lg overflow-hidden">
-                        <div className="w-full h-full" />
+                      <div className="aspect-square  rounded-lg overflow-hidden">
+                        {card.video ? (
+                          <video
+                            src={card.video}
+                            className="w-full h-full object-contain"
+                            muted
+                            autoPlay
+                            loop
+                            playsInline
+                            preload="metadata"
+                            aria-label={`${card.title} demo video`}
+                          />
+                        ) : (
+                          <div className="w-full h-full" />
+                        )}
                       </div>
                     </div>
                   </div>
