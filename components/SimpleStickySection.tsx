@@ -1,9 +1,9 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { useGSAP } from "@gsap/react";
 
 const cards = [
   {
@@ -39,9 +39,8 @@ export function SimpleStickySection() {
   const cardsViewportRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<HTMLDivElement[]>([]);
 
-  useLayoutEffect(() => {
-    // Register plugins inside useLayoutEffect to avoid SSR issues
-    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
     const container = containerRef.current;
@@ -60,121 +59,53 @@ export function SimpleStickySection() {
     )
       return;
 
-    let mounted = true;
-    let ctx: gsap.Context | null = null;
-
-    (async () => {
-      try {
-        await document.fonts?.ready;
-      } catch (error) {
-        // ignore
-      }
-
-      // Wait until ScrollSmoother is initialized so measurements are correct
-      try {
-        await new Promise<void>((resolve) => {
-          if (ScrollSmoother.get()) return resolve();
-          let attempts = 0;
-          const check = () => {
-            if (ScrollSmoother.get() || attempts++ > 60) {
-              resolve();
-              return;
-            }
-            requestAnimationFrame(check);
-          };
-          check();
-        });
-      } catch (e) {
-        // ignore
-      }
-      if (!mounted) return;
-
-      // Create context for better performance
-      ctx = gsap.context(() => {
-        const getMaxTranslateX = () => {
-          if (!cardsWrapper || !cardsViewport) return 0;
-          const wrapperWidth = cardsWrapper.scrollWidth;
-          const viewportWidth = cardsViewport.clientWidth;
-          const maxShift = Math.max(0, wrapperWidth - viewportWidth);
-          return -maxShift;
-        };
-
-        // Pin the section and create animations
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${cards.length * 100}%`,
-            pin: container,
-            scrub: 1,
-            markers: false,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const cardProgress = self.progress * (cards.length - 1);
-              cardRefs.current.forEach((card, index) => {
-                if (!card) return;
-                const distance = Math.abs(cardProgress - index);
-                const scale = Math.max(0.9, 1 - distance * 0.1);
-                gsap.set(card, { scale });
-              });
-            },
-          },
-        });
-
-        // Headline animation - fade and scale down when pinned
-        tl.to(
-          headline,
-          {
-            opacity: 0,
-            scale: 0.7,
-            duration: 0.3,
-            ease: "power2.inOut",
-          },
-          0
-        );
-
-        // Cards container slides up from bottom
-        tl.fromTo(
-          cardsContainer,
-          {
-            yPercent: 100,
-          },
-          {
-            yPercent: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          },
-          0.1
-        );
-
-        // Horizontal scroll for cards (responsive)
-        tl.to(
-          cardsWrapper,
-          {
-            x: getMaxTranslateX,
-            duration: 2,
-            ease: "none",
-          },
-          0.5
-        );
-
-        // Card focus effect handled in scrollTrigger.onUpdate above
-      }, section);
-
-      // Ensure everything measures after creation, once fonts are ready
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          ScrollTrigger.refresh();
-        });
-      });
-    })();
-
-    // Cleanup
-    return () => {
-      mounted = false;
-      ctx?.revert();
+    const getMaxTranslateX = () => {
+      const wrapperWidth = cardsWrapper.scrollWidth;
+      const viewportWidth = cardsViewport.clientWidth;
+      const maxShift = Math.max(0, wrapperWidth - viewportWidth);
+      return -maxShift;
     };
-  }, []);
+
+    // Timeline that pins the container and scrubs with scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: () => "+=" + window.innerHeight * 3, // match PhoneScrollSection pattern
+        pin: container,
+        scrub: 1,
+        markers: false,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const cardProgress = self.progress * (cards.length - 1);
+          cardRefs.current.forEach((card, index) => {
+            if (!card) return;
+            const distance = Math.abs(cardProgress - index);
+            const scale = Math.max(0.9, 1 - distance * 0.1);
+            gsap.set(card, { scale });
+          });
+        },
+      },
+    });
+
+    // Headline fades/scales out as the cards take over
+    tl.to(
+      headline,
+      { opacity: 0, scale: 0.7, duration: 0.3, ease: "power2.inOut" },
+      0
+    );
+
+    // Cards container slides up from bottom
+    tl.fromTo(
+      cardsContainer,
+      { yPercent: 100 },
+      { yPercent: 0, duration: 0.5, ease: "power2.out" },
+      0.1
+    );
+
+    // Horizontal scrub for cards
+    tl.to(cardsWrapper, { x: getMaxTranslateX, ease: "none" }, 0.5);
+  });
 
   return (
     <>

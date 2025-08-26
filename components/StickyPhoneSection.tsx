@@ -175,7 +175,7 @@ export default function StickyPhoneSection() {
             >
               <div
                 ref={navContainerRef}
-                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1"
+                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2"
               >
                 {/* Sliding indicator pill */}
                 <div
@@ -196,8 +196,10 @@ export default function StickyPhoneSection() {
                       }}
                       onClick={() => handleNavClick(index)}
                       className={
-                        "relative z-10 px-4 py-2 rounded-full text-sm font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
-                        (isActive ? "" : "hover:bg-white/10")
+                        "relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
+                        (isActive
+                          ? "text-white"
+                          : "hover:bg-white/10 text-white/50")
                       }
                       aria-current={isActive ? "page" : undefined}
                       aria-label={`Show ${slide.title}`}
