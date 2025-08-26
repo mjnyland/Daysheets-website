@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { Section } from "@/components/containers/Section";
 
 interface VideoSection {
@@ -18,7 +19,55 @@ const SECTION_LENGTH_SECONDS = 3;
 
 export const VisibilityOptions = () => {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const copyRef = useRef<HTMLParagraphElement>(null);
+
+  const sectionCopy: string[] = [
+    "Share with a specific group. Crew, VIP, or Local Team.",
+    "Post to multiple groups at once. Mix roles to match your flow.",
+    "Share with an individual. Give precise, private access.",
+  ];
+
+  // Smooth progress updater using requestAnimationFrame
+  useEffect(() => {
+    const updateWithRaf = () => {
+      const video = videoRef.current;
+      if (video) {
+        const currentTime = video.currentTime;
+        const idx =
+          Math.floor(currentTime / SECTION_LENGTH_SECONDS) %
+          videoSections.length;
+        setActiveSectionIndex(idx);
+
+        const sectionStartTime = idx * SECTION_LENGTH_SECONDS;
+        const elapsedInSection = Math.max(0, currentTime - sectionStartTime);
+        const progressRatio = Math.min(
+          1,
+          elapsedInSection / SECTION_LENGTH_SECONDS
+        );
+        setSectionProgress(progressRatio);
+      }
+      rafIdRef.current = requestAnimationFrame(updateWithRaf);
+    };
+
+    rafIdRef.current = requestAnimationFrame(updateWithRaf);
+    return () => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, []);
+
+  // Animate the descriptive copy on section change
+  useEffect(() => {
+    const el = copyRef.current;
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { autoAlpha: 0, y: 4 },
+      { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" }
+    );
+  }, [activeSectionIndex]);
 
   // Handle clicking on a dot to jump to that section
   const handleSectionClick = (index: number) => {
@@ -47,6 +96,14 @@ export const VisibilityOptions = () => {
       Math.floor(video.currentTime / SECTION_LENGTH_SECONDS) %
       videoSections.length;
     if (idx !== activeSectionIndex) setActiveSectionIndex(idx);
+
+    const sectionStartTime = idx * SECTION_LENGTH_SECONDS;
+    const elapsedInSection = Math.max(0, video.currentTime - sectionStartTime);
+    const progressRatio = Math.min(
+      1,
+      elapsedInSection / SECTION_LENGTH_SECONDS
+    );
+    setSectionProgress(progressRatio);
   };
 
   return (
@@ -64,10 +121,12 @@ export const VisibilityOptions = () => {
             <br />
             for everyone on tour.
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-            Decide exactly who can see what. Keep things public, private,
-            <br />
-            or shared with select people — your content, your rules.
+          <p
+            ref={copyRef}
+            key={activeSectionIndex}
+            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mt-4"
+          >
+            {sectionCopy[activeSectionIndex]}
           </p>
         </div>
 
@@ -84,7 +143,6 @@ export const VisibilityOptions = () => {
                 muted
                 playsInline
                 preload="metadata"
-                onTimeUpdate={handleTimeUpdate}
                 loop
                 aria-hidden="true"
               >
@@ -95,25 +153,38 @@ export const VisibilityOptions = () => {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center gap-4">
-            <div className="flex gap-3">
-              {videoSections.map((section, index) => (
-                <button
-                  key={section.id}
-                  type="button"
-                  onClick={() => handleSectionClick(index)}
-                  className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === activeSectionIndex
-                      ? "bg-blue-600 scale-125"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                  aria-label={`Go to ${section.title}`}
-                >
-                  {index === activeSectionIndex && (
-                    <div className="absolute inset-0 rounded-full bg-blue-600 opacity-30 animate-ping" />
-                  )}
-                </button>
-              ))}
+          <div className="flex items-center gap-4 w-[240px]">
+            <div className="flex items-center gap-3 bg-slate-100 p-4 rounded-full w-full">
+              {videoSections.map((section, index) => {
+                const isActive = index === activeSectionIndex;
+                if (isActive) {
+                  return (
+                    <div
+                      key={section.id}
+                      className="relative h-3 w-full rounded-full bg-slate-400 overflow-hidden shadow-inner"
+                      role="progressbar"
+                      aria-label={`${section.title} progress`}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(sectionProgress * 100)}
+                    >
+                      <div
+                        className="absolute left-0 top-0 h-full bg-white"
+                        style={{ width: `${sectionProgress * 100}%` }}
+                      />
+                    </div>
+                  );
+                }
+                return (
+                  <button
+                    key={section.id}
+                    type="button"
+                    onClick={() => handleSectionClick(index)}
+                    className={`relative w-[16px] h-[12px] rounded-full transition-colors duration-200 bg-slate-400 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400`}
+                    aria-label={`Go to ${section.title}`}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
