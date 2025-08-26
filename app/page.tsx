@@ -18,43 +18,30 @@ import { SimpleStickySection } from "@/components/SimpleStickySection";
 import StickyPhoneSection from "@/components/StickyPhoneSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import { useGSAP } from "@gsap/react";
 
 export default function Home() {
-  useEffect(() => {
+  useGSAP(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
+    // Initialize a new Lenis instance for smooth scrolling
+    const lenis = new Lenis();
 
-    // Update ScrollTrigger on Lenis scroll
+    // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Add Lenis's requestAnimationFrame to GSAP's ticker
+    // Add Lenis's requestAnimationFrame (raf) method to GSAP's ticker
+    // This ensures Lenis's smooth scroll animation updates on each GSAP tick
     gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
+      lenis.raf(time * 1000); // Convert time from seconds to milliseconds
     });
 
-    // Disable GSAP's lag smoothing to prevent jumps
+    // Disable lag smoothing in GSAP to prevent any delay in scroll animations
     gsap.ticker.lagSmoothing(0);
-
-    // Cleanup
-    return () => {
-      lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
-    };
-  }, []);
+  });
 
   return (
-    <main className="min-h-dvh">
+    <main>
       <Hero />
       <div className="bg-[#166CD1]  bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
         <TestimonialsSplide />

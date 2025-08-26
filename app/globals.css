@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --font-archivo: 'Archivo', sans-serif;
+  --font-archivo: "Archivo", sans-serif;
 }
 
 /* Lenis smooth scroll styles */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -24,7 +25,6 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
-
 
 /* Splide carousel overrides */
 .splide__track {
