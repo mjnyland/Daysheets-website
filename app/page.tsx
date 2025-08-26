@@ -15,6 +15,7 @@ import IOSViewsSection from "@/components/IOSViewsSection";
 import AppDownloadSection from "@/components/AppDownloadSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
+import StickyPhoneSection from "@/components/StickyPhoneSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -61,8 +62,8 @@ export default function Home() {
       </div>
       <FlightGrid />
       <VisibilityOptions />
+      <StickyPhoneSection />
       <AppDownloadSection />
-      <PhoneScrollSection />
       <IOSViewsSection />
       <MobileEditingCarousel />
       <TravelSection />
