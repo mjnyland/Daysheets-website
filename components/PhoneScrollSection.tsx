@@ -15,7 +15,7 @@ export default function PhoneScrollSection() {
   useEffect(() => {
     // Register plugin inside useEffect to avoid SSR issues
     gsap.registerPlugin(ScrollTrigger);
-    
+
     const video = videoRef.current;
     const section = sectionRef.current;
     const container = containerRef.current;

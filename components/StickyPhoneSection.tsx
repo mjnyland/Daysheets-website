@@ -68,7 +68,7 @@ export default function StickyPhoneSection() {
       pin: true,
 
       // Tie animation progress to scroll position (no discrete timeline)
-      scrub: 1,
+      scrub: 0.25, // tighter scrub for more responsive feel
 
       // Snap to the nearest logical segment between slides
       // For N slides, there are N-1 segments; 1/(N-1) defines each snap stop
@@ -97,14 +97,23 @@ export default function StickyPhoneSection() {
           if (fromEl && toEl) {
             gsap.to(fromEl, {
               opacity: 0,
-
-              duration: 0.5,
+              duration: 0.18,
               ease: "power2.out",
+              overwrite: "auto",
+              lazy: false,
+              force3D: true,
             });
             gsap.fromTo(
               toEl,
               { opacity: 0 },
-              { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }
+              {
+                opacity: 1,
+                duration: 0.18,
+                ease: "power2.out",
+                overwrite: "auto",
+                lazy: false,
+                force3D: true,
+              }
             );
           }
 
@@ -143,7 +152,14 @@ export default function StickyPhoneSection() {
     const x = btnRect.left - containerRect.left;
     const width = btnRect.width;
 
-    gsap.to(pill, { x, width, duration, ease: "power2.out" });
+    gsap.to(pill, {
+      x,
+      width,
+      duration,
+      ease: "power2.out",
+      overwrite: "auto",
+      force3D: true,
+    });
   };
 
   return (
@@ -169,7 +185,10 @@ export default function StickyPhoneSection() {
           </div>
 
           {/* Phone Content (contained) */}
-          <div className="relative w-full max-w-sm aspect-[9/16]">
+          <div
+            className="relative w-full max-w-sm aspect-[9/16] transform-gpu"
+            style={{ willChange: "transform, opacity" }}
+          >
             {/* Nav Content */}
             <nav
               aria-label="Phone views"
