@@ -57,8 +57,19 @@ export const TransparentVideo = forwardRef<
       >
         {hasAlpha ? (
           <>
+            {/* Prefer HEVC first so Safari selects it */}
+            <source
+              src={hevcSrc}
+              type={
+                hevcExtension === "mov"
+                  ? 'video/quicktime; codecs="hvc1"'
+                  : 'video/mp4; codecs="hvc1"'
+              }
+            />
+            {hevcExtension === "mov" ? (
+              <source src={hevcSrc} type='video/mp4; codecs="hvc1"' />
+            ) : null}
             <source src={webmSrc} type='video/webm; codecs="vp9"' />
-            <source src={hevcSrc} type='video/quicktime; codecs="hvc1"' />
           </>
         ) : null}
         <source src={src} type="video/mp4" />

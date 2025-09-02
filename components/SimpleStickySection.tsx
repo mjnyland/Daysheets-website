@@ -169,7 +169,7 @@ export function SimpleStickySection() {
                         {card.video ? (
                           <TransparentVideo
                             src={card.video}
-                            hasAlpha
+                            hasAlpha={true}
                             className="w-full h-full object-contain"
                             preload="metadata"
                             aria-label={`${card.title} demo video`}
