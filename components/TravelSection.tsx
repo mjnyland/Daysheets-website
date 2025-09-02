@@ -1,7 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import { Section } from "@/components/containers/Section";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export const TravelSection = () => {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const pathRef = useRef<SVGPathElement | null>(null);
+
   return (
     <Section background="white" gap="md">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -19,6 +28,13 @@ export const TravelSection = () => {
           </button>
         </div>
         <div className="relative ">
+          <Image
+            src="/assets/StayPageMockup.png"
+            alt="Globe illustration showing travel connectivity"
+            width={600}
+            height={600}
+            className="w-full h-auto absolute top-30 -left-45 scale-130"
+          />
           <Image
             src="/assets/globe.png"
             alt="Globe illustration showing travel connectivity"
