@@ -98,9 +98,9 @@ export function FlightGrid() {
           </div>
         </div>
       </div>
-      <div className="w-full max-w-6xl mt-8 rounded-2xl overflow-hidden px-12">
+      <div className="w-full max-w-6xl mt-8 rounded-2xl overflow-hidden px-12 mx-auto">
         {/* Feature 1: Text left, Image right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center border-1 border-white/10 ">
           <div className="flex flex-col justify-center p-12">
             <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
               Import Flights
