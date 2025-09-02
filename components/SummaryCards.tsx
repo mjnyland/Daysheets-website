@@ -5,6 +5,7 @@ import { Section } from "./containers/Section";
 import { Container } from "./containers/Container";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TransparentVideo } from "@/components/TransparentVideo";
 
 const cards = [
   {
@@ -123,13 +124,9 @@ export function SummaryCards() {
                       </p>
                     </div>
                     <div className="aspect-square bg-gray-200/10 rounded-lg overflow-hidden">
-                      <video
+                      <TransparentVideo
                         src={card.video}
                         className="w-full h-full object-cover"
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
                         preload="metadata"
                         aria-label={`${card.title} demo video`}
                       />

@@ -22,7 +22,7 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
 
   return (
     <nav className={["px-4 md:px-8 py-6", className].filter(Boolean).join(" ")}>
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+      <div className="max-w-screen-xl mx-auto flex items-center justify-between ">
         <Link
           href="/"
           className="flex items-center gap-2"

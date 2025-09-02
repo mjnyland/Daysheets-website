@@ -8,6 +8,7 @@ import HeroImage from "@/assets/hero img.png";
 import NavBar from "@/components/NavBar";
 import { AnimatedGradientBg } from "@/components/backgrounds/AnimatedGradientBg";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +21,7 @@ export const Hero = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const glassRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
@@ -158,7 +159,7 @@ export const Hero = () => {
       tl.to(
         imageContainerRef.current,
         {
-          y: -10,
+          y: 10,
           duration: 3,
           ease: "power1.inOut",
           repeat: -1,
@@ -176,7 +177,7 @@ export const Hero = () => {
       ref={containerRef}
       id="hero"
       gap="none"
-      className="relative overflow-hidden bg-gradient-to-b from-[#050548] to-[#050548] sm:h-[80dvh] md:h-[80dvh] lg:h-[100dvh] min-h-[400px] md:min-h-[800px] max-h-[1000px] flex items-center"
+      className="relative overflow-hidden bg-gradient-to-b from-[#050548] to-[#050548]   lg:h-[100dvh] min-h-[400px] md:min-h-[800px] max-h-[1000px] flex items-center"
     >
       {/* Animated gradient background */}
       <div ref={bgRef} className="absolute inset-0 z-0">

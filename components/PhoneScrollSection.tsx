@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Section } from "@/components/containers/Section";
+import { TransparentVideo } from "@/components/TransparentVideo";
 
 export default function PhoneScrollSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -157,12 +158,10 @@ export default function PhoneScrollSection() {
           {/* Left side - Sticky iPhone */}
           <div className="w-2/3 px-16 flex items-start h-full ">
             <div ref={videoContainerRef} className="relative">
-              <video
+              <TransparentVideo
                 ref={videoRef}
                 className="h-full object-contain object-top"
                 src="/videos/DaysheetsiPhoneMockup.mp4"
-                playsInline
-                muted
                 preload="auto"
               />
             </div>

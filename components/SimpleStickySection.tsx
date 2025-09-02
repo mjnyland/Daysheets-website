@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { TransparentVideo } from "./TransparentVideo";
 
 const cards = [
   {
@@ -166,13 +167,10 @@ export function SimpleStickySection() {
                       </div>
                       <div className="aspect-square  rounded-lg overflow-hidden">
                         {card.video ? (
-                          <video
+                          <TransparentVideo
                             src={card.video}
+                            hasAlpha
                             className="w-full h-full object-contain"
-                            muted
-                            autoPlay
-                            loop
-                            playsInline
                             preload="metadata"
                             aria-label={`${card.title} demo video`}
                           />

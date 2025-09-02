@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Section } from "@/components/containers/Section";
 import Image from "next/image";
+import { TransparentVideo } from "@/components/TransparentVideo";
 
 interface Feature {
   id: string;
@@ -152,14 +153,10 @@ export const FeatureSlideshow = () => {
           <div className="w-full">
             <div className="relative aspect-[1250/822] rounded-2xl overflow-hidden">
               {currentFeature.videoUrl ? (
-                <video
+                <TransparentVideo
                   key={currentFeature.id}
                   src={currentFeature.videoUrl}
                   className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
                 />
               ) : currentFeature.imageUrl ? (
                 <Image
