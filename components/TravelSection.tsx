@@ -3,7 +3,7 @@ import { Section } from "@/components/containers/Section";
 
 export const TravelSection = () => {
   return (
-    <Section background="subtle" gap="md">
+    <Section background="white" gap="md">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div className="space-y-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-left text-[#166CD1]">
@@ -18,7 +18,7 @@ export const TravelSection = () => {
             Learn more about DS Travel
           </button>
         </div>
-        <div className="relative">
+        <div className="relative ">
           <Image
             src="/assets/globe.png"
             alt="Globe illustration showing travel connectivity"
