@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState, useCallback } from "react";
 import Logo from "@/assets/DaysheetsLogo@3x.png";
 
 type Props = {
@@ -19,6 +20,27 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
     theme === "dark"
       ? "bg-white text-blue-600 hover:bg-blue-50"
       : "bg-blue-600 text-white hover:bg-blue-700";
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleToggleMenu = useCallback(() => {
+    setIsMenuOpen((prev) => !prev);
+  }, []);
+
+  const handleCloseMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isMenuOpen]);
 
   return (
     <nav className={["px-4 md:px-8 py-6", className].filter(Boolean).join(" ")}>
@@ -68,7 +90,13 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
           </Link>
         </div>
 
-        <button className="md:hidden" aria-label="Open menu">
+        <button
+          className="md:hidden"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+          onClick={handleToggleMenu}
+        >
           <svg
             className={
               theme === "dark"
@@ -88,6 +116,87 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
           </svg>
         </button>
       </div>
+
+      {isMenuOpen && (
+        <div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className={[
+            "fixed inset-0 h-dvh z-50 md:hidden",
+            theme === "dark" ? "bg-neutral-950/95" : "bg-white/95",
+            "backdrop-blur-sm",
+          ].join(" ")}
+          onClick={handleCloseMenu}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") handleCloseMenu();
+          }}
+          tabIndex={0}
+        >
+          <div
+            className="relative h-full w-full flex flex-col items-center justify-center gap-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-5 right-5 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              aria-label="Close menu"
+              onClick={handleCloseMenu}
+            >
+              <svg
+                className={
+                  theme === "dark"
+                    ? "w-7 h-7 text-white"
+                    : "w-7 h-7 text-neutral-900"
+                }
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <Link
+              href="#"
+              className={["text-2xl font-medium", linkBase].join(" ")}
+              onClick={handleCloseMenu}
+            >
+              Travel
+            </Link>
+            <Link
+              href="/pricing"
+              className={["text-2xl font-medium", linkBase].join(" ")}
+              onClick={handleCloseMenu}
+            >
+              Pricing
+            </Link>
+            <Link
+              href="#"
+              className={["text-2xl font-medium", linkBase].join(" ")}
+              onClick={handleCloseMenu}
+            >
+              Careers
+            </Link>
+            <Link
+              href="mailto:hello@daysheets.app?subject=Book%20a%20demo"
+              className={[
+                "mt-4 px-6 py-3 rounded-lg font-medium transition-colors",
+                buttonClass,
+              ].join(" ")}
+              aria-label="Book a demo via email"
+              onClick={handleCloseMenu}
+            >
+              Book a demo
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
