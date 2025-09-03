@@ -19,21 +19,21 @@ const features: Feature[] = [
     title: "Day View",
     description:
       "Add 100+ seats in seconds, with section, row, and seat numbers ready to go.",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/DayViewRecording.mp4",
   },
   {
     id: "personnel",
     title: "Personnel",
     description:
       "View every available ticket in one place, with real-time updates as you assign seats.",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/PersonnelRecording.mp4",
   },
   {
     id: "routing",
     title: "Multi-day Routing",
     description:
       "Distribute tickets instantly, without double-booking or manual errors.",
-    imageUrl: "/assets/dayview.png",
+    videoUrl: "/videos/MultiDayRecording.mp4",
   },
 ];
 
@@ -43,6 +43,7 @@ export const FeatureSlideshow = () => {
   const [progress, setProgress] = useState(0);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const SLIDE_DURATION = 5000; // 5 seconds per slide
   const PROGRESS_UPDATE_INTERVAL = 50; // Update progress every 50ms for smooth animation
 
@@ -55,7 +56,49 @@ export const FeatureSlideshow = () => {
     // Reset progress when slide changes
     setProgress(0);
 
-    // Always start progress animation (whether auto-playing or manual)
+    const feature = features[activeFeature];
+
+    // If current slide is a video, bind to video events for progress and advancing
+    if (feature.videoUrl && videoRef.current) {
+      const videoElement = videoRef.current;
+
+      const handleLoadedMetadata = () => {
+        setProgress(0);
+      };
+
+      const handleTimeUpdate = () => {
+        if (!videoElement.duration || !isFinite(videoElement.duration)) return;
+        const pct = Math.min(
+          (videoElement.currentTime / videoElement.duration) * 100,
+          100
+        );
+        setProgress(pct);
+      };
+
+      const handleEnded = () => {
+        if (isAutoPlaying) {
+          setActiveFeature((prev) => (prev + 1) % features.length);
+        }
+      };
+
+      videoElement.addEventListener("loadedmetadata", handleLoadedMetadata);
+      videoElement.addEventListener("timeupdate", handleTimeUpdate);
+      videoElement.addEventListener("ended", handleEnded);
+
+      // Initialize progress in case metadata is already available
+      handleTimeUpdate();
+
+      return () => {
+        videoElement.removeEventListener(
+          "loadedmetadata",
+          handleLoadedMetadata
+        );
+        videoElement.removeEventListener("timeupdate", handleTimeUpdate);
+        videoElement.removeEventListener("ended", handleEnded);
+      };
+    }
+
+    // Fallback for non-video slides: time-based progress
     const startTime = Date.now();
     progressIntervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -68,14 +111,15 @@ export const FeatureSlideshow = () => {
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [activeFeature]);
+  }, [activeFeature, isAutoPlaying]);
 
   // Handle auto-advance in a separate effect
   useEffect(() => {
-    if (progress >= 100 && isAutoPlaying) {
+    const isVideoSlide = Boolean(features[activeFeature]?.videoUrl);
+    if (!isVideoSlide && progress >= 100 && isAutoPlaying) {
       setActiveFeature((prev) => (prev + 1) % features.length);
     }
-  }, [progress, isAutoPlaying]);
+  }, [progress, isAutoPlaying, activeFeature]);
 
   const handleFeatureClick = (index: number) => {
     // Clear auto-play timeout if it exists
@@ -157,6 +201,9 @@ export const FeatureSlideshow = () => {
                   key={currentFeature.id}
                   src={currentFeature.videoUrl}
                   className="w-full h-full object-cover"
+                  hasAlpha={false}
+                  loop={false}
+                  ref={videoRef}
                 />
               ) : currentFeature.imageUrl ? (
                 <Image
