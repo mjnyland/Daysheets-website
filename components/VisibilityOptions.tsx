@@ -17,7 +17,7 @@ const videoSections: VideoSection[] = [
   { id: "public-info", title: "Public Information" },
 ];
 
-const SECTION_LENGTH_SECONDS = 3;
+const SECTION_LENGTH_SECONDS = 6;
 
 export const VisibilityOptions = () => {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
@@ -76,6 +76,17 @@ export const VisibilityOptions = () => {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    const tryPlayVideo = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      video.muted = true;
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise.catch(() => {
+          // Ignore autoplay restrictions errors; user interaction will trigger play later
+        });
+      }
+    };
     const ctx = gsap.context(() => {
       gsap.set(
         [".vo-badge", ".vo-heading", ".vo-video", ".vo-copy", ".vo-controls"],
@@ -91,6 +102,9 @@ export const VisibilityOptions = () => {
           trigger: root,
           start: "top 75%",
           once: true,
+          onEnter: () => {
+            tryPlayVideo();
+          },
         },
       });
 
@@ -175,6 +189,20 @@ export const VisibilityOptions = () => {
                 className="absolute inset-0 w-full h-full lg:object-cover object-contain"
                 src="/videos/visibility_master.mp4"
                 preload="metadata"
+                autoPlay
+                muted
+                playsInline
+                loop
+                onLoadedMetadata={() => {
+                  const video = videoRef.current;
+                  if (!video) return;
+                  video.muted = true;
+                  const p = video.play();
+                  if (p && typeof p.then === "function") {
+                    p.catch(() => {});
+                  }
+                }}
+                onTimeUpdate={handleTimeUpdate}
                 aria-hidden="true"
               />
             </div>
