@@ -72,6 +72,15 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
           <Link href="#" className={linkBase}>
             Travel
           </Link>
+          <Link
+            href="https://daysheets-1194227f.mintlify.app"
+            className={linkBase}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open help documentation in a new tab"
+          >
+            Help
+          </Link>
           <Link href="/pricing" className={linkBase}>
             Pricing
           </Link>
@@ -168,6 +177,16 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
               onClick={handleCloseMenu}
             >
               Travel
+            </Link>
+            <Link
+              href="https://daysheets-1194227f.mintlify.app"
+              className={["text-2xl font-medium", linkBase].join(" ")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open help documentation in a new tab"
+              onClick={handleCloseMenu}
+            >
+              Help
             </Link>
             <Link
               href="/pricing"
