@@ -171,7 +171,7 @@ export default function StickyPhoneSection() {
         containerClassName="flex flex-col h-full"
       >
         {/* Content wrapper - kept contained within the section container */}
-        <div className="flex flex-1 w-full items-center justify-center flex-col gap-8">
+        <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
           {/* Blur */}
           <div className="absolute left-1/2 bottom-[10%] -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-blue-500/50 blur-[160px] z-0"></div>
           {/* Headline Content */}
