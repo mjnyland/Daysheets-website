@@ -14,7 +14,7 @@
 		"appIDs": ["8L2W2UX7UQ.com.daysheets.daysheets"],
 		"components": [
 		  {
-			"/": "/paywall-checkout-confirmation/",
+			"/": "/paywall-checkout/*",
 			"comment": "Mac app: Matches the paywall checkout confirmation page"
 		  }
 		]
