@@ -1,0 +1,24 @@
+{
+  "applinks": {
+	"details": [
+	  {
+		"appIDs": ["8L2W2UX7UQ.com.daysheets.daysheets-ios"],
+		"components": [
+		  {
+			"/": "/connect/*",
+			"comment": "iOS app: Matches any URL with a path that starts with /connect/"
+		  }
+		]
+	  },
+	  {
+		"appIDs": ["8L2W2UX7UQ.com.daysheets.daysheets"],
+		"components": [
+		  {
+			"/": "/paywall-checkout-confirmation/",
+			"comment": "Mac app: Matches the paywall checkout confirmation page"
+		  }
+		]
+	  }
+	]
+  }
+}
