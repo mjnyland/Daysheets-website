@@ -15,7 +15,7 @@
 		"components": [
 		  {
 			"/": "/paywall-checkout/*",
-			"comment": "Mac app: Matches the paywall checkout confirmation page"
+			"comment": "Mac app: Matches the paywall checkout success & cancel pages"
 		  }
 		]
 	  }
