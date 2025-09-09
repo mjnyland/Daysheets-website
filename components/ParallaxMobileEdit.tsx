@@ -23,7 +23,7 @@ export default function ParallaxMobileEdit() {
     const ctx = gsap.context(() => {
       // Mockups layer - moves slowest (15% of scroll)
       gsap.to(mockupsRef.current, {
-        yPercent: 5,
+        yPercent: 30,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -125,7 +125,7 @@ export default function ParallaxMobileEdit() {
           {/* Phone Mockups Container - Cards will be positioned relative to this */}
           <div className="relative flex items-center justify-center gap-16 ">
             {/* Calendar View Mockup */}
-            <div className="relative w-[460px] h-[980px] transform -rotate-6 translate-y-10">
+            <div className="hidden lg:block relative w-[460px] h-[980px] transform -rotate-6 translate-y-10">
               <Image
                 src="/assets/iOS_Calendar2.png"
                 alt="Daysheets Calendar View"
@@ -139,7 +139,7 @@ export default function ParallaxMobileEdit() {
             {/* Card 1 - Personnel - Far left */}
             <div
               ref={card1Ref}
-              className="absolute left-0 top-0 bg-white rounded-3xl shadow-xl px-4 py-4"
+              className="absolute left-0 top-0 bg-white rounded-3xl shadow-xl px-4 py-4 z-10"
             >
               <div className="flex items-center gap-3">
                 <div className="bg-blue-500 p-3 rounded-2xl">
@@ -154,7 +154,7 @@ export default function ParallaxMobileEdit() {
             {/* Card 2 - Notes - Left bottom */}
             <div
               ref={card2Ref}
-              className="absolute left-0 bottom-15 bg-white rounded-3xl shadow-xl px-4 py-4"
+              className="hidden lg:absolute left-0 bottom-15 bg-white rounded-3xl shadow-xl px-4 py-4"
             >
               <div className="flex items-center gap-3">
                 <div className="bg-blue-500 p-3 rounded-2xl">
@@ -213,7 +213,7 @@ export default function ParallaxMobileEdit() {
             {/* Card 5 - Events - Right bottom */}
             <div
               ref={card5Ref}
-              className="absolute right-0 bottom-[25%] bg-white rounded-3xl shadow-xl px-4 py-4"
+              className="absolute right-20 bottom-80 bg-white rounded-3xl shadow-xl px-4 py-4"
             >
               <div className="flex items-center gap-3">
                 <div className="bg-blue-500 p-3 rounded-2xl">
