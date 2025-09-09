@@ -17,6 +17,7 @@ import { SimpleStickySection } from "@/components/SimpleStickySection";
 import StickyPhoneSection from "@/components/StickyPhoneSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import ParallaxMobileEdit from "@/components/ParallaxMobileEdit";
 
 export default function Home() {
   useGSAP(() => {
@@ -48,8 +49,8 @@ export default function Home() {
       <FlightGrid />
       <VisibilityOptions />
       <StickyPhoneSection />
+      <ParallaxMobileEdit />
       <AppDownloadSection />
-      <MobileEditingCarousel />
       <TravelSection />
       <SimpleStickySection />
       <CtaSection />

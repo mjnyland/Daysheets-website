@@ -125,10 +125,9 @@ export function SimpleStickySection() {
           >
             <div className="text-center max-w-4xl mx-auto px-6">
               <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span className="text-sm uppercase tracking-wider text-white">
+                <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-blue-500 bg-white px-4 py-2 rounded-full mb-4 w-fit mx-auto">
                   Built for every band.
-                </span>
+                </div>
               </div>
               <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white">
                 The most complete
