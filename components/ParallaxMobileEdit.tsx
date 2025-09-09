@@ -23,7 +23,7 @@ export default function ParallaxMobileEdit() {
     const ctx = gsap.context(() => {
       // Mockups layer - moves slowest (15% of scroll)
       gsap.to(mockupsRef.current, {
-        yPercent: 15,
+        yPercent: 5,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -112,10 +112,15 @@ export default function ParallaxMobileEdit() {
           ref={mockupsRef}
           className="absolute inset-0 flex flex-col items-center justify-center"
         >
-          {/* Title - on same layer as mockups */}
-          <h1 className="text-5xl md:text-7xl font-semibold text-white mb-12 text-center px-8  max-w-4xl tracking-tight">
-            Edit your entire tour, right from your phone.
-          </h1>
+          <div className="flex flex-col mx-auto gap-8">
+            <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
+              Mobile Editing
+            </div>
+            {/* Title - on same layer as mockups */}
+            <h1 className="text-5xl md:text-7xl font-semibold text-white mb-12 text-center px-8  max-w-4xl tracking-tight">
+              Edit your entire tour, right from your phone.
+            </h1>
+          </div>
 
           {/* Phone Mockups Container - Cards will be positioned relative to this */}
           <div className="relative flex items-center justify-center gap-16 ">
@@ -193,7 +198,7 @@ export default function ParallaxMobileEdit() {
             {/* Card 4 - Hotels - Right top */}
             <div
               ref={card4Ref}
-              className="absolute -right-48 top-[20%] bg-white rounded-3xl shadow-xl px-4 py-4"
+              className="absolute left-50 top-[20%] bg-white rounded-3xl shadow-xl px-4 py-4"
             >
               <div className="flex items-center gap-3">
                 <div className="bg-blue-500 p-3 rounded-2xl">
