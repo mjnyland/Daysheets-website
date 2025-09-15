@@ -1,11 +1,14 @@
 "use client";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef, useState } from "react";
 import { Section } from "./containers/Section";
 import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 type Slide = {
   key: string;
@@ -18,7 +21,7 @@ const SLIDES: Slide[] = [
   {
     key: "day",
     title: "Day",
-    description: "Today’s schedule, notes, lodging and contacts at a glance.",
+    description: "Today's schedule, notes, lodging and contacts at a glance.",
     src: "/assets/iOS_DayView.png",
   },
   {
@@ -42,217 +45,325 @@ const SLIDES: Slide[] = [
 ];
 
 export default function StickyPhoneSection() {
-  const sectionRef = useRef(null);
-  const triggerRef = useRef<ScrollTrigger | null>(null);
-  const imageRefs = useRef<HTMLDivElement[]>([]);
-  const activeIndexRef = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const navContainerRef = useRef<HTMLDivElement>(null);
-  const navButtonRefs = useRef<HTMLButtonElement[]>([]);
-  const indicatorRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const phoneContainerRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressCardRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const progressCircleRef = useRef<SVGCircleElement>(null);
+  const navIndicatorRef = useRef<HTMLDivElement>(null);
+  const navButtonsRef = useRef<HTMLButtonElement[]>([]);
 
-  useGSAP(() => {
-    // Create one ScrollTrigger controlling this whole sticky section
-    const st = ScrollTrigger.create({
-      // Trigger element used to calculate start and end positions
-      trigger: sectionRef.current, // top of this element is our reference
+  useGSAP(
+    () => {
+      if (!sectionRef.current || !phoneContainerRef.current) return;
 
-      // When to start pinning: section top hits viewport top
-      start: "top top",
+      const phoneImages =
+        phoneContainerRef.current.querySelectorAll(".phone-image");
+      const titleEl = sectionRef.current.querySelector(
+        ".slide-title"
+      ) as HTMLElement;
+      const descEl = sectionRef.current.querySelector(
+        ".slide-description"
+      ) as HTMLElement;
 
-      // How long to keep the section pinned. Using a function ensures
-      // it recalculates on refresh/resizes. Here: 2x the viewport height.
-      end: () => "+=" + window.innerHeight * 2,
+      const totalScrollDistance = 3000;
 
-      // Actually pin the trigger element during the span above
-      pin: true,
+      // Set initial state
+      gsap.set(phoneImages, { opacity: 0 });
+      gsap.set(phoneImages[0], { opacity: 1 });
+      gsap.set(titleEl, { textContent: SLIDES[0].title });
+      gsap.set(descEl, { textContent: SLIDES[0].description });
 
-      // Tie animation progress to scroll position (no discrete timeline)
-      scrub: 0.25, // tighter scrub for more responsive feel
+      const tl = gsap.timeline({ defaults: { ease: "none" } });
 
-      // Snap to the nearest logical segment between slides
-      // For N slides, there are N-1 segments; 1/(N-1) defines each snap stop
-      snap: SLIDES.length > 1 ? 1 / (SLIDES.length - 1) : 1,
+      // Dummy spacer defines a 1-second timeline
+      tl.to({}, { duration: 1, ease: "none" });
 
-      // Whenever ScrollTrigger refreshes (resize, fonts load, etc),
-      // normalize image visibility so only the active is shown
-      onRefresh: () => {
-        imageRefs.current.forEach((el, i) => {
-          if (!el) return;
-          gsap.set(el, { opacity: i === activeIndexRef.current ? 1 : 0, y: 0 });
-        });
-        // Position nav indicator on refresh
-        moveIndicator(activeIndexRef.current, 0);
-      },
+      // Add labels for reference but handle visibility in onUpdate
+      tl.addLabel("slide0", 0) // 0% - Day view
+        .addLabel("slide1", 0.25) // 25% - Calendar view
+        .addLabel("slide2", 0.5) // 50% - Routing view
+        .addLabel("slide3", 0.75); // 75% - Map view
 
-      // Called on every scroll update; decides which slide should be visible
-      onUpdate: (self) => {
-        const segments = SLIDES.length - 1;
-        const next = Math.round(self.progress * segments);
-        if (next !== activeIndexRef.current) {
-          const fromEl = imageRefs.current[activeIndexRef.current];
-          const toEl = imageRefs.current[next];
+      timelineRef.current = tl;
 
-          // Crossfade with a subtle vertical motion for polish
-          if (fromEl && toEl) {
-            gsap.to(fromEl, {
-              opacity: 0,
-              duration: 0.18,
+      // Animate progress card entrance
+      gsap.fromTo(
+        progressCardRef.current,
+        {
+          y: 100,
+          opacity: 0,
+          scale: 0.8,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.5,
+        }
+      );
+
+      // Initialize nav indicator position
+      if (navIndicatorRef.current && navButtonsRef.current[0]) {
+        const button = navButtonsRef.current[0];
+        const buttonRect = button.getBoundingClientRect();
+        const containerRect = button.parentElement?.getBoundingClientRect();
+        
+        if (containerRect) {
+          const leftOffset = buttonRect.left - containerRect.left;
+          const width = buttonRect.width;
+          
+          gsap.set(navIndicatorRef.current, {
+            left: leftOffset,
+            width: width,
+          });
+        }
+      }
+
+      ScrollTrigger.create({
+        id: "phone-slides",
+        animation: tl,
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${totalScrollDistance}`,
+        pin: true,
+        scrub: true,
+        markers: true,
+        //snap: [0, 0.25, 0.5, 0.75, 1],
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const progressPercent = Math.round(progress * 100);
+          setScrollProgress(progressPercent);
+
+          // Update progress bar
+          if (progressBarRef.current) {
+            gsap.to(progressBarRef.current, {
+              width: `${progressPercent}%`,
+              duration: 0.1,
               ease: "power2.out",
-              overwrite: "auto",
-              lazy: false,
-              force3D: true,
             });
-            gsap.fromTo(
-              toEl,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                duration: 0.18,
-                ease: "power2.out",
-                overwrite: "auto",
-                lazy: false,
-                force3D: true,
-              }
-            );
           }
 
-          activeIndexRef.current = next;
-          setActiveIndex(next);
-          // Slide nav indicator to the new active button
-          moveIndicator(next, 0.25);
-        }
-      },
-    });
+          // Update circular progress
+          if (progressCircleRef.current) {
+            const circumference = 2 * Math.PI * 20;
+            const offset = circumference * (1 - progress);
+            gsap.to(progressCircleRef.current, {
+              strokeDashoffset: offset,
+              duration: 0.1,
+              ease: "power2.out",
+            });
+          }
 
-    // Save ref so nav clicks can compute the correct scroll target
-    triggerRef.current = st;
-  }); // useGSAP handles cleanup automatically
+          // Determine current slide based on progress
+          let slideIndex;
+          if (progress < 0.25) {
+            slideIndex = 0; // 0% - 25%: Day view
+          } else if (progress < 0.5) {
+            slideIndex = 1; // 25% - 50%: Calendar view
+          } else if (progress < 0.75) {
+            slideIndex = 2; // 50% - 75%: Routing view
+          } else {
+            slideIndex = 3; // 75% - 100%: Map view
+          }
 
-  // Nav click handler
-  const handleNavClick = (index: number) => {
-    const st = triggerRef.current;
+          // Update images visibility - this ensures proper state when scrolling back
+          gsap.set(phoneImages, { opacity: 0 });
+          gsap.set(phoneImages[slideIndex], { opacity: 1 });
+
+          // Update text content
+          gsap.set(titleEl, { textContent: SLIDES[slideIndex].title });
+          gsap.set(descEl, { textContent: SLIDES[slideIndex].description });
+
+          // Update nav indicator position and size
+          if (navIndicatorRef.current && navButtonsRef.current[slideIndex]) {
+            const button = navButtonsRef.current[slideIndex];
+            const buttonRect = button.getBoundingClientRect();
+            const containerRect = button.parentElement?.getBoundingClientRect();
+            
+            if (containerRect) {
+              const leftOffset = buttonRect.left - containerRect.left;
+              const width = buttonRect.width;
+              
+              gsap.to(navIndicatorRef.current, {
+                left: leftOffset,
+                width: width,
+                duration: 0.3,
+                ease: "power2.out",
+              });
+            }
+          }
+
+          setCurrentSlide(slideIndex);
+        },
+      });
+
+      return () => {
+        console.log("🧹 Cleaning up StickyPhoneSection");
+      };
+    },
+    { scope: sectionRef }
+  );
+
+  function scrollToSlide(index: number) {
+    const st = ScrollTrigger.getById("phone-slides");
     if (!st) return;
-    const segments = SLIDES.length - 1;
-    const target =
-      st.start +
-      (segments === 0 ? 0 : (index / segments) * (st.end - st.start));
-    window.scrollTo({ top: target, behavior: "smooth" });
-  };
+    const progress = index / (SLIDES.length - 1); // 0, .25, .5, .75 if 4 slides
+    const targetY = st.start + (st.end - st.start) * progress;
 
-  // Animate the blue pill indicator under the active nav item
-  const moveIndicator = (index: number, duration: number) => {
-    const container = navContainerRef.current;
-    const pill = indicatorRef.current;
-    const btn = navButtonRefs.current[index];
-    if (!container || !pill || !btn) return;
-
-    const containerRect = container.getBoundingClientRect();
-    const btnRect = btn.getBoundingClientRect();
-    const x = btnRect.left - containerRect.left;
-    const width = btnRect.width;
-
-    gsap.to(pill, {
-      x,
-      width,
-      duration,
-      ease: "power2.out",
-      overwrite: "auto",
-      force3D: true,
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: targetY,
+      ease: "power2.inOut",
     });
-  };
+    console.log("wat");
+  }
 
   return (
-    <>
-      <Section
-        ref={sectionRef}
-        background="darkBlue"
-        className="h-dvh"
-        containerClassName="flex flex-col h-full"
+    <Section
+      ref={sectionRef}
+      background="darkBlue"
+      className="h-dvh relative"
+      containerClassName="flex flex-col h-full"
+    >
+      {/* Floating Progress Card */}
+      <div
+        ref={progressCardRef}
+        className="fixed bottom-8 right-8 z-50 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-4 min-w-[240px]"
       >
-        {/* Content wrapper - kept contained within the section container */}
-        <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
-          {/* Blur */}
-          <div className="absolute left-1/2 bottom-[10%] -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-blue-500/50 blur-[160px] z-0"></div>
-          {/* Headline Content */}
-          <div className="text-center px-6 max-w-2xl z-2">
-            <h2 className="text-white text-3xl sm:text-4xl font-medium tracking-tight">
-              {SLIDES[activeIndex].title}
-            </h2>
-            <p className="text-white/80 mt-2 text-base sm:text-lg">
-              {SLIDES[activeIndex].description}
-            </p>
+        <div className="flex items-center gap-4">
+          {/* Progress Circle */}
+          <div className="relative w-14 h-14">
+            <svg className="w-14 h-14 -rotate-90" viewBox="0 0 48 48">
+              {/* Background circle */}
+              <circle
+                cx="24"
+                cy="24"
+                r="20"
+                fill="none"
+                stroke="#e5e7eb"
+                strokeWidth="3"
+              />
+              {/* Progress circle */}
+              <circle
+                ref={progressCircleRef}
+                cx="24"
+                cy="24"
+                r="20"
+                fill="none"
+                stroke="#3b82f6"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 20}`}
+                strokeDashoffset={`${2 * Math.PI * 20}`}
+                className="transition-none"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-sm font-bold text-gray-700">
+                {scrollProgress}%
+              </span>
+            </div>
           </div>
 
-          {/* Phone Content (contained) */}
-          <div
-            className="relative w-full max-w-sm aspect-[9/16] transform-gpu"
-            style={{ willChange: "transform, opacity" }}
-          >
-            {/* Nav Content */}
-            <nav
-              aria-label="Phone views"
-              className="mt-2 absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-2"
-            >
+          {/* Text Content */}
+          <div className="flex flex-col flex-1">
+            <h3 className="text-sm font-semibold text-gray-900">
+              Timeline Progress
+            </h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {SLIDES[currentSlide]?.title || "Loading"}
+            </p>
+            <div className="w-full h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
               <div
-                ref={navContainerRef}
-                className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2 shadow-xl shadow-slate-900/30"
-              >
-                {/* Sliding indicator pill */}
-                <div
-                  ref={indicatorRef}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 h-[32px] rounded-full bg-blue-500"
-                  style={{ width: 0 }}
-                  aria-hidden
-                />
-
-                {SLIDES.map((slide, index) => {
-                  const isActive = index === activeIndex;
-                  return (
-                    <button
-                      key={slide.key}
-                      type="button"
-                      ref={(el) => {
-                        if (el) navButtonRefs.current[index] = el;
-                      }}
-                      onClick={() => handleNavClick(index)}
-                      className={
-                        "relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 " +
-                        (isActive
-                          ? "text-white"
-                          : "hover:bg-white/10 text-white/50")
-                      }
-                      aria-current={isActive ? "page" : undefined}
-                      aria-label={`Show ${slide.title}`}
-                    >
-                      {slide.title}
-                    </button>
-                  );
-                })}
-              </div>
-            </nav>
-            {SLIDES.map((slide, i) => (
-              <div
-                key={slide.key}
-                ref={(el) => {
-                  if (el) imageRefs.current[i] = el;
-                }}
-                className="absolute inset-0"
-                aria-hidden={activeIndex !== i}
-              >
-                <Image
-                  src={slide.src}
-                  alt={slide.title}
-                  fill
-                  sizes="(max-width: 640px) 90vw, 420px"
-                  className="object-contain object-top select-none"
-                  priority={i === 0}
-                />
-              </div>
-            ))}
+                ref={progressBarRef}
+                className="h-full bg-blue-500 rounded-full transition-none"
+                style={{ width: "0%" }}
+              />
+            </div>
           </div>
         </div>
-      </Section>
-    </>
+      </div>
+
+      <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
+        <div
+          className="absolute left-1/2 bottom-[15%] -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-blue-500/40 blur-[120px] z-0 pointer-events-none"
+          style={{ willChange: "transform" }}
+        />
+
+        <div className="text-center px-6 max-w-2xl z-10">
+          <h2 className="slide-title text-white text-3xl sm:text-4xl font-medium tracking-tight">
+            {SLIDES[0].title}
+          </h2>
+          <p className="slide-description text-white/80 mt-2 text-base sm:text-lg">
+            {SLIDES[0].description}
+          </p>
+        </div>
+
+        <div
+          ref={phoneContainerRef}
+          className="relative w-full max-w-sm aspect-[9/16]"
+          style={{ willChange: "transform" }}
+        >
+          <nav
+            aria-label="Phone views"
+            className="absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-20"
+          >
+            <div className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2 shadow-xl shadow-slate-900/30">
+              <div
+                ref={navIndicatorRef}
+                className="nav-indicator absolute left-0 top-1/2 -translate-y-1/2 h-[32px] rounded-full bg-blue-500 transition-none"
+                style={{ width: 0 }}
+                aria-hidden
+              />
+
+              {SLIDES.map((slide, index) => (
+                <button
+                  key={slide.key}
+                  ref={(el) => {
+                    if (el) navButtonsRef.current[index] = el;
+                  }}
+                  onClick={() => scrollToSlide(index)}
+                  type="button"
+                  className="nav-button relative z-10 px-6 py-2 rounded-full text-sm font-medium text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 hover:bg-white/10 transition-colors"
+                  style={{
+                    color:
+                      currentSlide === index
+                        ? "white"
+                        : "rgba(255,255,255,0.5)",
+                  }}
+                  aria-label={`Show ${slide.title}`}
+                  aria-current={currentSlide === index ? "true" : "false"}
+                >
+                  {slide.title}
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          {SLIDES.map((slide, i) => (
+            <div
+              key={slide.key}
+              className="phone-image absolute inset-0"
+              style={{ willChange: "opacity" }}
+            >
+              <Image
+                src={slide.src}
+                alt={slide.title}
+                fill
+                sizes="(max-width: 640px) 90vw, 420px"
+                className="object-contain object-top select-none"
+                priority={i === 0}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
   );
 }
