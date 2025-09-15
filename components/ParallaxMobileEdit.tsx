@@ -23,7 +23,7 @@ export default function ParallaxMobileEdit() {
     const ctx = gsap.context(() => {
       // Mockups layer - moves slowest (15% of scroll)
       gsap.to(mockupsRef.current, {
-        yPercent: 30,
+        yPercent: 0,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
