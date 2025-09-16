@@ -49,10 +49,6 @@ export default function StickyPhoneSection() {
   const phoneContainerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const progressCardRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const progressCircleRef = useRef<SVGCircleElement>(null);
   const navIndicatorRef = useRef<HTMLDivElement>(null);
   const navButtonsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -63,10 +59,10 @@ export default function StickyPhoneSection() {
       const phoneImages =
         phoneContainerRef.current.querySelectorAll(".phone-image");
       const titleEl = sectionRef.current.querySelector(
-        ".slide-title"
+        ".slide-title",
       ) as HTMLElement;
       const descEl = sectionRef.current.querySelector(
-        ".slide-description"
+        ".slide-description",
       ) as HTMLElement;
 
       const totalScrollDistance = 3000;
@@ -90,34 +86,16 @@ export default function StickyPhoneSection() {
 
       timelineRef.current = tl;
 
-      // Animate progress card entrance
-      gsap.fromTo(
-        progressCardRef.current,
-        {
-          y: 100,
-          opacity: 0,
-          scale: 0.8,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: 0.5,
-        }
-      );
-
       // Initialize nav indicator position
       if (navIndicatorRef.current && navButtonsRef.current[0]) {
         const button = navButtonsRef.current[0];
         const buttonRect = button.getBoundingClientRect();
         const containerRect = button.parentElement?.getBoundingClientRect();
-        
+
         if (containerRect) {
           const leftOffset = buttonRect.left - containerRect.left;
           const width = buttonRect.width;
-          
+
           gsap.set(navIndicatorRef.current, {
             left: leftOffset,
             width: width,
@@ -137,28 +115,6 @@ export default function StickyPhoneSection() {
         //snap: [0, 0.25, 0.5, 0.75, 1],
         onUpdate: (self) => {
           const progress = self.progress;
-          const progressPercent = Math.round(progress * 100);
-          setScrollProgress(progressPercent);
-
-          // Update progress bar
-          if (progressBarRef.current) {
-            gsap.to(progressBarRef.current, {
-              width: `${progressPercent}%`,
-              duration: 0.1,
-              ease: "power2.out",
-            });
-          }
-
-          // Update circular progress
-          if (progressCircleRef.current) {
-            const circumference = 2 * Math.PI * 20;
-            const offset = circumference * (1 - progress);
-            gsap.to(progressCircleRef.current, {
-              strokeDashoffset: offset,
-              duration: 0.1,
-              ease: "power2.out",
-            });
-          }
 
           // Determine current slide based on progress
           let slideIndex;
@@ -185,11 +141,11 @@ export default function StickyPhoneSection() {
             const button = navButtonsRef.current[slideIndex];
             const buttonRect = button.getBoundingClientRect();
             const containerRect = button.parentElement?.getBoundingClientRect();
-            
+
             if (containerRect) {
               const leftOffset = buttonRect.left - containerRect.left;
               const width = buttonRect.width;
-              
+
               gsap.to(navIndicatorRef.current, {
                 left: leftOffset,
                 width: width,
@@ -207,7 +163,7 @@ export default function StickyPhoneSection() {
         console.log("🧹 Cleaning up StickyPhoneSection");
       };
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   function scrollToSlide(index: number) {
@@ -231,65 +187,6 @@ export default function StickyPhoneSection() {
       className="h-dvh relative"
       containerClassName="flex flex-col h-full"
     >
-      {/* Floating Progress Card */}
-      <div
-        ref={progressCardRef}
-        className="fixed bottom-8 right-8 z-50 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-4 min-w-[240px]"
-      >
-        <div className="flex items-center gap-4">
-          {/* Progress Circle */}
-          <div className="relative w-14 h-14">
-            <svg className="w-14 h-14 -rotate-90" viewBox="0 0 48 48">
-              {/* Background circle */}
-              <circle
-                cx="24"
-                cy="24"
-                r="20"
-                fill="none"
-                stroke="#e5e7eb"
-                strokeWidth="3"
-              />
-              {/* Progress circle */}
-              <circle
-                ref={progressCircleRef}
-                cx="24"
-                cy="24"
-                r="20"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray={`${2 * Math.PI * 20}`}
-                strokeDashoffset={`${2 * Math.PI * 20}`}
-                className="transition-none"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-gray-700">
-                {scrollProgress}%
-              </span>
-            </div>
-          </div>
-
-          {/* Text Content */}
-          <div className="flex flex-col flex-1">
-            <h3 className="text-sm font-semibold text-gray-900">
-              Timeline Progress
-            </h3>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {SLIDES[currentSlide]?.title || "Loading"}
-            </p>
-            <div className="w-full h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
-              <div
-                ref={progressBarRef}
-                className="h-full bg-blue-500 rounded-full transition-none"
-                style={{ width: "0%" }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
         <div
           className="absolute left-1/2 bottom-[15%] -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-blue-500/40 blur-[120px] z-0 pointer-events-none"
