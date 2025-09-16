@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function MaskedPhoneMocks() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
   const handMockRef = useRef<HTMLDivElement>(null);
   const image1Ref = useRef<HTMLDivElement>(null);
   const image2Ref = useRef<HTMLDivElement>(null);
@@ -23,11 +24,17 @@ export default function MaskedPhoneMocks() {
     () => {
       if (!sectionRef.current) return;
 
+      const headline = headlineRef.current;
       const handMock = handMockRef.current;
 
       const images = [image1Ref.current, image2Ref.current, image3Ref.current];
 
-      // Set initial positions - all images start below the viewport
+      // Set initial positions
+      gsap.set(headline, {
+        scale: 1,
+        opacity: 1,
+        filter: "blur(0px)",
+      });
       gsap.set(handMock, {
         scale: 5,
         opacity: 0,
@@ -43,7 +50,7 @@ export default function MaskedPhoneMocks() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=300%",
+          end: "+=500%",
           pin: true,
           scrub: true,
           anticipatePin: 1,
@@ -54,12 +61,28 @@ export default function MaskedPhoneMocks() {
         },
       });
 
-      // First: Both jet and hand scale down together
-      tl.to(images[0], {
-        scale: 1,
-        ease: "power4.out",
-        duration: 1,
-      })
+      // First: Headline scales down and fades out
+      tl.to(
+        headline,
+        {
+          scale: 0.8,
+          opacity: 0,
+          ease: "power2.inOut",
+          duration: 0.75,
+          filter: "blur(10px)",
+        },
+        0.1,
+      )
+        // Then: Jet and hand scale down together
+        .to(
+          images[0],
+          {
+            scale: 1,
+            ease: "power4.out",
+            duration: 1,
+          },
+          0.4,
+        )
         .to(
           handMock,
           {
@@ -68,7 +91,7 @@ export default function MaskedPhoneMocks() {
             duration: 0.75,
             filter: "blur(0px)",
           },
-          0.2,
+          0.4,
         ) // The 0 makes it start at the same time as the jet
         .to(
           handMock,
@@ -78,7 +101,7 @@ export default function MaskedPhoneMocks() {
             yPercent: 0,
             duration: 1,
           },
-          0.2,
+          0.4,
         )
         // Then: Bus slides up over jet
         .to(images[1], {
@@ -109,10 +132,21 @@ export default function MaskedPhoneMocks() {
       size="full"
       gap="none"
     >
+      {/* Headline text */}
+      <div
+        ref={headlineRef}
+        className="absolute inset-0 flex items-center justify-center z-50"
+      >
+        <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white tracking-tight">
+          Edit your tour from anywhere.
+        </h2>
+      </div>
+      {/* darken */}
+      <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/10"></div>
       {/* Hand image - top layer */}
       <div
         ref={handMockRef}
-        className="relative h-full w-full flex items-center justify-center z-40 mt-90"
+        className="relative h-[70%] w-full flex items-center justify-center z-40  mt-auto"
       >
         <Image
           src="/assets/HandMock.png"
