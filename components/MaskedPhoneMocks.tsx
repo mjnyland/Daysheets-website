@@ -43,7 +43,7 @@ export default function MaskedPhoneMocks() {
       gsap.set(maskContainer, {
         scale: 1,
         borderRadius: "0px",
-        opacity: 0.5,
+        opacity: 0.9,
       });
       gsap.set(headline, {
         y: 100,
@@ -65,14 +65,14 @@ export default function MaskedPhoneMocks() {
         scale: 0.6,
         opacity: 0,
         x: -180,
-        y: 200,
+        y: -20,
         filter: "blur(20px)",
       });
       gsap.set(hotelCard, {
         scale: 0.5,
         opacity: 0,
         x: 240,
-        y: -50,
+        y: -140,
         filter: "blur(20px)",
       });
       gsap.set(noteCard, {
@@ -86,7 +86,7 @@ export default function MaskedPhoneMocks() {
         scale: 0.4,
         opacity: 0,
         x: -180,
-        y: 10,
+        y: -140,
         filter: "blur(20px)",
       });
 
@@ -180,8 +180,8 @@ export default function MaskedPhoneMocks() {
           {
             scale: 0.7,
             opacity: 1,
-            x: 215,
-            y: -160,
+            x: 180,
+            y: -190,
             filter: "blur(0px)",
             ease: "power2.out",
             duration: 0.8,
@@ -246,7 +246,7 @@ export default function MaskedPhoneMocks() {
             />
           </div>
           {/* Hotel Card */}
-          <div ref={hotelCardRef} className="absolute z-30">
+          <div ref={hotelCardRef} className="absolute z-60">
             <Image
               src="/assets/hotel.png"
               alt="Hotel UI"
@@ -285,13 +285,13 @@ export default function MaskedPhoneMocks() {
             />
           </div>
           {/* Gradient overlay - fades from transparent to dark blue, covering full */}
-          <div className="absolute inset-0 z-[50] pointer-events-none bg-gradient-to-t from-[#030720] to-transparent from-0% to-40%" />
+          <div className="absolute inset-0 z-[50] pointer-events-none bg-gradient-to-t from-[#030720] to-transparent from-0% to-60%" />
           {/* Headline text - now at the bottom with gradient behind it */}
           <div
             ref={headlineRef}
             className="absolute bottom-0 left-0 right-0 z-[60] pb-30 "
           >
-            <h2 className="text-5xl md:text-6xl font-medium text-white tracking-tight text-center">
+            <h2 className="text-5xl md:text-6xl font-medium text-white tracking-tight leading-14 text-center">
               Edit your tour <br /> from{" "}
               <span className="text-blue-500">anywhere.</span>
             </h2>
