@@ -108,7 +108,7 @@ export default function MaskedPhoneMocks() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=300%",
+          end: "+=400%",
           pin: true,
           scrub: true,
           anticipatePin: 1,
@@ -291,6 +291,9 @@ export default function MaskedPhoneMocks() {
             ref={headlineRef}
             className="absolute bottom-0 left-0 right-0 z-[60] pb-30 "
           >
+            <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
+              Mobile Editing
+            </div>
             <h2 className="text-5xl md:text-6xl font-medium text-white tracking-tight leading-14 text-center">
               Edit your tour <br /> from{" "}
               <span className="text-blue-500">anywhere.</span>

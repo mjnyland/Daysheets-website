@@ -48,7 +48,7 @@ export const VisibilityOptions = () => {
         const elapsedInSection = Math.max(0, currentTime - sectionStartTime);
         const progressRatio = Math.min(
           1,
-          elapsedInSection / SECTION_LENGTH_SECONDS
+          elapsedInSection / SECTION_LENGTH_SECONDS,
         );
         setSectionProgress(progressRatio);
       }
@@ -68,7 +68,7 @@ export const VisibilityOptions = () => {
     gsap.fromTo(
       el,
       { autoAlpha: 0, y: 4 },
-      { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" }
+      { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" },
     );
   }, [activeSectionIndex]);
 
@@ -93,7 +93,7 @@ export const VisibilityOptions = () => {
         {
           autoAlpha: 0,
           y: 12,
-        }
+        },
       );
 
       const tl = gsap.timeline({
@@ -128,16 +128,6 @@ export const VisibilityOptions = () => {
     video.play();
   };
 
-  const handleNextClick = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    const nextIndex = (activeSectionIndex + 1) % videoSections.length;
-    const targetTime = nextIndex * SECTION_LENGTH_SECONDS + 0.001;
-    video.currentTime = targetTime;
-    setActiveSectionIndex(nextIndex);
-    video.play();
-  };
-
   const handleTimeUpdate = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -150,7 +140,7 @@ export const VisibilityOptions = () => {
     const elapsedInSection = Math.max(0, video.currentTime - sectionStartTime);
     const progressRatio = Math.min(
       1,
-      elapsedInSection / SECTION_LENGTH_SECONDS
+      elapsedInSection / SECTION_LENGTH_SECONDS,
     );
     setSectionProgress(progressRatio);
   };
