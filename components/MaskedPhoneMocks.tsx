@@ -43,12 +43,12 @@ export default function MaskedPhoneMocks() {
       gsap.set(maskContainer, {
         scale: 1,
         borderRadius: "0px",
-        opacity: 0.2,
+        opacity: 0.5,
       });
       gsap.set(headline, {
-        scale: 1,
-        opacity: 1,
-        filter: "blur(0px)",
+        y: 100,
+        opacity: 0,
+        filter: "blur(10px)",
       });
       gsap.set(handMock, {
         scale: 2,
@@ -94,7 +94,6 @@ export default function MaskedPhoneMocks() {
       gsap.to(maskContainer, {
         scale: 0.9,
         borderRadius: "64px",
-        opacity: 0.1,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -120,17 +119,17 @@ export default function MaskedPhoneMocks() {
         },
       });
 
-      // First: Headline scales down and fades out
+      // First: Headline fades in from bottom
       tl.to(
         headline,
         {
-          scale: 0.8,
-          opacity: 0,
-          ease: "power2.inOut",
-          duration: 0.75,
-          filter: "blur(10px)",
+          y: 0,
+          opacity: 1,
+          ease: "power2.out",
+          duration: 1,
+          filter: "blur(0px)",
         },
-        0.1,
+        0.2,
       )
         // Then: Jet and hand scale down together
         .to(
@@ -167,9 +166,9 @@ export default function MaskedPhoneMocks() {
           flightsCard,
           {
             scale: 0.7,
-            opacity: 0.9,
+            opacity: 1,
             x: -120,
-            y: 200,
+            y: -10,
             filter: "blur(0px)",
             ease: "power2.out",
             duration: 0.8,
@@ -180,9 +179,9 @@ export default function MaskedPhoneMocks() {
           hotelCard,
           {
             scale: 0.7,
-            opacity: 0.9,
-            x: 250,
-            y: -60,
+            opacity: 1,
+            x: 215,
+            y: -160,
             filter: "blur(0px)",
             ease: "power2.out",
             duration: 0.8,
@@ -190,25 +189,12 @@ export default function MaskedPhoneMocks() {
           0.6,
         )
         .to(
-          noteCard,
-          {
-            scale: 1,
-            opacity: 0.9,
-            x: -150,
-            y: 120,
-            filter: "blur(0px)",
-            ease: "power2.out",
-            duration: 0.8,
-          },
-          0.7,
-        )
-        .to(
           guestlistCard,
           {
             scale: 0.7,
             opacity: 0.9,
             x: -180,
-            y: -30,
+            y: -180,
             filter: "blur(0px)",
             ease: "power2.out",
             duration: 0.8,
@@ -240,17 +226,12 @@ export default function MaskedPhoneMocks() {
       ref={sectionRef}
       background="darkBlue"
       className="h-dvh overflow-hidden"
-      containerClassName="flex relative items-center justify-center h-full"
+      containerClassName="flex relative items-center justify-center h-full px-0"
       size="full"
       gap="none"
+      padded="none"
     >
-      <div className="h-full w-full z-40 grid grid-rows-[300px_1fr] place-items-center">
-        <div className=" h-full place-content-end row-start-1 row-end-2 -mb-20">
-          <h2 className="text-7xl md:text-7xl font-medium text-white tracking-tight text-center">
-            Edit your tour <br /> from{" "}
-            <span className="text-blue-500">anywhere.</span>
-          </h2>
-        </div>
+      <div className="h-full w-full z-40 relative flex flex-col items-center justify-end">
         {/* UI Cards - positioned behind phone */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none shadow-none">
           {/* Flights Card */}
@@ -288,18 +269,33 @@ export default function MaskedPhoneMocks() {
             />
           </div>
         </div>
-        {/* Hand image - top layer */}
-        <div
-          ref={handMockRef}
-          className="relative h-full w-full flex items-center justify-center  mt-auto  row-start-2 row-end-4 z-50"
-        >
-          <Image
-            src="/assets/HandMock.png"
-            alt="Phone Mock"
-            fill
-            className="object-contain object-bottom"
-            priority
-          />
+
+        <div className="relative flex flex-col z-40 h-full w-full ">
+          {/* Hand image - now positioned above the text */}
+          <div
+            ref={handMockRef}
+            className="h-full w-full flex items-center justify-center z-40 mt-40"
+          >
+            <Image
+              src="/assets/HandMock.png"
+              alt="Phone Mock"
+              fill
+              className="object-contain object-bottom"
+              priority
+            />
+          </div>
+          {/* Gradient overlay - fades from transparent to dark blue, covering full */}
+          <div className="absolute inset-0 z-[50] pointer-events-none bg-gradient-to-t from-[#030720] to-transparent from-0% to-40%" />
+          {/* Headline text - now at the bottom with gradient behind it */}
+          <div
+            ref={headlineRef}
+            className="absolute bottom-0 left-0 right-0 z-[60] pb-30 "
+          >
+            <h2 className="text-5xl md:text-6xl font-medium text-white tracking-tight text-center">
+              Edit your tour <br /> from{" "}
+              <span className="text-blue-500">anywhere.</span>
+            </h2>
+          </div>
         </div>
       </div>
       {/* Mask container with rounded corners */}

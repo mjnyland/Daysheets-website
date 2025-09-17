@@ -3,7 +3,7 @@
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 export type ContainerSize = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-export type ContainerPadding = false | "sm" | "md" | "lg";
+export type ContainerPadding = false | "none" | "sm" | "md" | "lg";
 
 type Props<T extends ElementType> = {
   as?: T;
@@ -23,6 +23,7 @@ const sizeClassMap: Record<ContainerSize, string> = {
 };
 
 const paddingClassMap: Record<Exclude<ContainerPadding, false>, string> = {
+  none: "px-0",
   sm: "px-3 md:px-4",
   md: "px-4 md:px-6 lg:px-8",
   lg: "px-6 md:px-8 lg:px-12",
