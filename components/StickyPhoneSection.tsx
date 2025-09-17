@@ -183,10 +183,11 @@ export default function StickyPhoneSection() {
     <Section
       ref={sectionRef}
       background="darkBlue"
-      className="h-dvh relative"
-      containerClassName="flex flex-col h-full"
+      className="h-dvh relative "
+      containerClassName="flex flex-col h-full items-center justify-center"
+      gap="lg"
     >
-      <div className="flex flex-1 w-full h-full items-center justify-center flex-col gap-4 overflow-hidden py-8">
+      <div className="flex flex-1 w-full h-full items-center justify-center flex-col gap-8 overflow-hidden max-h-[700px]">
         <div className="flex flex-col gap-0">
           <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
             Custom Views
@@ -203,12 +204,9 @@ export default function StickyPhoneSection() {
 
         <div
           ref={phoneContainerRef}
-          className="relative w-full flex-1 max-w-sm "
+          className="relative w-full flex-1 max-w-sm"
           style={{ willChange: "transform", maxHeight: "70vh" }}
         >
-          {/* Background frame */}
-          <div className="absolute inset-10 bg-blue-500/30 rounded-3xl shadow-2xl my-8" />
-
           <nav
             aria-label="Phone views"
             className="absolute bottom-[40px] left-0 right-0 flex items-center justify-center z-20 "
@@ -248,7 +246,7 @@ export default function StickyPhoneSection() {
           {SLIDES.map((slide, i) => (
             <div
               key={slide.key}
-              className="phone-image absolute inset-4"
+              className="phone-image absolute inset-0 mx-12 "
               style={{ willChange: "opacity" }}
             >
               <Image

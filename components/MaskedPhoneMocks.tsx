@@ -56,7 +56,7 @@ export default function MaskedPhoneMocks() {
         yPercent: 50,
         filter: "blur(100px)",
       });
-      gsap.set(images[0], { scale: 1.5 });
+      gsap.set(images[0], { scale: 1.2 });
       gsap.set(images[1], { yPercent: 100 });
       gsap.set(images[2], { yPercent: 100 });
 
