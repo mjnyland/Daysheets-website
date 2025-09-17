@@ -177,7 +177,6 @@ export default function StickyPhoneSection() {
       scrollTo: targetY,
       ease: "power2.inOut",
     });
-    console.log("wat");
   }
 
   return (
@@ -187,29 +186,32 @@ export default function StickyPhoneSection() {
       className="h-dvh relative"
       containerClassName="flex flex-col h-full"
     >
-      <div className="flex flex-1 w-full items-center justify-center flex-col gap-8 overflow-hidden">
-        <div
-          className="absolute left-1/2 bottom-[15%] -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-blue-500/40 blur-[120px] z-0 pointer-events-none"
-          style={{ willChange: "transform" }}
-        />
-
-        <div className="text-center px-6 max-w-2xl z-10">
-          <h2 className="slide-title text-white text-3xl sm:text-4xl font-medium tracking-tight">
-            {SLIDES[0].title}
-          </h2>
-          <p className="slide-description text-white/80 mt-2 text-base sm:text-lg">
-            {SLIDES[0].description}
-          </p>
+      <div className="flex flex-1 w-full h-full items-center justify-center flex-col gap-4 overflow-hidden py-8">
+        <div className="flex flex-col gap-0">
+          <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
+            Custom Views
+          </div>
+          {/* Header */}
+          <div className="text-center">
+            <h2 className="vo-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center text-white">
+              View your tour
+              <br />
+              from every angle.
+            </h2>
+          </div>
         </div>
 
         <div
           ref={phoneContainerRef}
-          className="relative w-full max-w-sm aspect-[9/16]"
-          style={{ willChange: "transform" }}
+          className="relative w-full flex-1 max-w-sm "
+          style={{ willChange: "transform", maxHeight: "70vh" }}
         >
+          {/* Background frame */}
+          <div className="absolute inset-10 bg-blue-500/30 rounded-3xl shadow-2xl my-8" />
+
           <nav
             aria-label="Phone views"
-            className="absolute bottom-[84px] left-0 right-0 flex items-center justify-center z-20"
+            className="absolute bottom-[40px] left-0 right-0 flex items-center justify-center z-20 "
           >
             <div className="relative flex items-center justify-center rounded-full bg-blue-900 p-1 px-2 shadow-xl shadow-slate-900/30">
               <div
@@ -246,7 +248,7 @@ export default function StickyPhoneSection() {
           {SLIDES.map((slide, i) => (
             <div
               key={slide.key}
-              className="phone-image absolute inset-0"
+              className="phone-image absolute inset-4"
               style={{ willChange: "opacity" }}
             >
               <Image
@@ -254,11 +256,19 @@ export default function StickyPhoneSection() {
                 alt={slide.title}
                 fill
                 sizes="(max-width: 640px) 90vw, 420px"
-                className="object-contain object-top select-none"
+                className="object-cover object-top select-none"
                 priority={i === 0}
               />
             </div>
           ))}
+        </div>
+        <div className="text-center px-6 max-w-2xl z-10">
+          <h2 className="slide-title text-white text-xl sm:text-2xl font-medium tracking-tight">
+            {SLIDES[0].title}
+          </h2>
+          <p className="slide-description text-white/80 mt-2 text-base sm:text-lg">
+            {SLIDES[0].description}
+          </p>
         </div>
       </div>
     </Section>

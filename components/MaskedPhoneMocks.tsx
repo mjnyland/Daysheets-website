@@ -165,7 +165,7 @@ export default function MaskedPhoneMocks() {
         .to(
           flightsCard,
           {
-            scale: 0.7,
+            scale: 0.6,
             opacity: 1,
             x: -120,
             y: -10,
@@ -178,7 +178,7 @@ export default function MaskedPhoneMocks() {
         .to(
           hotelCard,
           {
-            scale: 0.7,
+            scale: 0.6,
             opacity: 1,
             x: 180,
             y: -190,
@@ -191,7 +191,7 @@ export default function MaskedPhoneMocks() {
         .to(
           guestlistCard,
           {
-            scale: 0.7,
+            scale: 0.6,
             opacity: 0.9,
             x: -180,
             y: -180,
