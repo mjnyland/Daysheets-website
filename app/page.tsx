@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,14 +9,13 @@ import TestimonialsSplide from "@/components/testimonials-splide";
 import { FeatureSlideshow } from "@/components/FeatureSlideshow";
 import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
-import { MobileEditingCarousel } from "@/components/MobileEditingCarousel";
 import AppDownloadSection from "@/components/AppDownloadSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
-import StickyPhoneSection from "@/components/StickyPhoneSection";
+import DebugPage from "@/components/DebugPage";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
-import ParallaxMobileEdit from "@/components/ParallaxMobileEdit";
+
 import MaskedPhoneMocks from "@/components/MaskedPhoneMocks";
 
 export default function Home() {
@@ -49,7 +47,7 @@ export default function Home() {
       </div>
       <FlightGrid />
       <VisibilityOptions />
-      <StickyPhoneSection />
+      <DebugPage />
       <MaskedPhoneMocks />
       <AppDownloadSection />
       <TravelSection />

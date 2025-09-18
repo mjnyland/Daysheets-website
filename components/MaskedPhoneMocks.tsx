@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function MaskedPhoneMocks() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+
   const maskContainerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const handMockRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,10 @@ export default function MaskedPhoneMocks() {
 
   useGSAP(
     () => {
-      if (!sectionRef.current) return;
+      if (!sectionRef.current) {
+        console.log("sectionRef is null");
+        return;
+      }
 
       const maskContainer = maskContainerRef.current;
       const headline = headlineRef.current;

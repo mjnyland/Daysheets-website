@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import React from "react";
 import {
   Container,
   ContainerPadding,
@@ -19,8 +19,8 @@ type SectionBg =
   | "white"
   | "light";
 
-type Props<T extends ElementType> = {
-  as?: T;
+interface Props {
+  as?: "section" | "div" | "article" | "aside" | "main" | "header" | "footer";
   id?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
@@ -31,8 +31,8 @@ type Props<T extends ElementType> = {
   className?: string;
   containerClassName?: string;
   ref?: React.RefObject<HTMLElement | null>;
-  children?: ReactNode;
-} & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+  children?: React.ReactNode;
+}
 
 const gapMap: Record<SectionGap, string> = {
   none: "py-0",
@@ -54,8 +54,8 @@ const bgMap: Record<SectionBg, string> = {
   light: "bg-white",
 };
 
-export const Section = <T extends ElementType = "section">({
-  as,
+export const Section: React.FC<Props> = ({
+  as = "section",
   id,
   background = "transparent",
   gap = "lg",
@@ -65,24 +65,39 @@ export const Section = <T extends ElementType = "section">({
   containerClassName,
   children,
   ref,
-  ...rest
-}: Props<T>) => {
-  const Tag = (as || "section") as ElementType;
-
+}) => {
   const outerClasses = [bgMap[background], gapMap[gap], className]
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <Tag
-      ref={ref}
-      id={id}
-      className={outerClasses}
-      {...(rest as Record<string, unknown>)}
-    >
-      <Container size={size} padded={padded} className={containerClassName}>
-        {children}
-      </Container>
-    </Tag>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const elementProps = {
+    ref: ref as any,
+    id,
+    className: outerClasses,
+  };
+
+  const content = (
+    <Container size={size} padded={padded} className={containerClassName}>
+      {children}
+    </Container>
   );
+
+  switch (as) {
+    case "div":
+      return <div {...elementProps}>{content}</div>;
+    case "article":
+      return <article {...elementProps}>{content}</article>;
+    case "aside":
+      return <aside {...elementProps}>{content}</aside>;
+    case "main":
+      return <main {...elementProps}>{content}</main>;
+    case "header":
+      return <header {...elementProps}>{content}</header>;
+    case "footer":
+      return <footer {...elementProps}>{content}</footer>;
+    case "section":
+    default:
+      return <section {...elementProps}>{content}</section>;
+  }
 };

@@ -1,17 +1,17 @@
 "use client";
 
-import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import React from "react";
 
 export type ContainerSize = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 export type ContainerPadding = false | "none" | "sm" | "md" | "lg";
 
-type Props<T extends ElementType> = {
-  as?: T;
+interface Props {
+  as?: "div" | "section" | "article" | "aside" | "main";
   size?: ContainerSize;
   padded?: ContainerPadding;
   className?: string;
-  children?: ReactNode;
-} & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+  children?: React.ReactNode;
+}
 
 const sizeClassMap: Record<ContainerSize, string> = {
   sm: "max-w-screen-sm",
@@ -29,15 +29,13 @@ const paddingClassMap: Record<Exclude<ContainerPadding, false>, string> = {
   lg: "px-6 md:px-8 lg:px-12",
 };
 
-export const Container = <T extends ElementType = "div">({
-  as,
+export const Container: React.FC<Props> = ({
+  as = "div",
   size = "xl",
   padded = "md",
   className,
   children,
-  ...rest
-}: Props<T>) => {
-  const Tag = (as || "div") as ElementType;
+}) => {
   const sizeClass = sizeClassMap[size];
   const padClass = padded ? paddingClassMap[padded] : "px-0";
 
@@ -45,9 +43,21 @@ export const Container = <T extends ElementType = "div">({
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <Tag className={classes} {...(rest as Record<string, unknown>)}>
-      {children}
-    </Tag>
-  );
+  const elementProps = {
+    className: classes,
+  };
+
+  switch (as) {
+    case "section":
+      return <section {...elementProps}>{children}</section>;
+    case "article":
+      return <article {...elementProps}>{children}</article>;
+    case "aside":
+      return <aside {...elementProps}>{children}</aside>;
+    case "main":
+      return <main {...elementProps}>{children}</main>;
+    case "div":
+    default:
+      return <div {...elementProps}>{children}</div>;
+  }
 };
