@@ -46,7 +46,7 @@ export default function PhoneScrollSection() {
           end: "top 30%",
           scrub: 1,
         },
-      }
+      },
     );
 
     // Ensure video is loaded before setting up ScrollTrigger
