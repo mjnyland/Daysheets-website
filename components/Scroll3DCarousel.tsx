@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,7 +10,10 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Individual 3D "card" component
+// Preload the model
+useGLTF.preload("/models/DayView3D9.glb");
+
+// Individual 3D phone component using GLB model
 function Phone3D({
   index,
   totalPhones,
@@ -17,164 +21,199 @@ function Phone3D({
   index: number;
   totalPhones: number;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const { scene } = useGLTF("/models/DayView3D9.glb");
+  const groupRef = useRef<THREE.Group>(null);
 
-  // Give each phone a unique color
-  const colors = ["#8b5cf6", "#3b82f6", "#10b981", "#f97316"];
-  const color = colors[index % colors.length];
+  // Clone the scene for each instance
+  const clonedScene = scene.clone();
 
   return (
-    <mesh ref={meshRef}>
-      {/* Simple phone-like shape */}
-      <boxGeometry args={[2, 4, 0.2]} />
-      <meshStandardMaterial
-        color={color}
-        metalness={0.3}
-        roughness={0.4}
-        transparent
-      />
-    </mesh>
+    <primitive
+      ref={groupRef}
+      object={clonedScene}
+      // Scale down more since the model is large
+      scale={[0.15, 0.15, 0.15]}
+      // Rotate 180 degrees to show the front (screen side)
+    />
   );
 }
 
 // Container for all 3D phones
 function PhoneCarousel() {
-  const groupRef = useRef<THREE.Group>(null);
-  const phonesRef = useRef<THREE.Mesh[]>([]);
+  const groupRef = useRef<THREE.Group>(null!);
 
   useGSAP(() => {
+    console.log(groupRef.current);
     if (!groupRef.current) return;
 
-    // ============================================
-    // Get all phone meshes from the group's children
-    // ============================================
-    const phones = groupRef.current.children as THREE.Mesh[];
+    // Wait a bit for models to load
+    setTimeout(() => {
+      // ============================================
+      // Get all phone models from the group's children
+      // ============================================
+      // Now that Suspense is outside, children should be the phone groups directly
+      const phones = groupRef.current.children;
 
-    if (phones.length === 0) return;
-
-    // ============================================
-    // Configuration for circular carousel
-    // ============================================
-    const radius = 4; // Distance from center
-    const phoneCount = phones.length;
-    const angleStep = (Math.PI * 2) / phoneCount; // Divide circle equally
-
-    // ============================================
-    // Set initial state - phones arranged in a circle
-    // ============================================
-    phones.forEach((phone, index) => {
-      // Ensure material is transparent
-      if (phone.material && "transparent" in phone.material) {
-        (phone.material as THREE.MeshStandardMaterial).transparent = true;
+      console.log("Found phones:", phones.length);
+      if (phones.length === 0) {
+        console.log("No phones found!");
+        return;
       }
 
-      // Calculate initial position on circle
-      const initialAngle = index * angleStep;
-      const x = radius * Math.sin(initialAngle);
-      const z = radius * Math.cos(initialAngle);
+      // ============================================
+      // Configuration for circular carousel
+      // ============================================
+      const radius = 2; // Increased distance from center for larger models
+      const phoneCount = phones.length;
+      const angleStep = (Math.PI * 2) / phoneCount; // Divide circle equally
 
-      gsap.set(phone.position, {
-        x: x,
-        y: 0,
-        z: z,
+      // ============================================
+      // Set initial state - phones arranged in a circle
+      // ============================================
+      phones.forEach((phone, index) => {
+        // Calculate initial position on circle
+        const initialAngle = index * angleStep;
+        const x = radius * Math.sin(initialAngle);
+        const z = radius * Math.cos(initialAngle);
+
+        gsap.set(phone.position, {
+          x: x,
+          y: 0,
+          z: z,
+        });
+
+        // Face inward toward center (toward camera)
+        gsap.set(phone.rotation, {
+          y: initialAngle,
+        });
       });
 
-      // Face the center
-      gsap.set(phone.rotation, {
-        y: -initialAngle,
-      });
+      // ============================================
+      // Create main timeline with ScrollTrigger
+      // ============================================
 
-      // Start with phones behind being invisible
-      const initialOpacity = z > 0 ? 1 : 0;
-      gsap.set(phone.material, {
-        opacity: initialOpacity,
-      });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#carousel-3d-container",
+          start: "top top",
+          end: "+=400%",
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          markers: true,
+          snap: {
+            snapTo: 1 / phoneCount, // Snap to each phone position
+            duration: { min: 0.2, max: 0.6 }, // Snap animation duration
+            delay: 0.1, // Delay before snapping
+            ease: "power2.inOut",
+            onComplete: () => {
+              // When snap completes, find the phone with highest z (closest to camera)
+              const progress = tl.scrollTrigger.progress;
 
-      // Scale based on z position (front = bigger, back = smaller)
-      const initialScale = z > 0 ? 1 : 0.8;
-      gsap.set(phone.scale, {
-        x: initialScale,
-        y: initialScale,
-        z: initialScale,
-      });
-    });
+              // Find the phone with the maximum z position (closest to camera)
+              let maxZ = -Infinity;
+              let actualCenteredIndex = 0;
 
-    // ============================================
-    // Create main timeline with ScrollTrigger
-    // ============================================
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#carousel-3d-container",
-        start: "top top",
-        end: "+=400%",
-        pin: true,
-        scrub: 1,
-        anticipatePin: 1,
-      },
-    });
+              phones.forEach((phone, i) => {
+                if (phone.position.z > maxZ) {
+                  maxZ = phone.position.z;
+                  actualCenteredIndex = i;
+                }
+              });
 
-    // ============================================
-    // Animate the entire carousel rotating
-    // ============================================
+              console.log("=== SNAP COMPLETE ===");
+              console.log("Progress:", progress);
+              console.log("Phone with max z (centered):", actualCenteredIndex);
+              console.log("Max z value:", maxZ.toFixed(2));
 
-    // Create a full rotation animation
-    phones.forEach((phone, index) => {
-      // Each phone needs to complete a full circle
-      const startAngle = index * angleStep;
+              // Reset all phones to normal scale
+              phones.forEach((phone, i) => {
+                // Log z position to see which is actually in front
+                const z = phone.position.z;
+                const isCentered = i === actualCenteredIndex;
+                console.log(
+                  `Phone ${i}: z=${z.toFixed(2)}, centered=${isCentered}`,
+                );
 
-      // We'll animate a proxy object to track the angle
-      const angleTracker = { angle: startAngle };
-
-      tl.to(
-        angleTracker,
-        {
-          angle: startAngle + Math.PI * 2, // Full rotation
-          duration: 1,
-          ease: "none",
-          onUpdate: function () {
-            const currentAngle = angleTracker.angle;
-
-            // Calculate position on circle
-            const x = radius * Math.sin(currentAngle);
-            const z = radius * Math.cos(currentAngle) * -1;
-
-            gsap.set(phone.position, {
-              x: x,
-              z: z,
-            });
-
-            // Rotate phone to face center
-            gsap.set(phone.rotation, {
-              y: -currentAngle,
-            });
-
-            // Opacity based on z position (fade in front, fade out back)
-            const opacity =
-              z > -2 ? Math.max(0, (z + radius) / (radius * 2)) : 0;
-            gsap.set(phone.material, {
-              opacity: opacity,
-            });
-
-            // Scale based on z position (perspective effect)
-            const scale = 0.7 + (z + radius) / (radius * 4);
-            gsap.set(phone.scale, {
-              x: scale,
-              y: scale,
-              z: scale,
-            });
+                if (isCentered) {
+                  // Scale up the centered phone
+                  gsap.to(phone.scale, {
+                    x: 0.17,
+                    y: 0.17,
+                    z: 0.17,
+                    duration: 0.3,
+                    ease: "power2.out",
+                  });
+                } else {
+                  // Scale down other phones
+                  gsap.to(phone.scale, {
+                    x: 0.15,
+                    y: 0.15,
+                    z: 0.15,
+                    duration: 0.3,
+                    ease: "power2.out",
+                  });
+                }
+              });
+            },
           },
         },
-        0,
-      ); // All start at time 0 to rotate together
-    });
+      });
+
+      // ============================================
+      // Animate the entire carousel rotating with snapping
+      // ============================================
+
+      // Create a single master rotation that all phones follow
+      const masterRotation = { angle: 0 };
+
+      // Create discrete sections for each phone to be centered
+      for (let i = 0; i < phoneCount; i++) {
+        const sectionProgress = i / phoneCount;
+        const targetAngle = i * angleStep;
+
+        tl.to(
+          masterRotation,
+          {
+            angle: targetAngle,
+            duration: 1 / phoneCount, // Each section takes equal time
+            ease: "none",
+            onUpdate: function () {
+              // Update all phones based on master rotation
+              phones.forEach((phone, phoneIndex) => {
+                const phoneStartAngle = phoneIndex * angleStep;
+                const currentAngle = phoneStartAngle + masterRotation.angle;
+
+                // Calculate position on circle
+                const x = radius * Math.sin(currentAngle);
+                const z = radius * Math.cos(currentAngle);
+
+                gsap.set(phone.position, {
+                  x: x,
+                  z: z,
+                });
+
+                // Rotate phone to face inward (toward camera)
+                gsap.set(phone.rotation, {
+                  y: currentAngle,
+                });
+              });
+            },
+          },
+          sectionProgress, // Position this section at the right time
+        );
+      }
+    }, 100); // Give models time to load
   }); // Removed scope since we're working with Three.js objects, not DOM
 
   return (
-    <group ref={groupRef}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Phone3D key={i} index={i} totalPhones={5} />
-      ))}
-    </group>
+    <Suspense fallback={null}>
+      <group ref={groupRef}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Phone3D key={i} index={i} totalPhones={6} />
+        ))}
+      </group>
+    </Suspense>
   );
 }
 
@@ -212,11 +251,11 @@ export default function Scroll3DCarousel() {
         <Canvas
           camera={{
             position: [0, 0, 10],
-            fov: 70,
+            fov: 30,
           }}
         >
           {/* Lighting */}
-          <ambientLight intensity={5} />
+          <ambientLight intensity={10} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} />
 
