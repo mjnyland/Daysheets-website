@@ -47,7 +47,7 @@ export function FlightGrid() {
             scrub: 1, // Smooth scrubbing, 1 second catch-up time
             // markers: true, // Uncomment to see debug markers
           },
-        }
+        },
       );
     }
 

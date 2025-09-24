@@ -22,6 +22,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/3d Section/PhoneCarousel.jsx",
+    "components/3d Section/Scroll3DCarousel2.jsx",
+    "components/3d Section/DayViewModel.jsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   Container,
-  ContainerPadding,
   ContainerSize,
+  ContainerPadding,
 } from "@/components/containers/Container";
 
-type SectionGap = "none" | "sm" | "md" | "lg" | "xl";
-type SectionBg =
+export type SectionGap = "none" | "sm" | "md" | "lg" | "xl";
+export type SectionBg =
   | "transparent"
   | "subtle"
   | "muted"
@@ -20,17 +20,13 @@ type SectionBg =
   | "light";
 
 interface Props {
-  as?: "section" | "div" | "article" | "aside" | "main" | "header" | "footer";
   id?: string;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
   background?: SectionBg;
   gap?: SectionGap;
   size?: ContainerSize;
   padded?: ContainerPadding;
   className?: string;
   containerClassName?: string;
-  ref?: React.RefObject<HTMLElement | null>;
   children?: React.ReactNode;
 }
 
@@ -54,50 +50,34 @@ const bgMap: Record<SectionBg, string> = {
   light: "bg-white",
 };
 
-export const Section: React.FC<Props> = ({
-  as = "section",
-  id,
-  background = "transparent",
-  gap = "lg",
-  size = "xl",
-  padded = "md",
-  className,
-  containerClassName,
-  children,
-  ref,
-}) => {
-  const outerClasses = [bgMap[background], gapMap[gap], className]
-    .filter(Boolean)
-    .join(" ");
+// 👇 add forwardRef here
+export const Section = forwardRef<HTMLDivElement, Props>(
+  (
+    {
+      id,
+      background = "transparent",
+      gap = "lg",
+      size = "xl",
+      padded = "md",
+      className,
+      containerClassName,
+      children,
+      ...rest
+    },
+    ref,
+  ) => {
+    const outerClasses = [bgMap[background], gapMap[gap], className]
+      .filter(Boolean)
+      .join(" ");
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const elementProps = {
-    ref: ref as any,
-    id,
-    className: outerClasses,
-  };
+    return (
+      <section ref={ref} id={id} className={outerClasses} {...rest}>
+        <Container size={size} padded={padded} className={containerClassName}>
+          {children}
+        </Container>
+      </section>
+    );
+  },
+);
 
-  const content = (
-    <Container size={size} padded={padded} className={containerClassName}>
-      {children}
-    </Container>
-  );
-
-  switch (as) {
-    case "div":
-      return <div {...elementProps}>{content}</div>;
-    case "article":
-      return <article {...elementProps}>{content}</article>;
-    case "aside":
-      return <aside {...elementProps}>{content}</aside>;
-    case "main":
-      return <main {...elementProps}>{content}</main>;
-    case "header":
-      return <header {...elementProps}>{content}</header>;
-    case "footer":
-      return <footer {...elementProps}>{content}</footer>;
-    case "section":
-    default:
-      return <section {...elementProps}>{content}</section>;
-  }
-};
+Section.displayName = "Section";

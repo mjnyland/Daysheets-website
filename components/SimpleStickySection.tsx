@@ -78,25 +78,6 @@ export function SimpleStickySection() {
         markers: false,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          // Debug logging for comparison
-          console.log("=== SIMPLE STICKY DEBUG ===");
-          console.log("ScrollTrigger start:", self.start);
-          console.log("ScrollTrigger end:", self.end);
-          console.log("Current scroll position:", self.scroll());
-          console.log("Progress:", self.progress);
-          console.log("Direction:", self.direction);
-          console.log("Is active:", self.isActive);
-          console.log(
-            "Pin spacer height:",
-            self.pin ? self.pin.spacer?.style.height : "No pin spacer",
-          );
-          console.log(
-            "Pin spacer element:",
-            self.pin ? self.pin.spacer : "No pin",
-          );
-          console.log("Pin spacing enabled:", self.pinSpacing);
-          console.log("============================");
-
           const cardProgress = self.progress * (cards.length - 1);
           cardRefs.current.forEach((card, index) => {
             if (!card) return;

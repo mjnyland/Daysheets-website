@@ -7,21 +7,15 @@ import Lenis from "lenis";
 import { Hero } from "@/components/Hero";
 import TestimonialsSplide from "@/components/testimonials-splide";
 import { FeatureSlideshow } from "@/components/FeatureSlideshow";
-import { VisibilityOptions } from "@/components/VisibilityOptions";
 import { FlightGrid } from "@/components/FlightGrid";
+import { VisibilityOptions } from "@/components/VisibilityOptions";
+import Scroll3DCarousel from "@/components/3d Section/Scroll3DCarousel";
+import MaskedPhoneMocks from "@/components/MaskedPhoneMocks";
 import AppDownloadSection from "@/components/AppDownloadSection";
 import { TravelSection } from "@/components/TravelSection";
 import { SimpleStickySection } from "@/components/SimpleStickySection";
-import DebugPage from "@/components/DebugPage";
-import Phone3dScroll from "@/components/Phone3dScroll";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
-import SimpleScrollCarousel from "@/components/SimpleScrollCarousel";
-
-import MaskedPhoneMocks from "@/components/MaskedPhoneMocks";
-import Scroll3DCarousel from "@/components/3d Section/Scroll3DCarousel";
-import Scroll3DCarousel2 from "@/components/3d Section/Scroll3DCarousel2";
-import Scroll3DCarouselSnap from "@/components/Scroll3DCarouselSnap";
 
 export default function Home() {
   useGSAP(() => {
@@ -45,20 +39,20 @@ export default function Home() {
 
   return (
     <main className="overflow-x-hidden">
-      {/*<Hero />
+      <Hero />
       <div className="bg-[#166CD1] bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1.2px,transparent_1.2px)] [background-size:22px_22px] [background-position:0_0]">
         <TestimonialsSplide />
         <FeatureSlideshow />
       </div>
       <FlightGrid />
-      <VisibilityOptions />*/}
-      <Scroll3DCarousel2 />
+      <VisibilityOptions />
+      <Scroll3DCarousel />
       <MaskedPhoneMocks />
-      {/*<AppDownloadSection />
+      <AppDownloadSection />
       <TravelSection />
       <SimpleStickySection />
       <CtaSection />
-      <Footer />*/}
+      <Footer />
     </main>
   );
 }
