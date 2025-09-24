@@ -2,7 +2,7 @@ import React, { useRef, forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 
 export const Model = forwardRef((props, ref) => {
-  const { nodes, materials } = useGLTF("./Models/DayView3D9.glb");
+  const { nodes, materials } = useGLTF("/models/DayView3D9.glb");
   return (
     <group ref={ref} {...props} dispose={null}>
       <group rotation={[Math.PI / 2, 0, 0]}>
