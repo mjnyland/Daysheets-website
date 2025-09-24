@@ -13,7 +13,6 @@ const STORE_LINKS = {
 export default function AppDownloadSection() {
   return (
     <Section
-      as="section"
       background="darkBlue"
       gap="xl"
       size="2xl"
