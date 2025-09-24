@@ -207,7 +207,7 @@ export default function PricingFeatureTable() {
 
   const tierIndex = useMemo(
     () => tierOrder.findIndex((t) => t.key === activeTier),
-    [activeTier]
+    [activeTier],
   );
 
   const renderValue = (value: Row["values"][TierKey]) => {

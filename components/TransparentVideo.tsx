@@ -22,7 +22,7 @@ export const TransparentVideo = forwardRef<
       children,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const computeWebmSrc = (originalSrc: string) => {
       if (originalSrc.endsWith(".mp4"))
@@ -76,7 +76,7 @@ export const TransparentVideo = forwardRef<
         {children}
       </video>
     );
-  }
+  },
 );
 
 TransparentVideo.displayName = "TransparentVideo";

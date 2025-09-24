@@ -85,7 +85,7 @@ export default function PricingFaq() {
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (
-    event
+    event,
   ) => {
     if (event.key === " ") {
       event.preventDefault();

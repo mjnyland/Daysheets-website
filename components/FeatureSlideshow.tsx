@@ -70,7 +70,7 @@ export const FeatureSlideshow = () => {
         if (!videoElement.duration || !isFinite(videoElement.duration)) return;
         const pct = Math.min(
           (videoElement.currentTime / videoElement.duration) * 100,
-          100
+          100,
         );
         setProgress(pct);
       };
@@ -91,7 +91,7 @@ export const FeatureSlideshow = () => {
       return () => {
         videoElement.removeEventListener(
           "loadedmetadata",
-          handleLoadedMetadata
+          handleLoadedMetadata,
         );
         videoElement.removeEventListener("timeupdate", handleTimeUpdate);
         videoElement.removeEventListener("ended", handleEnded);
@@ -134,7 +134,7 @@ export const FeatureSlideshow = () => {
     // Resume auto-play after 10 seconds of inactivity
     autoPlayTimeoutRef.current = setTimeout(
       () => setIsAutoPlaying(true),
-      10000
+      10000,
     );
   };
 

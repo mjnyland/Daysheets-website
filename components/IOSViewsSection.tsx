@@ -35,7 +35,6 @@ const VIEWS: View[] = [
 export default function IOSViewsSection() {
   return (
     <Section
-      as="section"
       background="darkBlue"
       gap="xl"
       size="xl"

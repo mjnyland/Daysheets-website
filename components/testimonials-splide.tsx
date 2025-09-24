@@ -93,10 +93,10 @@ function TestimonialCard({
 export default function TestimonialsSplide() {
   const topRowTestimonials = testimonials.slice(
     0,
-    Math.ceil(testimonials.length / 2)
+    Math.ceil(testimonials.length / 2),
   );
   const bottomRowTestimonials = testimonials.slice(
-    Math.ceil(testimonials.length / 2)
+    Math.ceil(testimonials.length / 2),
   );
 
   return (

@@ -4,7 +4,7 @@ import { Section } from "@/components/containers/Section";
 
 export const CtaSection = () => {
   const handleKeyDown: React.KeyboardEventHandler<HTMLAnchorElement> = (
-    event
+    event,
   ) => {
     if (event.key === " ") {
       event.preventDefault();

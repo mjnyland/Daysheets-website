@@ -51,7 +51,7 @@ export const Hero = () => {
           duration: 1.5,
           ease: "power2.inOut",
         },
-        0
+        0,
       );
 
       // Navigation slides down
@@ -63,7 +63,7 @@ export const Hero = () => {
           duration: 0.8,
           ease: "power2.out",
         },
-        0.2
+        0.2,
       );
 
       // Logo animation with rotation and scale
@@ -75,7 +75,7 @@ export const Hero = () => {
           duration: 0.8,
           ease: "back.out(1.7)",
         },
-        0.3
+        0.3,
       );
 
       // Heading reveal with clip-path animation
@@ -88,7 +88,7 @@ export const Hero = () => {
           duration: 1,
           ease: "power3.out",
         },
-        0.5
+        0.5,
       );
 
       // Add text shimmer effect
@@ -99,7 +99,7 @@ export const Hero = () => {
           duration: 2,
           ease: "power2.inOut",
         },
-        0.8
+        0.8,
       );
 
       // Subtext fade up
@@ -111,7 +111,7 @@ export const Hero = () => {
           duration: 0.8,
           stagger: 0.1,
         },
-        0.7
+        0.7,
       );
 
       // CTA button bounce in
@@ -124,7 +124,7 @@ export const Hero = () => {
           duration: 0.6,
           ease: "back.out(1.7)",
         },
-        0.8
+        0.8,
       );
 
       // Glass element animates in first
@@ -138,7 +138,7 @@ export const Hero = () => {
             duration: 1,
             ease: "power3.out",
           },
-          0.6
+          0.6,
         );
       }
 
@@ -152,7 +152,7 @@ export const Hero = () => {
           duration: 1.2,
           ease: "power3.out",
         },
-        0.8
+        0.8,
       );
 
       // Add subtle float animation to hero image
@@ -165,7 +165,7 @@ export const Hero = () => {
           repeat: -1,
           yoyo: true,
         },
-        2
+        2,
       );
     }, containerRef);
 
