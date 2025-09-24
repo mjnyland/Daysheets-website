@@ -18,10 +18,21 @@ export default function MaskedPhoneMocks() {
   const image1Ref = useRef<HTMLDivElement>(null);
   const image2Ref = useRef<HTMLDivElement>(null);
   const image3Ref = useRef<HTMLDivElement>(null);
-  const flightsCardRef = useRef<HTMLDivElement>(null);
-  const hotelCardRef = useRef<HTMLDivElement>(null);
-  const noteCardRef = useRef<HTMLDivElement>(null);
-  const guestlistCardRef = useRef<HTMLDivElement>(null);
+
+  // Phase 1 UI cards (Jet)
+  const flightsCard1Ref = useRef<HTMLDivElement>(null);
+  const hotelCard1Ref = useRef<HTMLDivElement>(null);
+  const guestlistCard1Ref = useRef<HTMLDivElement>(null);
+
+  // Phase 2 UI cards (Bus)
+  const flightsCard2Ref = useRef<HTMLDivElement>(null);
+  const hotelCard2Ref = useRef<HTMLDivElement>(null);
+  const guestlistCard2Ref = useRef<HTMLDivElement>(null);
+
+  // Phase 3 UI cards (Van)
+  const flightsCard3Ref = useRef<HTMLDivElement>(null);
+  const hotelCard3Ref = useRef<HTMLDivElement>(null);
+  const guestlistCard3Ref = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [timelineProgress, setTimelineProgress] = useState(0);
 
@@ -35,10 +46,21 @@ export default function MaskedPhoneMocks() {
       const maskContainer = maskContainerRef.current;
       const headline = headlineRef.current;
       const handMock = handMockRef.current;
-      const flightsCard = flightsCardRef.current;
-      const hotelCard = hotelCardRef.current;
-      const noteCard = noteCardRef.current;
-      const guestlistCard = guestlistCardRef.current;
+
+      // Phase 1 cards
+      const flightsCard1 = flightsCard1Ref.current;
+      const hotelCard1 = hotelCard1Ref.current;
+      const guestlistCard1 = guestlistCard1Ref.current;
+
+      // Phase 2 cards
+      const flightsCard2 = flightsCard2Ref.current;
+      const hotelCard2 = hotelCard2Ref.current;
+      const guestlistCard2 = guestlistCard2Ref.current;
+
+      // Phase 3 cards
+      const flightsCard3 = flightsCard3Ref.current;
+      const hotelCard3 = hotelCard3Ref.current;
+      const guestlistCard3 = guestlistCard3Ref.current;
 
       const images = [image1Ref.current, image2Ref.current, image3Ref.current];
 
@@ -63,33 +85,72 @@ export default function MaskedPhoneMocks() {
       gsap.set(images[1], { yPercent: 100 });
       gsap.set(images[2], { yPercent: 100 });
 
-      // Set initial positions for UI cards
-      gsap.set(flightsCard, {
+      // Set initial positions for Phase 1 UI cards (Jet)
+      gsap.set(flightsCard1, {
         scale: 0.6,
         opacity: 0,
         x: -180,
         y: -20,
         filter: "blur(20px)",
       });
-      gsap.set(hotelCard, {
+      gsap.set(hotelCard1, {
         scale: 0.5,
         opacity: 0,
         x: 240,
         y: -140,
         filter: "blur(20px)",
       });
-      gsap.set(noteCard, {
-        scale: 0.8,
-        opacity: 0,
-        x: -200,
-        y: 150,
-        filter: "blur(20px)",
-      });
-      gsap.set(guestlistCard, {
+      gsap.set(guestlistCard1, {
         scale: 0.4,
         opacity: 0,
         x: -180,
         y: -140,
+        filter: "blur(20px)",
+      });
+
+      // Set initial positions for Phase 2 UI cards (Bus) - hidden
+      gsap.set(flightsCard2, {
+        scale: 0.4,
+        opacity: 0,
+        x: 200,
+        y: 100,
+        filter: "blur(20px)",
+      });
+      gsap.set(hotelCard2, {
+        scale: 0.5,
+        opacity: 0,
+        x: -220,
+        y: 80,
+        filter: "blur(20px)",
+      });
+      gsap.set(guestlistCard2, {
+        scale: 0.6,
+        opacity: 0,
+        x: 160,
+        y: -80,
+        filter: "blur(20px)",
+      });
+
+      // Set initial positions for Phase 3 UI cards (Van) - hidden
+      gsap.set(flightsCard3, {
+        scale: 0.5,
+        opacity: 0,
+        x: -150,
+        y: 120,
+        filter: "blur(20px)",
+      });
+      gsap.set(hotelCard3, {
+        scale: 0.6,
+        opacity: 0,
+        x: 180,
+        y: 40,
+        filter: "blur(20px)",
+      });
+      gsap.set(guestlistCard3, {
+        scale: 0.5,
+        opacity: 0,
+        x: -200,
+        y: -100,
         filter: "blur(20px)",
       });
 
@@ -163,9 +224,9 @@ export default function MaskedPhoneMocks() {
           },
           0.4,
         )
-        // Animate UI cards in with staggered timing
+        // Phase 1: Animate UI cards in with staggered timing (Jet phase)
         .to(
-          flightsCard,
+          flightsCard1,
           {
             scale: 0.6,
             opacity: 1,
@@ -178,7 +239,7 @@ export default function MaskedPhoneMocks() {
           0.5,
         )
         .to(
-          hotelCard,
+          hotelCard1,
           {
             scale: 0.6,
             opacity: 1,
@@ -191,7 +252,7 @@ export default function MaskedPhoneMocks() {
           0.6,
         )
         .to(
-          guestlistCard,
+          guestlistCard1,
           {
             scale: 0.6,
             opacity: 0.9,
@@ -203,18 +264,121 @@ export default function MaskedPhoneMocks() {
           },
           0.8,
         )
-        // Then: Bus slides up over jet
-        .to(images[1], {
-          yPercent: 0,
-          duration: 1,
-          ease: "power2.inOut",
-        })
-        // Finally: Van slides up over bus
-        .to(images[2], {
-          yPercent: 0,
-          duration: 1,
-          ease: "power2.inOut",
-        });
+
+        // Transition to Phase 2: Bus slides up
+        // First fade out Phase 1 cards
+        .to(
+          [flightsCard1, hotelCard1, guestlistCard1],
+          {
+            opacity: 0,
+            scale: 0.4,
+            filter: "blur(20px)",
+            ease: "power2.in",
+            duration: 0.6,
+          },
+          2,
+        )
+        // Bus slides up over jet
+        .to(
+          images[1],
+          {
+            yPercent: 0,
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          2.2,
+        )
+        // Phase 2 cards animate in
+        .to(
+          flightsCard2,
+          {
+            scale: 0.55,
+            opacity: 1,
+            x: 150,
+            y: 60,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          2.6,
+        )
+        .to(
+          hotelCard2,
+          {
+            scale: 0.65,
+            opacity: 1,
+            x: -180,
+            y: 50,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          2.7,
+        )
+
+        // Transition to Phase 3: Van slides up
+        // First fade out Phase 2 cards
+        .to(
+          [flightsCard2, hotelCard2, guestlistCard2],
+          {
+            opacity: 0,
+            scale: 0.4,
+            filter: "blur(20px)",
+            ease: "power2.in",
+            duration: 0.6,
+          },
+          4,
+        )
+        // Van slides up over bus
+        .to(
+          images[2],
+          {
+            yPercent: 0,
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          4.2,
+        )
+        // Phase 3 cards animate in
+        .to(
+          flightsCard3,
+          {
+            scale: 0.6,
+            opacity: 1,
+            x: -100,
+            y: 80,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          4.6,
+        )
+        .to(
+          hotelCard3,
+          {
+            scale: 0.7,
+            opacity: 1,
+            x: 140,
+            y: 20,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          4.7,
+        )
+        .to(
+          guestlistCard3,
+          {
+            scale: 0.65,
+            opacity: 0.9,
+            x: -160,
+            y: -140,
+            filter: "blur(0px)",
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          4.8,
+        );
 
       return () => {
         ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -241,8 +405,8 @@ export default function MaskedPhoneMocks() {
       <div className="h-full w-full z-40 relative flex flex-col items-center justify-end">
         {/* UI Cards - positioned behind phone */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none shadow-none">
-          {/* Flights Card */}
-          <div ref={flightsCardRef} className="absolute z-70">
+          {/* Phase 1 Cards (Jet) */}
+          <div ref={flightsCard1Ref} className="absolute z-70">
             <Image
               src="/assets/flights.png"
               alt="Flights UI"
@@ -252,10 +416,9 @@ export default function MaskedPhoneMocks() {
               priority
             />
           </div>
-          {/* Hotel Card */}
-          <div ref={hotelCardRef} className="absolute z-60">
+          <div ref={hotelCard1Ref} className="absolute z-60">
             <Image
-              src="/assets/hotel.png"
+              src="/assets/privateflight.png"
               alt="Hotel UI"
               width={420}
               height={200}
@@ -263,15 +426,67 @@ export default function MaskedPhoneMocks() {
               priority
             />
           </div>
-
-          {/* Guestlist Card */}
-          <div ref={guestlistCardRef} className="absolute z-30 ">
+          <div ref={guestlistCard1Ref} className="absolute z-30 ">
             <Image
-              src="/assets/guestlist.png"
+              src="/assets/flight-event.png"
               alt="Guestlist UI"
               width={380}
               height={400}
               className="rounded-2xl shadow-2xl opacity-90"
+              priority
+            />
+          </div>
+
+          {/* Phase 2 Cards (Bus) */}
+          <div ref={flightsCard2Ref} className="absolute z-70">
+            <Image
+              src="/assets/transfer.png"
+              alt="Hotel UI"
+              width={420}
+              height={200}
+              className="rounded-2xl shadow-2xl"
+              priority
+            />
+          </div>
+          <div ref={hotelCard2Ref} className="absolute z-60">
+            <Image
+              src="/assets/routing.png"
+              alt="Guestlist UI"
+              width={380}
+              height={400}
+              className="rounded-2xl shadow-2xl opacity-90"
+              priority
+            />
+          </div>
+
+          {/* Phase 3 Cards (Van) */}
+          <div ref={flightsCard3Ref} className="absolute z-70">
+            <Image
+              src="/assets/DayType.png"
+              alt="Guestlist UI"
+              width={380}
+              height={400}
+              className="rounded-2xl shadow-2xl opacity-90"
+              priority
+            />
+          </div>
+          <div ref={hotelCard3Ref} className="absolute z-60">
+            <Image
+              src="/assets/ShowEvent.png"
+              alt="Flights UI"
+              width={400}
+              height={180}
+              className="rounded-2xl shadow-2xl"
+              priority
+            />
+          </div>
+          <div ref={guestlistCard3Ref} className="absolute z-30 ">
+            <Image
+              src="/assets/LoadOutEvent.png"
+              alt="Hotel UI"
+              width={420}
+              height={200}
+              className="rounded-2xl shadow-2xl"
               priority
             />
           </div>
@@ -346,7 +561,7 @@ export default function MaskedPhoneMocks() {
           className="absolute inset-0 flex items-center justify-center z-30"
         >
           <Image
-            src="/assets/van.png"
+            src="/assets/show.png"
             alt="Van"
             fill
             className="object-cover"
@@ -389,9 +604,9 @@ export default function MaskedPhoneMocks() {
             Phase
           </div>
           <div className="text-sm font-medium">
-            {timelineProgress <= 50
+            {timelineProgress <= 35
               ? "🛩️ Jet"
-              : timelineProgress <= 100
+              : timelineProgress <= 70
                 ? "🚌 Bus"
                 : "🚐 Van"}
           </div>
