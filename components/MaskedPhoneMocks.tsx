@@ -114,7 +114,13 @@ export default function MaskedPhoneMocks() {
           end: "+=400%",
           pin: true,
           scrub: true,
-          anticipatePin: 1,
+          markers: {
+            startColor: "white",
+            endColor: "white",
+            fontSize: "18px",
+            fontWeight: "bold",
+            indent: 200,
+          },
           onUpdate: (self) => {
             setScrollProgress(Math.round(self.progress * 100));
             setTimelineProgress(Math.round(tl.progress() * 100));
@@ -223,6 +229,11 @@ export default function MaskedPhoneMocks() {
     },
     { scope: sectionRef },
   );
+
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+    console.log("ScrollTrigger refreshed");
+  }, 10000);
 
   return (
     <Section

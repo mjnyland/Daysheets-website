@@ -19,7 +19,8 @@ import Footer from "@/components/Footer";
 import SimpleScrollCarousel from "@/components/SimpleScrollCarousel";
 
 import MaskedPhoneMocks from "@/components/MaskedPhoneMocks";
-import Scroll3DCarousel from "@/components/Scroll3DCarousel";
+import Scroll3DCarousel from "@/components/3d Section/Scroll3DCarousel";
+import Scroll3DCarousel2 from "@/components/3d Section/Scroll3DCarousel2";
 import Scroll3DCarouselSnap from "@/components/Scroll3DCarouselSnap";
 
 export default function Home() {
@@ -50,16 +51,14 @@ export default function Home() {
         <FeatureSlideshow />
       </div>
       <FlightGrid />
-      <VisibilityOptions />
-      <Phone3dScroll />
+      <VisibilityOptions />*/}
+      <Scroll3DCarousel2 />
       <MaskedPhoneMocks />
-      <AppDownloadSection />
+      {/*<AppDownloadSection />
       <TravelSection />
       <SimpleStickySection />
       <CtaSection />
       <Footer />*/}
-
-      <Scroll3DCarousel />
     </main>
   );
 }

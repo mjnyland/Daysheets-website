@@ -78,6 +78,25 @@ export function SimpleStickySection() {
         markers: false,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
+          // Debug logging for comparison
+          console.log("=== SIMPLE STICKY DEBUG ===");
+          console.log("ScrollTrigger start:", self.start);
+          console.log("ScrollTrigger end:", self.end);
+          console.log("Current scroll position:", self.scroll());
+          console.log("Progress:", self.progress);
+          console.log("Direction:", self.direction);
+          console.log("Is active:", self.isActive);
+          console.log(
+            "Pin spacer height:",
+            self.pin ? self.pin.spacer?.style.height : "No pin spacer",
+          );
+          console.log(
+            "Pin spacer element:",
+            self.pin ? self.pin.spacer : "No pin",
+          );
+          console.log("Pin spacing enabled:", self.pinSpacing);
+          console.log("============================");
+
           const cardProgress = self.progress * (cards.length - 1);
           cardRefs.current.forEach((card, index) => {
             if (!card) return;
@@ -93,7 +112,7 @@ export function SimpleStickySection() {
     tl.to(
       headline,
       { opacity: 0, scale: 0.7, duration: 0.3, ease: "power2.inOut" },
-      0
+      0,
     );
 
     // Cards container slides up from bottom
@@ -101,7 +120,7 @@ export function SimpleStickySection() {
       cardsContainer,
       { yPercent: 100 },
       { yPercent: 0, duration: 0.5, ease: "power2.out" },
-      0.1
+      0.1,
     );
 
     // Horizontal scrub for cards
