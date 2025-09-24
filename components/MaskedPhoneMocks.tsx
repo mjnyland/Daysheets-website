@@ -114,13 +114,6 @@ export default function MaskedPhoneMocks() {
           end: "+=400%",
           pin: true,
           scrub: true,
-          markers: {
-            startColor: "white",
-            endColor: "white",
-            fontSize: "18px",
-            fontWeight: "bold",
-            indent: 200,
-          },
           onUpdate: (self) => {
             setScrollProgress(Math.round(self.progress * 100));
             setTimelineProgress(Math.round(tl.progress() * 100));

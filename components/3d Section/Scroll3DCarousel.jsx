@@ -21,7 +21,7 @@ function Cube() {
   );
 }
 
-function PhoneCarousel({ scrollProgress, isSnapping, centeredIndex }) {
+function PhoneCarousel({ scrollProgress }) {
   const groupRef = useRef();
   const phoneRefs = useRef([]);
   const phoneCount = 4;
@@ -116,7 +116,7 @@ export default function Scroll3DCarousel2() {
   // Model titles for display
   const modelTitles = ["Day View", "Routing View", "Map", "Calendar View"];
   const modelDescriptions = [
-    "Manage your daily tour operations with a comprehensive view of all flights, crew, and logistics in one streamlined interface.",
+    "Manage your daily operations with a view of all flights, crew, and logistics in one streamlined interface.",
     "Optimize your tour routing with smart suggestions based on traffic, weather, and venue requirements.",
     "Visualize your tour routes on an interactive map with real-time updates and location tracking.",
     "Keep your entire tour organized with our intelligent calendar that syncs across all devices and team members.",
@@ -129,7 +129,6 @@ export default function Scroll3DCarousel2() {
       end: "+=400%",
       pin: true,
       scrub: true,
-      markers: true,
       onUpdate: (self) => {
         setScrollProgress(self.progress);
         setIsSnapping(false); // Reset scale when scrolling
@@ -159,7 +158,7 @@ export default function Scroll3DCarousel2() {
 
           return closest;
         },
-        duration: { min: 0.2, max: 0.6 },
+        duration: { min: 0.1, max: 0.3 },
         delay: 0.1,
         ease: "power2.inOut",
         onComplete: () => setIsSnapping(true),
@@ -172,7 +171,7 @@ export default function Scroll3DCarousel2() {
       ref={sectionRef}
       className="relative h-dvh  bg-gradient-to-b from-gray-900 to-black py-24"
     >
-      <div className="grid grid-cols-1 grid-rows-[auto_1fr_auto] justify-center h-full ">
+      <div className="grid grid-cols-1 grid-rows-[auto_1fr_auto] justify-center h-full gap-0">
         <div className="row-start-1 row-end-2">
           <div className="vo-badge text-sm sm:text-sm md:text-base font-medium tracking-tight text-center text-white bg-blue-500 px-4 py-2 rounded-full mb-4 w-fit mx-auto">
             Custom Views
@@ -199,7 +198,10 @@ export default function Scroll3DCarousel2() {
             />
           </Canvas>
         </div>
-        <div className="flex flex-col justify-center items-center mx-auto p-12  row-start-3 row-end-4 max-w-2xl text-center">
+        <div
+          className="flex flex-col justify-center items-center mx-auto p-12 row-start-3 row-end-4 max-w-xl text-center absolute left-1/2 -translate-x-1/2 bottom-8
+          bg-gradient-to-t from-black to-transparent rounded-xl"
+        >
           <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
             {modelTitles[centeredIndex]}
           </h3>
