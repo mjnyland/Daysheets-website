@@ -31,8 +31,8 @@ const cards = [
 ];
 
 export function SummaryCards() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  //const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,17 +40,17 @@ export function SummaryCards() {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
-    const container = containerRef.current;
+    //const container = containerRef.current;
     const headline = headlineRef.current;
 
-    if (!section || !container || !headline) return;
+    if (!section || !headline) return;
 
     // Follow PhoneScrollSection pattern - simple ScrollTrigger.create
     ScrollTrigger.create({
       trigger: section,
       start: "top top",
       end: "bottom top",
-      pin: container,
+      pin: section,
       scrub: 1,
       onUpdate: (self) => {
         // Simple scale animation based on progress
@@ -72,17 +72,12 @@ export function SummaryCards() {
 
   return (
     <Section
-      ref={sectionRef}
-      as="section"
       background="blue"
       padded={false}
       className="relative min-h-[300vh]"
       containerClassName="h-full"
     >
-      <div
-        ref={containerRef}
-        className="h-screen flex flex-col overflow-hidden"
-      >
+      <div ref={sectionRef} className="h-screen flex flex-col overflow-hidden">
         {/* Headline Section */}
         <div
           ref={headlineRef}
