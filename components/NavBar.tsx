@@ -84,6 +84,9 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
           <Link href="/pricing" className={linkBase}>
             Pricing
           </Link>
+          <Link href="/blog" className={linkBase}>
+            Blog
+          </Link>
           <Link href="#" className={linkBase}>
             Careers
           </Link>
@@ -194,6 +197,13 @@ export const NavBar = ({ theme = "dark", className }: Props) => {
               onClick={handleCloseMenu}
             >
               Pricing
+            </Link>
+            <Link
+              href="/blog"
+              className={["text-2xl font-medium", linkBase].join(" ")}
+              onClick={handleCloseMenu}
+            >
+              Blog
             </Link>
             <Link
               href="#"
