@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
-import { PortableText } from 'next-sanity'
+import { PortableText, type PortableTextBlock } from 'next-sanity'
 
 interface Post {
   _id: string
   title: string
-  content: any[]
+  content: PortableTextBlock[]
   publishedAt: string
 }
 
