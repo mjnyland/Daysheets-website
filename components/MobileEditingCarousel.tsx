@@ -151,7 +151,7 @@ export function MobileEditingCarousel() {
         <div className="space-y-6">
           <div className="">
             <span className="text-blue-400 text-md font-medium sp">
-              Mobile Editing
+              Mobile Editing?
             </span>
           </div>
           <div className="space-y-4">

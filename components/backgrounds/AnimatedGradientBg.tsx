@@ -13,8 +13,6 @@ export function AnimatedGradientBg() {
           mixBlendMode: "normal",
         }}
       />
-
-      {/* Removed frosted backdrop to eliminate white bleeding */}
     </div>
   );
 }

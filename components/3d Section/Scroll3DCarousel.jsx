@@ -200,7 +200,7 @@ export default function Scroll3DCarousel2() {
         </div>
         <div
           className="flex flex-col justify-center items-center mx-auto p-12 row-start-3 row-end-4 max-w-xl text-center absolute left-1/2 -translate-x-1/2 bottom-8
-          bg-gradient-to-t from-black to-transparent rounded-xl"
+            bg-gradient-to-t from-black to-transparent rounded-xl"
         >
           <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
             {modelTitles[centeredIndex]}

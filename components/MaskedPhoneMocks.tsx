@@ -387,11 +387,6 @@ export default function MaskedPhoneMocks() {
     { scope: sectionRef },
   );
 
-  setTimeout(() => {
-    ScrollTrigger.refresh();
-    console.log("ScrollTrigger refreshed");
-  }, 10000);
-
   return (
     <Section
       ref={sectionRef}
@@ -567,49 +562,6 @@ export default function MaskedPhoneMocks() {
             className="object-cover"
             priority
           />
-        </div>
-      </div>
-      ;{/* Floating Progress Indicators */}
-      <div className="fixed top-4 right-4 z-50 bg-black/80 backdrop-blur-sm rounded-lg p-4 space-y-3 min-w-[200px]">
-        <div className="text-white">
-          <div className="text-xs opacity-60 uppercase tracking-wide mb-1">
-            Scroll Progress
-          </div>
-          <div className="text-2xl font-mono font-bold">{scrollProgress}%</div>
-          <div className="w-full bg-white/20 rounded-full h-2 mt-2">
-            <div
-              className="bg-blue-500 h-full rounded-full transition-all duration-100"
-              style={{ width: `${scrollProgress}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="text-white border-t border-white/20 pt-3">
-          <div className="text-xs opacity-60 uppercase tracking-wide mb-1">
-            Timeline Progress
-          </div>
-          <div className="text-2xl font-mono font-bold">
-            {timelineProgress}%
-          </div>
-          <div className="w-full bg-white/20 rounded-full h-2 mt-2">
-            <div
-              className="bg-green-500 h-full rounded-full transition-all duration-100"
-              style={{ width: `${timelineProgress}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="text-white border-t border-white/20 pt-3">
-          <div className="text-xs opacity-60 uppercase tracking-wide mb-2">
-            Phase
-          </div>
-          <div className="text-sm font-medium">
-            {timelineProgress <= 35
-              ? "🛩️ Jet"
-              : timelineProgress <= 70
-                ? "🚌 Bus"
-                : "🚐 Van"}
-          </div>
         </div>
       </div>
     </Section>
