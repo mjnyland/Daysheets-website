@@ -45,7 +45,7 @@ const tiers: Tier[] = [
       "Collaborate on other tours",
       "Up to 50 personnel per tour",
       "Groups & Visibility",
-      "Feature 3",
+      "Access to Daysheets AI",
     ],
     ctaText: "Get started with Pro",
     ctaHref: "mailto:hello@daysheets.app?subject=Pro",
